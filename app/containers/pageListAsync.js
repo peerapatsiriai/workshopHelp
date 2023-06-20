@@ -4,6 +4,11 @@ import React from 'react';
 import Loading from 'dan-components/Loading';
 import loadable from '../utils/loadable';
 
+export const DataManagementHelp = loadable(() =>
+  import('./Pages/DataManagementHelp'), {
+    fallback: <Loading />,
+  });
+
 export const BlankPage = loadable(() =>
   import('./Pages/BlankPage'), {
     fallback: <Loading />,
