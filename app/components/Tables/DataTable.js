@@ -5,14 +5,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import JoyModal from '../Modal/JoyModal';
 
 function DataTable(props) {
-  const {
-    rows,
-    columns,
-    open,
-    handleClose,
-    modalContent,
-    modalHeader,
-  } = props;
+  const { rows, columns, open, handleClose, modalContent, modalHeader } = props;
 
   // const [open, setOpen] = React.useState(false);
   // sample rows
@@ -26,9 +19,23 @@ function DataTable(props) {
   //   { field: 'col1', headerName: 'Column 1', width: 150 },
   //   { field: 'col2', headerName: 'Column 2', width: 150 },
   // ];
+
+  // const onRowsSelectionHandler = (ids) => {
+  //   const selectedRowsData = ids.map((id) => rows.find((row) => row.id === id));
+  //   console.log(selectedRowsData);
+  // };
+
   return (
     <Box sx={{ width: '100%' }}>
-      <DataGrid rows={rows} columns={columns} />
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        getRowId={(row) => row.co_id}
+        initialState={{
+          pagination: { paginationModel: { pageSize: 5 } },
+        }}
+        pageSizeOptions={[5, 10, 25]}
+      />
       <JoyModal
         open={open}
         handleClose={handleClose}

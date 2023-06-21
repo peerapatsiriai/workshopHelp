@@ -18,3 +18,7 @@ export Notification from './Notification/Notification';
 export EmptyData from './Tables/EmptyData';
 // Error
 export ErrorWrap from './Error/ErrorWrap';
+// Input
+export InputJoy from './Input/InputJoy';
+// Modal
+export JoyModal from './Modal/JoyModal';
