@@ -6,7 +6,7 @@ import { Box, Button, Hidden, Typography, useMediaQuery } from '@mui/material';
 import TableChartIcon from '@mui/icons-material/TableChart';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import { useTheme } from '@emotion/react';
-import { Tab, TabList, TabPanel, Tabs, Select, selectClasses, Option, FormLabel } from '@mui/joy';
+import { Tab, TabList, TabPanel, Tabs, Select, selectClasses, Option } from '@mui/joy';
 import axios from 'axios';
 import { DataGrid } from '@mui/x-data-grid';
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
@@ -71,7 +71,7 @@ function PersonelsPage() {
   // สำหรับ ใส่ใน Edit Form Modal
   const CollegianContentEditModal = (
     <Box>
-      <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
         <Box sx={{ flexDirection: 'column', width: '50%' }}>
           <InputJoy
             label='First Name(TH)'
@@ -82,7 +82,7 @@ function PersonelsPage() {
             onChange={(event) => setState({ co_fname_th: event.target.value })}
           />
         </Box>
-        <Box sx={{ flexDirection: 'column', width: '50%' }}>
+        <Box sx={{ flexDirection: 'column', width: '50%', mb: 1 }}>
           <InputJoy
             label='Last Name(TH)'
             placeholder='Type in here…'
@@ -91,7 +91,7 @@ function PersonelsPage() {
           />
         </Box>
       </Box>
-      <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
         <Box sx={{ flexDirection: 'column', width: '50%' }}>
           <InputJoy
             label='First Name(ENG)'
@@ -100,7 +100,7 @@ function PersonelsPage() {
             size={'md'}
           />
         </Box>
-        <Box sx={{ flexDirection: 'column', width: '50%' }}>
+        <Box sx={{ flexDirection: 'column', width: '50%', mb: 1 }}>
           <InputJoy
             label='Last Name(ENG)'
             placeholder='Type in here…'
@@ -109,7 +109,7 @@ function PersonelsPage() {
           />
         </Box>
       </Box>
-      <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
         <Box sx={{ flexDirection: 'column', width: '50%' }}>
           <InputJoy
             label='Collegian Code'
@@ -118,7 +118,7 @@ function PersonelsPage() {
             size={'md'}
           />
         </Box>
-        <Box sx={{ flexDirection: 'column', width: '50%' }}>
+        <Box sx={{ flexDirection: 'column', width: '50%', mb: 1 }}>
           <InputJoy
             label='Email'
             placeholder='Type in here…'
@@ -127,7 +127,7 @@ function PersonelsPage() {
           />
         </Box>
       </Box>
-      <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
         <Box sx={{ flexDirection: 'column', width: '50%' }}>
           <InputJoy
             label='Telphone'
@@ -137,22 +137,17 @@ function PersonelsPage() {
           />
         </Box>
       </Box>
-      <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
         <Box sx={{ flexDirection: 'column', width: '50%' }}>
-          <FormLabel
-            sx={(themeFL) => ({
-              '--FormLabel-color': themeFL.vars.palette.primary.plainColor,
-              ml: 2,
-            })}
-          >
-            Faculty Institutes
-          </FormLabel>
+          <Typography sx={{ fontSize: 12, mb: 0.5, ml: 2 }}>Faculty Institutes</Typography>
           <Select
             placeholder='Type in here…'
             indicator={<KeyboardArrowDown />}
+            size='sm'
             sx={{
               ml: 2,
               border: 1,
+              mr: 5,
               [`& .${selectClasses.indicator}`]: {
                 transition: '0.2s',
                 [`&.${selectClasses.expanded}`]: {
@@ -167,19 +162,14 @@ function PersonelsPage() {
           </Select>
         </Box>
         <Box sx={{ flexDirection: 'column', width: '50%' }}>
-          <FormLabel
-            sx={(themeFL) => ({
-              '--FormLabel-color': themeFL.vars.palette.primary.plainColor,
-              ml: 2,
-            })}
-          >
-            Curriculum
-          </FormLabel>
+          <Typography sx={{ fontSize: 12, mb: 0.5, ml: 2 }}>Curriculum</Typography>
           <Select
             placeholder='Type in here…'
             indicator={<KeyboardArrowDown />}
+            size='sm'
             sx={{
               ml: 2,
+              mr: 5,
               border: 1,
               [`& .${selectClasses.indicator}`]: {
                 transition: '0.2s',
@@ -267,22 +257,16 @@ function PersonelsPage() {
           />
         </Box>
       </Box>
-      <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
+      <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1, ml: 2 }}>
         <Box sx={{ width: '50%' }}>
-          <FormLabel
-            sx={(themeFL) => ({
-              '--FormLabel-color': themeFL.vars.palette.primary.plainColor,
-              ml: 2,
-            })}
-          >
-            Faculty Institutes
-          </FormLabel>
+          <Typography sx={{ fontSize: 12, mb: 0.5 }}>Faculty Institutes</Typography>
           <Select
             placeholder='Type in here…'
             indicator={<KeyboardArrowDown />}
             sx={{
-              ml: 2,
+              mr: 5,
               border: 1,
+              size: 'sm',
               [`& .${selectClasses.indicator}`]: {
                 transition: '0.2s',
                 [`&.${selectClasses.expanded}`]: {
@@ -297,20 +281,15 @@ function PersonelsPage() {
           </Select>
         </Box>
         <Box sx={{ width: '50%' }}>
-          <FormLabel
-            sx={(themeFL) => ({
-              '--FormLabel-color': themeFL.vars.palette.primary.plainColor,
-              ml: 2,
-            })}
-          >
-            Curriculum
-          </FormLabel>
+          <Typography sx={{ fontSize: 12, mb: 0.5, ml: 2 }}>Curriculum</Typography>
           <Select
             placeholder='Type in here…'
             indicator={<KeyboardArrowDown />}
             sx={{
               ml: 2,
+              mr: 5,
               border: 1,
+              size: 'sm',
               [`& .${selectClasses.indicator}`]: {
                 transition: '0.2s',
                 [`&.${selectClasses.expanded}`]: {
