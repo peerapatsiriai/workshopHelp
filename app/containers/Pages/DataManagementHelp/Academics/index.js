@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import brand from 'dan-api/dummy/brand';
 import { PapperBlock } from 'dan-components';
@@ -35,6 +35,7 @@ function AcademicsPage() {
   const description = brand.desc;
   const [openIns, setOpenIns] = React.useState(false); // สำหรับใช้ควบคุม Modal insert
   const [openUpd, setOpenUpd] = React.useState(false); // สำหรับใช้ควบคุม Modal update
+  const [state, setState] = React.useState([]);
   // dummy
   const rows = [
     { id: 1, col1: 'Hello', col2: 'World' },
@@ -61,7 +62,8 @@ function AcademicsPage() {
       headerName:
       'Edit',
       width: 150,
-      renderCell: () => <Button variant="text" onClick={() => setOpenUpd(true)}>...</Button>
+      // renderCell: (cellValues) => <Button variant="text" onClick={() => setOpenUpd(true)}>...</Button>
+      renderCell: (cellValues) => <Button variant="text" onClick={() => console.log(cellValues.row)}>...</Button>
       // renderCell ใช้สำหรับสร้างปุ่มภายในตาราง
     },
   ];
@@ -80,6 +82,10 @@ function AcademicsPage() {
   ); // dummy ลองเอาไปใส่ Modal
   // color
   const primaryColor = '#1c1c1c';
+
+  useEffect(() => {
+    console.log(state);
+  }, [state]);
 
   return (
     <div>
@@ -324,6 +330,7 @@ function AcademicsPage() {
                       handleClose={() => setOpenUpd(false)}
                       modalContent={testContentModal} // สามารถใส่เข้ามาเป็น UI ได้เลย
                       modalHeader={'ทดสอบ Update Form'}
+                      stateUpdate={setState}
                     />
                     {/* ทำแค่ตัวนี้ก่อน */}
                   </Box>

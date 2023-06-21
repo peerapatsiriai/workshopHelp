@@ -6,12 +6,12 @@ import JoyModal from '../Modal/JoyModal';
 
 function DataTable(props) {
   const {
-    rows,
-    columns,
-    open,
-    handleClose,
-    modalContent,
-    modalHeader,
+    rows, // ใช้สำหรับรับเอาข้อมูลเนื้อหาในตาราง จากด้านนอกมาแสดงภายใน Modal
+    columns, // ใช้สำหรับรับเอาหัวตารางหรือ columns จากด้านนอกมาแสดงภายใน Modal
+    open, // ใช้สำหรับเปิดปิด Modal
+    handleClose, // ใช้สำหรับสั่งปิด Modal
+    modalContent, // ใช้สำหรับรับ UI จากด้านนอกมาแสดงใน Modal
+    modalHeader, // ใช้กำหนดหัวเรื่องของ Modal
   } = props;
 
   // const [open, setOpen] = React.useState(false);
