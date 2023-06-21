@@ -15,7 +15,7 @@ function App(props) {
       <Router history={history}>
         <Switch>
           <Route path="/" exact component={LoginDedicated} />
-          <Route path="/app" component={Application} />
+          <Route path="/back-office" component={Application} />
           <Route component={Auth} />
           <Route component={NotFound} />
         </Switch>

@@ -18,11 +18,11 @@ import {
   Tabs
 } from '@mui/joy';
 import SearchIcon from '@mui/icons-material/Search';
-import DataTable from '../../../components/Tables/DataTable';
-import InputJoy from '../../../components/Input/InputJoy';
-import JoyModal from '../../../components/Modal/JoyModal';
+import DataTable from '../../../../components/Tables/DataTable';
+import InputJoy from '../../../../components/Input/InputJoy';
+import JoyModal from '../../../../components/Modal/JoyModal';
 
-function HelpHome() {
+function AcademicsPage() {
   // สำหรับ Responsive
   const theme = useTheme();
   const onlySmallScreen = useMediaQuery(theme.breakpoints.up('sm'));
@@ -52,7 +52,7 @@ function HelpHome() {
     },
   ];
   // dummy
-  const testContentModal = (<InputJoy label={'test'} placeholder={'check'}/>); // dummy ลองเอาไปใส่ Modal
+  const testContentModal = (< InputJoy label={'test'} placeholder={'check'}/>); // dummy ลองเอาไปใส่ Modal
 
   return (
     <div>
@@ -205,4 +205,4 @@ function HelpHome() {
   );
 }
 
-export default HelpHome;
+export default AcademicsPage;

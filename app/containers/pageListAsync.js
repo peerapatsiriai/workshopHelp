@@ -4,8 +4,13 @@ import React from 'react';
 import Loading from 'dan-components/Loading';
 import loadable from '../utils/loadable';
 
-export const DataManagementHelp = loadable(() =>
-  import('./Pages/DataManagementHelp'), {
+export const PersonelsManagement = loadable(() =>
+  import('./Pages/DataManagementHelp/Personels'), {
+    fallback: <Loading />,
+  });
+
+export const AcademicsManagement = loadable(() =>
+  import('./Pages/DataManagementHelp/Academics'), {
     fallback: <Loading />,
   });
 

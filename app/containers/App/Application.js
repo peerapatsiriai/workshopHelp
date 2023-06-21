@@ -11,7 +11,8 @@ import {
   Table,
   Error,
   NotFound,
-  DataManagementHelp
+  AcademicsManagement,
+  PersonelsManagement,
 } from '../pageListAsync';
 
 function Application(props) {
@@ -20,15 +21,17 @@ function Application(props) {
   return (
     <Dashboard history={history} changeMode={changeMode}>
       <Switch>
-        <Route exact path="/app" component={DataManagementHelp} />
+        <Route exact path="/back-office/" component={AcademicsManagement} />
+        <Route exact path="/back-office/academics" component={AcademicsManagement} />
+        <Route exact path="/back-office/personels" component={PersonelsManagement} />
         {/* <Route exact path="/app" component={BlankPage} /> */}
-        <Route exact path="/app/blank-page" component={BlankPage} />
-        <Route path="/app/pages/dashboard" component={DashboardPage} />
-        <Route path="/app/pages/form" component={Form} />
-        <Route path="/app/pages/table" component={Table} />
-        <Route path="/app/pages/not-found" component={NotFound} />
-        <Route path="/app/pages/error" component={Error} />
-        <Route exact path="/app/pages" component={Parent} />
+        <Route exact path="/back-office/blank-page" component={BlankPage} />
+        <Route path="/back-office/pages/dashboard" component={DashboardPage} />
+        <Route path="/back-office/pages/form" component={Form} />
+        <Route path="/back-office/pages/table" component={Table} />
+        <Route path="/back-office/pages/not-found" component={NotFound} />
+        <Route path="/back-office/pages/error" component={Error} />
+        <Route exact path="/back-office/pages" component={Parent} />
         <Route component={NotFound} />
       </Switch>
     </Dashboard>
