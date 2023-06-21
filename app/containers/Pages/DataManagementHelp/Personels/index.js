@@ -9,15 +9,17 @@ import {
   Typography,
   useMediaQuery
 } from '@mui/material';
+import TableChartIcon from '@mui/icons-material/TableChart';
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import { useTheme } from '@emotion/react';
 import {
-  Input,
+  // Input,
   Tab,
   TabList,
   TabPanel,
   Tabs
 } from '@mui/joy';
-import SearchIcon from '@mui/icons-material/Search';
+// import SearchIcon from '@mui/icons-material/Search';
 import DataTable from '../../../../components/Tables/DataTable';
 import InputJoy from '../../../../components/Input/InputJoy';
 import JoyModal from '../../../../components/Modal/JoyModal';
@@ -38,6 +40,18 @@ function PersonelsPage() {
     { id: 1, col1: 'Hello', col2: 'World' },
     { id: 2, col1: 'DataGridPro', col2: 'is Awesome' },
     { id: 3, col1: 'MUI', col2: 'is Amazing' },
+    { id: 4, col1: 'Hello', col2: 'World' },
+    { id: 5, col1: 'DataGridPro', col2: 'is Awesome' },
+    { id: 6, col1: 'MUI', col2: 'is Amazing' },
+    { id: 7, col1: 'Hello', col2: 'World' },
+    { id: 8, col1: 'DataGridPro', col2: 'is Awesome' },
+    { id: 9, col1: 'MUI', col2: 'is Amazing' },
+    { id: 10, col1: 'Hello', col2: 'World' },
+    { id: 11, col1: 'DataGridPro', col2: 'is Awesome' },
+    { id: 12, col1: 'MUI', col2: 'is Amazing' },
+    { id: 13, col1: 'Hello', col2: 'World' },
+    { id: 14, col1: 'DataGridPro', col2: 'is Awesome' },
+    { id: 15, col1: 'MUI', col2: 'is Amazing' },
   ];
   const columns = [
     { field: 'col1', headerName: 'Column 1', width: 150 },
@@ -53,6 +67,8 @@ function PersonelsPage() {
   ];
   // dummy
   const testContentModal = (< InputJoy label={'test'} placeholder={'check'}/>); // dummy ลองเอาไปใส่ Modal
+  // color
+  const primaryColor = '##e0e0e0';
 
   return (
     <div>
@@ -65,26 +81,23 @@ function PersonelsPage() {
         <meta property="twitter:description" content={description} />
       </Helmet>
       <PapperBlock title="Table Group" desc='' >
-        {onlyLargeScreen ? 'LargeScreen ' : onlyMediumScreen ? 'MediumScreen ' : onlySmallScreen ? 'SmallScreen' : 'xs'}
+        {/* {onlyLargeScreen ? 'LargeScreen ' : onlyMediumScreen ? 'MediumScreen ' : onlySmallScreen ? 'SmallScreen' : 'xs'} */}
         <Box
           sx={{
             display: 'flex',
             flexDirection: 'column',
             width: '100%',
-            background: 'red'
           }}>
           <Box
             sx={{
               display: 'flex',
               flexDirection: onlyLargeScreen ? 'row' : onlyMediumScreen ? 'row' : onlySmallScreen ? 'column' : 'column',
               width: '100%',
-              background: 'blue'
             }}>
             <Box sx={{
               display: 'flex',
-              flexDirection: 'column',
-              width: onlyLargeScreen ? '30%' : onlyMediumScreen ? '30%' : onlySmallScreen ? '100%' : '100%',
-              background: 'black',
+              flexDirection: onlyLargeScreen ? 'column' : onlyMediumScreen ? 'column' : onlySmallScreen ? 'row' : 'row',
+              width: onlyLargeScreen ? '25%' : onlyMediumScreen ? '25%' : onlySmallScreen ? '100%' : '100%',
               textAlign: onlyLargeScreen ? 'left' : onlyMediumScreen ? 'left' : onlySmallScreen ? 'center' : 'center',
             }}>
               <Box sx={{
@@ -92,53 +105,155 @@ function PersonelsPage() {
                 flexDirection: 'row',
                 height: '50%',
                 width: '100%',
-                background: 'red',
-                justifyContent: onlyLargeScreen ? 'left' : onlyMediumScreen ? 'left' : onlySmallScreen ? 'center' : 'center',
-                textAlign: onlyLargeScreen ? 'left' : onlyMediumScreen ? 'left' : onlySmallScreen ? 'center' : 'center'
+                background: primaryColor,
+                borderTopLeftRadius: 20,
+                justifyContent: onlyLargeScreen ? 'left' : onlyMediumScreen ? 'left' : onlySmallScreen ? 'left' : 'left',
+                textAlign: onlyLargeScreen ? 'left' : onlyMediumScreen ? 'left' : onlySmallScreen ? 'left' : 'left'
               }}>
-                <Typography sx={{ p: 4 }}>ICON</Typography>
-                <Box sx={{ p: 1, m: 2 }}>
-                  <Typography sx={{ fontSize: 12, fontWeight: 'bold' }}>Table name</Typography>
-                  <Typography style={{ lineHeight: '10px' }} sx={{ fontSize: 12 }}>last updated</Typography>
-                  <Typography sx={{ fontSize: 12 }} >on March 13th,2023</Typography>
+                <Box sx={{
+                  ml: onlyLargeScreen ? 0 : onlyMediumScreen ? 0 : onlySmallScreen ? 2 : 2,
+                  display: 'flex',
+                  justifyContent: 'right',
+                  width: onlyLargeScreen ? '30%' : onlyMediumScreen ? '30%' : onlySmallScreen ? '10%' : '10%',
+                }}>
+                  <Box sx={{
+                    ml: 3,
+                    mt: 3.5,
+                    mb: onlyLargeScreen ? 3 : onlyMediumScreen ? 3 : onlySmallScreen ? 0 : 0,
+                    p: 1.5,
+                    width: 45,
+                    height: 45,
+                    borderRadius: 4,
+                    background: 'lightgray',
+                    display: 'flex',
+                    justifyContent: 'center',
+                  }}>
+                    <AccountBalanceIcon style={{ color: 'black' }} fontSize={'large'}/>
+                  </Box>
                 </Box>
-              </Box>
-              <Box sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                height: '50%',
-                p: 2,
-              }}>
-                <Box>
-                  <Typography sx={{ fontWeight: 'bold' }}>COUNT TABLE</Typography>
-                  <Typography sx={{ fontSize: '14px' }}>COUNT ALL RECORDS</Typography>
+                <Box sx={{
+                  p: 1,
+                  m: 2,
+                  mt: 2,
+                }}>
+                  <Typography sx={{
+                    fontSize: 16,
+                    fontWeight: 'bold',
+                    color: 'black'
+                  }}>
+                    Personels
+                  </Typography>
+                  <Typography style={{
+                    lineHeight: '11px',
+                    color: 'black',
+                    opacity: '60%',
+                  }} sx={{ fontSize: 12, mt: 0.5 }}>
+                    Last updated
+                  </Typography>
+                  <Typography sx={{
+                    fontSize: 12,
+                    color: 'black',
+                    opacity: '60%',
+                    mt: 0.5,
+                  }} >on March 13th,2023</Typography>
                 </Box>
+                <Hidden mdUp>
+                  <Box sx={{
+                    ml: 3,
+                    mt: 1,
+                    mb: onlyLargeScreen ? 3 : onlyMediumScreen ? 3 : onlySmallScreen ? 0 : 0,
+                    p: 2.5,
+                    pl: 0,
+                  }}>
+                    <Typography sx={{ fontSize: 28, fontWeight: 'bold', color: 'black' }}>2 Tables</Typography>
+                  </Box>
+                </Hidden>
               </Box>
+              <Hidden mdDown>
+                <Box sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  height: '50%',
+                  p: 2,
+                  background: primaryColor
+                }}>
+                  <Box sx={{
+                    ml: 3,
+                  }}>
+                    <Typography sx={{ fontSize: 28, fontWeight: 'bold', color: 'black' }}>2 Tables</Typography>
+                    <Typography sx={{ fontSize: 14, color: 'black', opacity: '60%' }}>XX records</Typography>
+                  </Box>
+                </Box>
+              </Hidden>
             </Box>
             <Hidden mdDown>
               <Box sx={{
                 display: 'flex',
-                width: onlyLargeScreen ? '70%' : onlyMediumScreen ? '70%' : onlySmallScreen ? '100%' : '100%',
-                background: 'green',
+                width: onlyLargeScreen ? '75%' : onlyMediumScreen ? '75%' : onlySmallScreen ? '100%' : '100%',
+                background: primaryColor,
                 p: 2,
-                textAlign: 'left'
+                textAlign: 'left',
+                borderTopRightRadius: 20,
               }}>
-                <Typography m={6} >ICON DATAMANAGEMENT</Typography>
+                <Box sx={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  mt: 12,
+                  pl: 4
+                }}>
+                  <TableChartIcon sx={{ fontSize: 42, color: 'black' }}/>
+                  <Typography sx={{
+                    // fontWeight: 'bold',
+                    color: 'black',
+                    fontSize: 28,
+                    m: 0.5,
+                    ml: 1.5
+                  }}>
+                    Data Management
+                  </Typography>
+                </Box>
               </Box>
             </Hidden>
           </Box>
           <Box sx={{
             display: 'flex',
             width: '100%',
-            background: 'blue',
           }}>
             <Box sx={{ width: '100%' }}>
-              <Tabs aria-label="Basic tabs" defaultValue={0} sx={{ borderRadius: 'lg' }}>
-                <TabList sx={{
-                  pl: onlyLargeScreen ? '30%' : onlyMediumScreen ? '30%' : onlySmallScreen ? '0%' : '0%',
-                }}>
-                  <Tab>Collegians</Tab>
-                  <Tab>Instrutors</Tab>
+              <Tabs
+                aria-label="Basic tabs"
+                defaultValue={0}
+              >
+                <TabList
+                  sx={{
+                    pl: onlyLargeScreen ? '30%' : onlyMediumScreen ? '30%' : onlySmallScreen ? '0%' : '0%',
+                    borderBottomRightRadius: 0,
+                    borderBottomLeftRadius: 0,
+                    borderTopLeftRadius: 0,
+                    borderTopRightRadius: 0,
+                    background: '#FAFAFA',
+                    px: 2,
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                  }}>
+                  <Tab sx={{
+                    borderRadius: 0,
+                    borderStartStartRadius: 20,
+                    color: 'black',
+                    borderBottom: 2,
+                    borderColor: 'gray'
+                  }}>
+                    Colegians
+                  </Tab>
+                  <Tab sx={{
+                    borderRadius: 0,
+                    borderStartStartRadius: 20,
+                    color: 'black',
+                    borderBottom: 2,
+                    borderColor: 'gray'
+                  }}>
+                  Instrutors
+                  </Tab>
                 </TabList>
                 <TabPanel value={0} sx={{ p: 2, height: 500 }}>
                   <Box sx={{
@@ -148,20 +263,34 @@ function PersonelsPage() {
                     p: 2,
                   }}>
                     <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-                      <Button onClick={() => setOpenIns(true)} sx={{
-                        px: 2,
-                        background: 'black',
-                        color: 'white',
-                        borderRadius: 5
-                      }}>+ INSERT</Button>
-                      <Input startDecorator={<SearchIcon sx={{ color: 'text.tertiary' }} />}
-                        placeholder="Search"
-                        size="sm"
+                      <Button
+                        onClick={() => setOpenIns(true)}
                         sx={{
-                          ml: 2,
-                          border: 1,
-                        }}
-                      />
+                          px: 2,
+                          background: 'black',
+                          color: 'white',
+                          borderRadius: 5,
+                          '&:hover': {
+                            background: '#fff',
+                            color: 'black',
+                          },
+                        }}>
+                        <Typography sx={{
+                          fontSize: 12,
+                          textTransform: 'capitalize',
+                          fontWeight: 'bold',
+                        }}>
+                            + Add Colegian
+                        </Typography>
+                      </Button>
+                      <Button sx={{ ml: 2 }}>
+                        <Typography sx={{
+                          fontSize: 12,
+                          textTransform: 'capitalize',
+                          fontWeight: 'bold',
+                        }}>
+                            Export
+                        </Typography></Button>
                     </Box>
                   </Box>
                   <Box>
@@ -178,7 +307,7 @@ function PersonelsPage() {
                   </Box>
                 </TabPanel>
                 <TabPanel value={1} sx={{ p: 2, height: 500 }}>
-                  <b>Academic Type</b> tab panel
+                  ssss
                 </TabPanel>
               </Tabs>
             </Box>

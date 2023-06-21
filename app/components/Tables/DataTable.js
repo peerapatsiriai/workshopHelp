@@ -28,13 +28,21 @@ function DataTable(props) {
   // ];
   return (
     <Box sx={{ width: '100%' }}>
-      <DataGrid rows={rows} columns={columns} />
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        initialState={{
+          pagination: { paginationModel: { pageSize: 5 } },
+        }}
+        pageSizeOptions={[5, 10, 25]}
+      />
       <JoyModal
         open={open}
         handleClose={handleClose}
         content={modalContent}
         header={modalHeader}
         labelBtn={'Update'}
+        subDetail={true}
       />
     </Box>
   );

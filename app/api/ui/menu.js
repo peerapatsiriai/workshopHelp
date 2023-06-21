@@ -10,12 +10,6 @@ module.exports = [
         title: true,
       },
       {
-        key: 'blank',
-        name: 'Blank Page',
-        link: '/app',
-        icon: 'ion-ios-document-outline',
-      },
-      {
         key: 'academics',
         name: 'Academics Page',
         link: '/back-office/academics',
