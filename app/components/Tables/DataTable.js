@@ -30,7 +30,6 @@ function DataTable(props) {
       <DataGrid
         rows={rows}
         columns={columns}
-        getRowId={(row) => row.co_id}
         initialState={{
           pagination: { paginationModel: { pageSize: 5 } },
         }}
@@ -42,6 +41,7 @@ function DataTable(props) {
         content={modalContent}
         header={modalHeader}
         labelBtn={'Update'}
+        subDetail={false}
       />
     </Box>
   );
