@@ -70,30 +70,6 @@ function PersonelsPage() {
   // สำหรับ ใส่ใน Edit Form Modal
   const CollegianContentEditModal = (
     <Box>
-      <Box sx={{ mb: 2 }}>
-        <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-          <Typography
-            color='neutral'
-            variant='body2'
-            sx={{
-              ml: 2,
-            }}
-          >
-            Created On March 10/2/2023 : 15:59:41
-          </Typography>
-        </Box>
-        <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-          <Typography
-            color='neutral'
-            variant='body2'
-            sx={{
-              ml: 2,
-            }}
-          >
-            Last updated On March 22/2/2023 : 21:32:51
-          </Typography>
-        </Box>
-      </Box>
       <Box sx={{ display: 'flex', flexDirection: 'row' }}>
         <Box sx={{ flexDirection: 'column', width: '50%' }}>
           <InputJoy
@@ -548,6 +524,7 @@ function PersonelsPage() {
                       content={CollegianContentEditModal}
                       header={'Update Collegian'}
                       labelBtn={'Update'}
+                      subDetail={true}
                     />
                     {/* ทำแค่ตัวนี้ก่อน */}
                   </Box>
