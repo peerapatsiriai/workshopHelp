@@ -32,9 +32,9 @@ function DataTable(props) {
         rows={rows}
         columns={columns}
         initialState={{
-          pagination: { paginationModel: { pageSize: 5 } },
+          pagination: { paginationModel: { pageSize: 10 } },
         }}
-        pageSizeOptions={[5, 10, 25]}
+        pageSizeOptions={[10, 25, 50]}
       />
       <JoyModal
         open={open}
