@@ -99,6 +99,8 @@ function PersonelsPage() {
           <InputJoy
             label='First Name(TH)'
             placeholder='Type in here…'
+            type={'text'}
+            size={'md'}
             value={state.co_fname_th}
             onChange={(event) => setState({ co_fname_th: event.target.value })}
           />
@@ -107,6 +109,8 @@ function PersonelsPage() {
           <InputJoy
             label='Last Name(TH)'
             placeholder='Type in here…'
+            type={'text'}
+            size={'md'}
           />
         </Box>
       </Box>
@@ -115,12 +119,16 @@ function PersonelsPage() {
           <InputJoy
             label='First Name(ENG)'
             placeholder='Type in here…'
+            type={'text'}
+            size={'md'}
           />
         </Box>
         <Box sx={{ flexDirection: 'column', width: '50%' }}>
           <InputJoy
             label='Last Name(ENG)'
             placeholder='Type in here…'
+            type={'text'}
+            size={'md'}
           />
         </Box>
       </Box>
@@ -129,12 +137,16 @@ function PersonelsPage() {
           <InputJoy
             label='Collegian Code'
             placeholder='Type in here…'
+            type={'text'}
+            size={'md'}
           />
         </Box>
         <Box sx={{ flexDirection: 'column', width: '50%' }}>
           <InputJoy
             label='Email'
             placeholder='Type in here…'
+            type={'text'}
+            size={'md'}
           />
         </Box>
       </Box>
@@ -143,6 +155,8 @@ function PersonelsPage() {
           <InputJoy
             label='Telphone'
             placeholder='Type in here…'
+            type={'text'}
+            size={'md'}
           />
         </Box>
       </Box>
@@ -210,60 +224,74 @@ function PersonelsPage() {
   // สำหรับ ใส่ใน Insert Form Modal
   const CollegianContentInsertModal = (
     <Box>
-      <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-        <Box sx={{ flexDirection: 'column', width: '50%' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
+        <Box sx={{ width: '50%' }}>
           <InputJoy
             label='First Name(TH)'
             placeholder='Type in here…'
+            type={'text'}
+            size={'md'}
             value={state.co_fname_th}
             onChange={(event) => setState({ co_fname_th: event.target.value })}
           />
         </Box>
-        <Box sx={{ flexDirection: 'column', width: '50%' }}>
+        <Box sx={{ width: '50%' }}>
           <InputJoy
             label='Last Name(TH)'
             placeholder='Type in here…'
+            type={'text'}
+            size={'md'}
           />
         </Box>
       </Box>
-      <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-        <Box sx={{ flexDirection: 'column', width: '50%' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
+        <Box sx={{ width: '50%' }}>
           <InputJoy
             label='First Name(ENG)'
             placeholder='Type in here…'
+            type={'text'}
+            size={'md'}
           />
         </Box>
-        <Box sx={{ flexDirection: 'column', width: '50%' }}>
+        <Box sx={{ width: '50%' }}>
           <InputJoy
             label='Last Name(ENG)'
             placeholder='Type in here…'
+            type={'text'}
+            size={'md'}
           />
         </Box>
       </Box>
-      <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-        <Box sx={{ flexDirection: 'column', width: '50%' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
+        <Box sx={{ width: '50%' }}>
           <InputJoy
             label='Collegian Code'
             placeholder='Type in here…'
+            type={'text'}
+            size={'md'}
           />
         </Box>
-        <Box sx={{ flexDirection: 'column', width: '50%' }}>
+        <Box sx={{ width: '50%' }}>
           <InputJoy
             label='Email'
             placeholder='Type in here…'
+            type={'text'}
+            size={'md'}
           />
         </Box>
       </Box>
-      <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-        <Box sx={{ flexDirection: 'column', width: '50%' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
+        <Box sx={{ width: '50%' }}>
           <InputJoy
             label='Telphone'
             placeholder='Type in here…'
+            type={'text'}
+            size={'md'}
           />
         </Box>
       </Box>
-      <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-        <Box sx={{ flexDirection: 'column', width: '50%' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
+        <Box sx={{ width: '50%' }}>
           <FormLabel
             sx={(themeFL) => ({
               '--FormLabel-color': themeFL.vars.palette.primary.plainColor,
@@ -291,7 +319,7 @@ function PersonelsPage() {
             <Option value='3'>คณะวิทยาศาสตร์และเทคโนโลยีการเกษตร</Option>
           </Select>
         </Box>
-        <Box sx={{ flexDirection: 'column', width: '50%' }}>
+        <Box sx={{ width: '50%' }}>
           <FormLabel
             sx={(themeFL) => ({
               '--FormLabel-color': themeFL.vars.palette.primary.plainColor,
