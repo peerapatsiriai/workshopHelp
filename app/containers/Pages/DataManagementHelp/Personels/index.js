@@ -67,9 +67,6 @@ function PersonelsPage() {
   ];
   // dummy
   const testContentModal = (< InputJoy label={'test'} placeholder={'check'}/>); // dummy ลองเอาไปใส่ Modal
-  // color
-  const primaryColor = '##e0e0e0';
-
   return (
     <div>
       <Helmet>
@@ -105,7 +102,7 @@ function PersonelsPage() {
                 flexDirection: 'row',
                 height: '50%',
                 width: '100%',
-                background: primaryColor,
+                background: '#FAFAFA',
                 borderTopLeftRadius: 20,
                 justifyContent: onlyLargeScreen ? 'left' : onlyMediumScreen ? 'left' : onlySmallScreen ? 'left' : 'left',
                 textAlign: onlyLargeScreen ? 'left' : onlyMediumScreen ? 'left' : onlySmallScreen ? 'left' : 'left'
@@ -175,7 +172,7 @@ function PersonelsPage() {
                   flexDirection: 'column',
                   height: '50%',
                   p: 2,
-                  background: primaryColor
+                  background: '#FAFAFA',
                 }}>
                   <Box sx={{
                     ml: 3,
@@ -190,7 +187,7 @@ function PersonelsPage() {
               <Box sx={{
                 display: 'flex',
                 width: onlyLargeScreen ? '75%' : onlyMediumScreen ? '75%' : onlySmallScreen ? '100%' : '100%',
-                background: primaryColor,
+                background: '#FAFAFA',
                 p: 2,
                 textAlign: 'left',
                 borderTopRightRadius: 20,

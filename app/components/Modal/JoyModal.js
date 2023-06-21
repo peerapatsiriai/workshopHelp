@@ -17,7 +17,7 @@ function JoyModal(props) {
     content,
     header,
     labelBtn,
-    subDetail,
+    subDetail, // สำหรับแสดง mockup วันที่เวลาที่อัพเดทล่าสุด (true = แสดง, false = ไม่แสดง)
   } = props;
   return (
     <React.Fragment>
