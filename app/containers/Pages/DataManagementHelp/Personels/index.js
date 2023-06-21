@@ -252,7 +252,7 @@ function PersonelsPage() {
                   Instrutors
                   </Tab>
                 </TabList>
-                <TabPanel value={0} sx={{ p: 2, height: 500 }}>
+                <TabPanel value={0} sx={{ p: 2 }}>
                   <Box sx={{
                     display: 'flex',
                     justifyContent: onlyLargeScreen ? 'space-between' : onlyMediumScreen ? 'space-between' : onlySmallScreen ? 'center' : 'center',
@@ -303,7 +303,7 @@ function PersonelsPage() {
                     {/* ทำแค่ตัวนี้ก่อน */}
                   </Box>
                 </TabPanel>
-                <TabPanel value={1} sx={{ p: 2, height: 500 }}>
+                <TabPanel value={1} sx={{ p: 2 }}>
                   ssss
                 </TabPanel>
               </Tabs>
