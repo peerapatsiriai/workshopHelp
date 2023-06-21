@@ -317,6 +317,7 @@ function PersonelsPage() {
           content={'testinsert'}
           header={'ทดสอบ Insert Form'}
           labelBtn={'Insert'}
+          subDetail={false}
         />
       </PapperBlock>
     </div>
