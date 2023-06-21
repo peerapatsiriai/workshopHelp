@@ -357,7 +357,6 @@ function PersonelsPage() {
         title='Table Group'
         desc=''
       >
-        {onlyLargeScreen ? 'LargeScreen ' : onlyMediumScreen ? 'MediumScreen ' : onlySmallScreen ? 'SmallScreen' : 'xs'}
         <Box
           sx={{
             display: 'flex',
