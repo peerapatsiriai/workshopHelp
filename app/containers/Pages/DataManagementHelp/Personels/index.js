@@ -26,15 +26,14 @@ function PersonelsPage() {
   // สำหรับรับค่า
   const [rows, setRows] = useState([]);
   const [state, setState] = useState({
+    co_code: '',
     co_fname_th: '',
     co_lname_th: '',
     co_fname_en: '',
     co_lname_en: '',
-    co_code: '',
     co_email: '',
     co_tel: '',
     faculty_institutes_fi_id: '',
-    curriculums_cur_id: '',
   });
 
   // dummy
