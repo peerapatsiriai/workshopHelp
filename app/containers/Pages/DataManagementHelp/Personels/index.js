@@ -7,7 +7,7 @@ import TableChartIcon from '@mui/icons-material/TableChart';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import axios from 'axios';
 import { useTheme } from '@emotion/react';
-import { Tab, TabList, TabPanel, Tabs, Select, selectClasses, Option } from '@mui/joy';
+import { Tab, TabList, TabPanel, Tabs, Select, selectClasses, Option, Input } from '@mui/joy';
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
 import CollegianTab from './Tabs/CollegianTab';
 
@@ -17,23 +17,26 @@ function PersonelsPage() {
   const onlySmallScreen = useMediaQuery(theme.breakpoints.up('sm'));
   const onlyMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
   const onlyLargeScreen = useMediaQuery(theme.breakpoints.up('lg'));
+
   // สำหรับ Responsive
   const title = brand.name + ' - Blank Page';
   const description = brand.desc;
   const [openIns, setOpenIns] = React.useState(false); // สำหรับใช้ควบคุม Modal insert
   const [openUpd, setOpenUpd] = React.useState(false); // สำหรับใช้ควบคุม Modal update
-  // สำหรับรับค่า
+
   // สำหรับรับค่า
   const [rows, setRows] = useState([]);
   const [state, setState] = useState({
-    co_code: '',
-    co_fname_th: '',
-    co_lname_th: '',
-    co_fname_en: '',
-    co_lname_en: '',
-    co_email: '',
-    co_tel: '',
-    faculty_institutes_fi_id: '',
+    myFormFields: {
+      co_code: '',
+      co_fname_th: '',
+      co_lname_th: '',
+      co_fname_en: '',
+      co_lname_en: '',
+      co_email: '',
+      co_tel: '',
+      faculty_institutes_fi_id: '',
+    },
   });
 
   // dummy
@@ -73,43 +76,47 @@ function PersonelsPage() {
     <Box>
       <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
         <Box sx={{ width: '50%' }}>
-          <InputJoy
-            label='First Name(TH)'
+          <Box sx={{ ml: 2 }}>
+            <Typography sx={{ fontSize: 12, mb: 0.5 }}>First Name(TH)</Typography>
+          </Box>
+          <Input
             placeholder='Type in here…'
-            type={'text'}
-            size={'md'}
-            value={state.co_fname_th}
-            onChange={(event) => setState({ co_fname_th: event.target.value })}
+            size='md'
+            value={state.co_fname_th || ''}
+            onChange={(event) => setState((pre) => ({ ...pre, co_fname_th: event.target.value }))}
           />
         </Box>
         <Box sx={{ width: '50%' }}>
-          <InputJoy
-            label='Last Name(TH)'
+          <Box sx={{ ml: 2 }}>
+            <Typography sx={{ fontSize: 12, mb: 0.5 }}>Last Name(TH)</Typography>
+          </Box>
+          <Input
             placeholder='Type in here…'
-            type={'text'}
-            size={'md'}
-            value={state.co_lname_th}
-            onChange={(event) => setState({ co_lname_th: event.target.value })}
+            size='md'
+            value={state.co_lname_th || ''}
+            onChange={(event) => setState((pre) => ({ ...pre, co_lname_th: event.target.value }))}
           />
         </Box>
       </Box>
       <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
         <Box sx={{ width: '50%' }}>
-          <InputJoy
-            label='First Name(ENG)'
+          <Box sx={{ ml: 2 }}>
+            <Typography sx={{ fontSize: 12, mb: 0.5 }}>First Name(EN)</Typography>
+          </Box>
+          <Input
             placeholder='Type in here…'
-            type={'text'}
-            size={'md'}
+            size='md'
             value={state.co_fname_en}
             onChange={(event) => setState({ co_fname_en: event.target.value })}
           />
         </Box>
         <Box sx={{ width: '50%' }}>
-          <InputJoy
-            label='Last Name(ENG)'
+          <Box sx={{ ml: 2 }}>
+            <Typography sx={{ fontSize: 12, mb: 0.5 }}>Last Name(EN)</Typography>
+          </Box>
+          <Input
             placeholder='Type in here…'
-            type={'text'}
-            size={'md'}
+            size='md'
             value={state.co_lname_en}
             onChange={(event) => setState({ co_lname_en: event.target.value })}
           />
@@ -117,21 +124,23 @@ function PersonelsPage() {
       </Box>
       <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
         <Box sx={{ width: '50%' }}>
-          <InputJoy
-            label='Collegian Code'
+          <Box sx={{ ml: 2 }}>
+            <Typography sx={{ fontSize: 12, mb: 0.5 }}>Collegian Code</Typography>
+          </Box>
+          <Input
             placeholder='Type in here…'
-            type={'text'}
-            size={'md'}
+            size='md'
             value={state.co_code}
             onChange={(event) => setState({ co_code: event.target.value })}
           />
         </Box>
         <Box sx={{ width: '50%' }}>
-          <InputJoy
-            label='Email'
+          <Box sx={{ ml: 2 }}>
+            <Typography sx={{ fontSize: 12, mb: 0.5 }}>Email</Typography>
+          </Box>
+          <Input
             placeholder='Type in here…'
-            type={'text'}
-            size={'md'}
+            size='md'
             value={state.co_email}
             onChange={(event) => setState({ co_email: event.target.value })}
           />
@@ -139,11 +148,12 @@ function PersonelsPage() {
       </Box>
       <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
         <Box sx={{ width: '50%' }}>
-          <InputJoy
-            label='Telphone'
+          <Box sx={{ ml: 2 }}>
+            <Typography sx={{ fontSize: 12, mb: 0.5 }}>Telphone</Typography>
+          </Box>
+          <Input
             placeholder='Type in here…'
-            type={'text'}
-            size={'md'}
+            size='md'
             value={state.co_tel}
             onChange={(event) => setState({ co_tel: event.target.value })}
           />
@@ -155,7 +165,6 @@ function PersonelsPage() {
           <Select
             placeholder='Type in here…'
             indicator={<KeyboardArrowDown />}
-            value={state.faculty_institutes_fi_id}
             sx={{
               mr: 5,
               border: 1,
@@ -211,8 +220,6 @@ function PersonelsPage() {
             placeholder='Type in here…'
             type={'text'}
             size={'md'}
-            value={state.co_fname_th}
-            onChange={(event) => setState({ co_fname_th: event.target.value })}
           />
         </Box>
         <Box sx={{ flexDirection: 'column', width: '50%', mb: 1 }}>
@@ -330,11 +337,9 @@ function PersonelsPage() {
       .post('http://192.168.1.168:8000/api/method/frappe.help-api.insertcollegian', state)
       .then((response) => {
         console.log(response);
-        console.log(state);
       })
       .catch((error) => {
         console.log(error);
-        console.log(state);
       });
   };
 
