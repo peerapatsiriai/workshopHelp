@@ -4,13 +4,14 @@ import PropTypes from 'prop-types';
 import * as React from 'react';
 
 function InputJoy(props) {
-  const { label, placeholder, size, type } = props;
+  const { label, placeholder, size, type, setState } = props;
   return (
     <Box>
       <Box sx={{ ml: 2 }}>
         {label !== '' ? <Typography sx={{ fontSize: 12, mb: 0.5 }}>{label}</Typography> : <Box sx={{ m: 2.75 }}></Box>}
       </Box>
       <Input
+        onChange={(event) => setState(event.target.value)}
         type={type || 'text'}
         placeholder={`${placeholder}`}
         size='sm'
@@ -28,6 +29,7 @@ InputJoy.propTypes = {
   label: PropTypes.string,
   size: PropTypes.string,
   type: PropTypes.string,
+  setState: PropTypes.func,
 };
 
 export default InputJoy;
