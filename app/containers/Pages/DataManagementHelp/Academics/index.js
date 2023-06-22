@@ -20,9 +20,10 @@ import {
 import TableChartIcon from '@mui/icons-material/TableChart';
 import SchoolIcon from '@mui/icons-material/School';
 // import SearchIcon from '@mui/icons-material/Search';
-import DataTable from '../../../../components/Tables/DataTable';
+// import DataTable from '../../../../components/Tables/DataTable';
 import InputJoy from '../../../../components/Input/InputJoy';
 import JoyModal from '../../../../components/Modal/JoyModal';
+import AcademicsTab from './Tab/AcademicsTab';
 
 function AcademicsPage() {
   // สำหรับ Responsive
@@ -284,56 +285,15 @@ function AcademicsPage() {
                     Departments</Tab>
                 </TabList>
                 <TabPanel value={0} sx={{ p: 2 }}>
-                  <Box sx={{
-                    display: 'flex',
-                    justifyContent: onlyLargeScreen ? 'space-between' : onlyMediumScreen ? 'space-between' : onlySmallScreen ? 'center' : 'center',
-                    width: '100%',
-                    p: 2,
-                  }}>
-                    <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-                      <Button
-                        onClick={() => setOpenIns(true)}
-                        sx={{
-                          px: 2,
-                          background: 'black',
-                          color: 'white',
-                          borderRadius: 5,
-                          '&:hover': {
-                            background: '#fff',
-                            color: 'black',
-                          },
-                        }}>
-                        <Typography sx={{
-                          fontSize: 12,
-                          textTransform: 'capitalize',
-                          fontWeight: 'bold',
-                        }}>
-                            + Add Academic
-                        </Typography>
-                      </Button>
-                      <Button sx={{ ml: 2 }}>
-                        <Typography sx={{
-                          fontSize: 12,
-                          textTransform: 'capitalize',
-                          fontWeight: 'bold',
-                        }}>
-                            Export
-                        </Typography></Button>
-                    </Box>
-                  </Box>
-                  <Box sx={{ display: 'flex', width: '100%' }}>
-                    {/* ทำแค่ตัวนี้ก่อน */}
-                    <DataTable
-                      rows={rows}
-                      columns={columns}
-                      open={openUpd}
-                      handleClose={() => setOpenUpd(false)}
-                      modalContent={testContentModal} // สามารถใส่เข้ามาเป็น UI ได้เลย
-                      modalHeader={'ทดสอบ Update Form'}
-                      stateUpdate={setState}
-                    />
-                    {/* ทำแค่ตัวนี้ก่อน */}
-                  </Box>
+                  <AcademicsTab
+                    setState={setState}
+                    ContentModal={testContentModal}
+                    setOpenUpd={setOpenUpd}
+                    openUpd={openUpd}
+                    setOpenIns={setOpenIns}
+                    rows={rows}
+                    columns={columns}
+                  />
                 </TabPanel>
                 <TabPanel value={1} sx={{ p: 2 }}>
                   <b>Academic Type</b> tab panel

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import brand from 'dan-api/dummy/brand';
 import { PapperBlock } from 'dan-components';
@@ -20,9 +20,10 @@ import {
   Tabs
 } from '@mui/joy';
 // import SearchIcon from '@mui/icons-material/Search';
-import DataTable from '../../../../components/Tables/DataTable';
+// import DataTable from '../../../../components/Tables/DataTable';
 import InputJoy from '../../../../components/Input/InputJoy';
 import JoyModal from '../../../../components/Modal/JoyModal';
+import ColligianTab from './Tab/ColligiansTab';
 
 function PersonelsPage() {
   // สำหรับ Responsive
@@ -35,6 +36,7 @@ function PersonelsPage() {
   const description = brand.desc;
   const [openIns, setOpenIns] = React.useState(false); // สำหรับใช้ควบคุม Modal insert
   const [openUpd, setOpenUpd] = React.useState(false); // สำหรับใช้ควบคุม Modal update
+  const [state, setState] = React.useState([]);
   // dummy
   const rows = [
     { id: 1, col1: 'Hello', col2: 'World' },
@@ -67,6 +69,11 @@ function PersonelsPage() {
   ];
   // dummy
   const testContentModal = (< InputJoy label={'test'} placeholder={'check'}/>); // dummy ลองเอาไปใส่ Modal
+
+  useEffect(() => {
+    console.log(state);
+  }, [state]);
+
   return (
     <div>
       <Helmet>
@@ -253,55 +260,15 @@ function PersonelsPage() {
                   </Tab>
                 </TabList>
                 <TabPanel value={0} sx={{ p: 2 }}>
-                  <Box sx={{
-                    display: 'flex',
-                    justifyContent: onlyLargeScreen ? 'space-between' : onlyMediumScreen ? 'space-between' : onlySmallScreen ? 'center' : 'center',
-                    width: '100%',
-                    p: 2,
-                  }}>
-                    <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-                      <Button
-                        onClick={() => setOpenIns(true)}
-                        sx={{
-                          px: 2,
-                          background: 'black',
-                          color: 'white',
-                          borderRadius: 5,
-                          '&:hover': {
-                            background: '#fff',
-                            color: 'black',
-                          },
-                        }}>
-                        <Typography sx={{
-                          fontSize: 12,
-                          textTransform: 'capitalize',
-                          fontWeight: 'bold',
-                        }}>
-                            + Add Colegian
-                        </Typography>
-                      </Button>
-                      <Button sx={{ ml: 2 }}>
-                        <Typography sx={{
-                          fontSize: 12,
-                          textTransform: 'capitalize',
-                          fontWeight: 'bold',
-                        }}>
-                            Export
-                        </Typography></Button>
-                    </Box>
-                  </Box>
-                  <Box>
-                    {/* ทำแค่ตัวนี้ก่อน */}
-                    <DataTable
-                      rows={rows}
-                      columns={columns}
-                      open={openUpd}
-                      handleClose={() => setOpenUpd(false)}
-                      modalContent={testContentModal} // สามารถใส่เข้ามาเป็น UI ได้เลย
-                      modalHeader={'ทดสอบ Update Form'}
-                    />
-                    {/* ทำแค่ตัวนี้ก่อน */}
-                  </Box>
+                  <ColligianTab
+                    setState={setState}
+                    ContentModal={testContentModal}
+                    setOpenUpd={setOpenUpd}
+                    openUpd={openUpd}
+                    setOpenIns={setOpenIns}
+                    rows={rows}
+                    columns={columns}
+                  />
                 </TabPanel>
                 <TabPanel value={1} sx={{ p: 2 }}>
                   ssss
