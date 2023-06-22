@@ -597,6 +597,8 @@ function PersonelsPage() {
           content={CollegianContentInsertModal}
           header={'Add New Collegian'}
           labelBtn={'Submit'}
+          handleSubmit={CollegianContentInsertModal}
+          subDetail={true}
         />
       </PapperBlock>
     </div>
