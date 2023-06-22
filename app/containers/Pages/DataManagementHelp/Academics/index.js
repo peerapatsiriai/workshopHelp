@@ -63,8 +63,9 @@ function AcademicsPage() {
       headerName:
       'Edit',
       width: 150,
-      renderCell: () => <Button variant="text" onClick={() => setOpenUpd(true)}>...</Button>
+      // renderCell: () => <Button variant="text" onClick={() => setOpenUpd(true)}>...</Button>
       // renderCell: (cellValues) => <Button variant="text" onClick={() => setState(cellValues.row)}>...</Button>
+      renderCell: (cellValues) => <Button variant="text" onClick={() => console.log(cellValues.row)}>...</Button>
       // renderCell ใช้สำหรับสร้างปุ่มภายในตาราง
     },
   ];

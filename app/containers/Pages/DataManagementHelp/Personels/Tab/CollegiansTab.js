@@ -9,7 +9,7 @@ import { useTheme } from '@emotion/react';
 import PropTypes from 'prop-types';
 import DataTable from '../../../../../components/Tables/DataTable';
 
-function ColligianTab(props) {
+function CollegianTab(props) {
   const {
     setState,
     ContentModal,
@@ -78,13 +78,13 @@ function ColligianTab(props) {
     </div>
   );
 }
-ColligianTab.propTypes = {
-  setOpenIns: PropTypes.func.isRequired,
+CollegianTab.propTypes = {
   rows: PropTypes.array.isRequired,
   columns: PropTypes.array.isRequired,
-  openUpd: PropTypes.bool.isRequired,
-  setState: PropTypes.any,
   ContentModal: PropTypes.any,
+  setState: PropTypes.any,
+  openUpd: PropTypes.bool.isRequired,
   setOpenUpd: PropTypes.func.isRequired,
+  setOpenIns: PropTypes.func.isRequired,
 };
-export default ColligianTab;
+export default CollegianTab;

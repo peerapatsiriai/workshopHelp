@@ -13,6 +13,7 @@ import {
   NotFound,
   AcademicsManagement,
   PersonelsManagement,
+  TestPage,
 } from '../pageListAsync';
 
 function Application(props) {
@@ -24,6 +25,7 @@ function Application(props) {
         <Route exact path="/back-office/" component={AcademicsManagement} />
         <Route exact path="/back-office/academics" component={AcademicsManagement} />
         <Route exact path="/back-office/personels" component={PersonelsManagement} />
+        <Route exact path="/back-office/testpage" component={TestPage} />
         {/* <Route exact path="/app" component={BlankPage} /> */}
         <Route exact path="/back-office/blank-page" component={BlankPage} />
         <Route path="/back-office/pages/dashboard" component={DashboardPage} />

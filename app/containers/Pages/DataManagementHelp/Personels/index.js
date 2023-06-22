@@ -23,7 +23,7 @@ import {
 // import DataTable from '../../../../components/Tables/DataTable';
 import InputJoy from '../../../../components/Input/InputJoy';
 import JoyModal from '../../../../components/Modal/JoyModal';
-import ColligianTab from './Tab/ColligiansTab';
+import ColligianTab from './Tab/CollegiansTab';
 
 function PersonelsPage() {
   // สำหรับ Responsive
