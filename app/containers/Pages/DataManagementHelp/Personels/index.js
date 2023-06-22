@@ -88,6 +88,8 @@ function PersonelsPage() {
             placeholder='Type in here…'
             type={'text'}
             size={'md'}
+            value={state.co_lname_th}
+            onChange={(event) => setState({ co_lname_th: event.target.value })}
           />
         </Box>
       </Box>
@@ -98,6 +100,8 @@ function PersonelsPage() {
             placeholder='Type in here…'
             type={'text'}
             size={'md'}
+            value={state.co_fname_en}
+            onChange={(event) => setState({ co_fname_en: event.target.value })}
           />
         </Box>
         <Box sx={{ width: '50%' }}>
@@ -106,6 +110,8 @@ function PersonelsPage() {
             placeholder='Type in here…'
             type={'text'}
             size={'md'}
+            value={state.co_lname_en}
+            onChange={(event) => setState({ co_lname_en: event.target.value })}
           />
         </Box>
       </Box>
@@ -116,6 +122,8 @@ function PersonelsPage() {
             placeholder='Type in here…'
             type={'text'}
             size={'md'}
+            value={state.co_code}
+            onChange={(event) => setState({ co_code: event.target.value })}
           />
         </Box>
         <Box sx={{ width: '50%' }}>
@@ -124,6 +132,8 @@ function PersonelsPage() {
             placeholder='Type in here…'
             type={'text'}
             size={'md'}
+            value={state.co_email}
+            onChange={(event) => setState({ co_email: event.target.value })}
           />
         </Box>
       </Box>
@@ -134,6 +144,8 @@ function PersonelsPage() {
             placeholder='Type in here…'
             type={'text'}
             size={'md'}
+            value={state.co_tel}
+            onChange={(event) => setState({ co_tel: event.target.value })}
           />
         </Box>
       </Box>
@@ -143,6 +155,7 @@ function PersonelsPage() {
           <Select
             placeholder='Type in here…'
             indicator={<KeyboardArrowDown />}
+            value={state.faculty_institutes_fi_id}
             sx={{
               mr: 5,
               border: 1,
@@ -307,6 +320,23 @@ function PersonelsPage() {
       </Box>
     </Box>
   );
+
+  useEffect(() => {
+    console.log(state);
+  }, [state]);
+
+  const handleInsertCollegianSubmit = () => {
+    axios
+      .post('http://192.168.1.168:8000/api/method/frappe.help-api.insertcollegian', state)
+      .then((response) => {
+        console.log(response);
+        console.log(state);
+      })
+      .catch((error) => {
+        console.log(error);
+        console.log(state);
+      });
+  };
 
   return (
     <div>
@@ -596,7 +626,7 @@ function PersonelsPage() {
           content={CollegianContentInsertModal}
           header={'Add New Collegian'}
           labelBtn={'Submit'}
-          handleSubmit={CollegianContentInsertModal}
+          handleSubmit={handleInsertCollegianSubmit}
           subDetail={true}
         />
       </PapperBlock>
