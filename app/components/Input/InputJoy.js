@@ -9,6 +9,7 @@ function InputJoy(props) {
     placeholder,
     size,
     type,
+    setState,
   } = props;
   return (
     <Box>
@@ -21,6 +22,7 @@ function InputJoy(props) {
         }
       </Box>
       <Input
+        onChange={(event) => setState(event.target.value)}
         type={type || 'text'}
         placeholder={`${placeholder}`}
         size='sm'
@@ -38,6 +40,7 @@ InputJoy.propTypes = {
   label: PropTypes.string,
   size: PropTypes.string,
   type: PropTypes.string,
+  setState: PropTypes.func,
 };
 
 export default InputJoy;
