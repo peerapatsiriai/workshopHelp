@@ -261,9 +261,13 @@ function CollegianTab(props) {
 }
 
 CollegianTab.propTypes = {
+  rows: PropTypes.array.isRequired,
+  columns: PropTypes.array.isRequired,
+  ContentModal: PropTypes.any,
+  setState: PropTypes.any,
   openUpd: PropTypes.any.isRequired,
   setOpenUpd: PropTypes.any.isRequired,
-  setOpenIns: PropTypes.any.isRequired,
+  setOpenIns: PropTypes.func.isRequired,
 };
 
 export default CollegianTab;
