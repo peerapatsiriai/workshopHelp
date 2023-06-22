@@ -10,7 +10,15 @@ import PropTypes from 'prop-types';
 import * as React from 'react';
 
 function JoyModal(props) {
-  const { open, handleClose, handleSubmit, content, header, labelBtn, subDetail } = props;
+  const {
+    open,
+    handleClose,
+    handleSubmit,
+    content,
+    header,
+    labelBtn,
+    subDetail, // สำหรับแสดง mockup วันที่เวลาที่อัพเดทล่าสุด (true = แสดง, false = ไม่แสดง)
+  } = props;
   return (
     <React.Fragment>
       <Modal
