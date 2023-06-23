@@ -3,6 +3,7 @@ import React from 'react';
 import { useTheme } from '@emotion/react';
 import PropTypes from 'prop-types';
 import { DataGrid } from '@mui/x-data-grid';
+import JoyModal from '../../../../../components/Modal/JoyModal';
 // import DataTable from '../../../../../components/Tables/DataTable';
 
 function FacultyTab(props) {
@@ -80,6 +81,14 @@ function FacultyTab(props) {
           modalHeader={'ทดสอบ Update Form'}
           stateUpdate={setState}
           getRowId={getRowId}
+        />
+        <JoyModal
+          open={openUpd}
+          handleClose={() => setOpenUpd(false)}
+          content={ContentModal}
+          header={'Update Collegian'}
+          labelBtn={'Update'}
+          subDetail={true}
         />
         {/* ทำแค่ตัวนี้ก่อน */}
       </Box>
