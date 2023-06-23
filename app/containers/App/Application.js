@@ -12,7 +12,9 @@ import {
   Error,
   NotFound,
   AcademicsManagement,
-  PersonelsManagement,
+  TestPage,
+  ShortCutPage,
+  MasterDataPage,
 } from '../pageListAsync';
 
 function Application(props) {
@@ -27,17 +29,37 @@ function Application(props) {
         <Route
           exact
           path='/back-office/'
+          component={ShortCutPage}
+        />
+        <Route
+          exact
+          path='/back-office/masterdata'
+          component={MasterDataPage}
+        />
+        <Route
+          exact
+          path='/back-office/masterdata/academics'
           component={AcademicsManagement}
         />
         <Route
           exact
-          path='/back-office/academics'
+          path='/back-office/masterdata/curriculums'
           component={AcademicsManagement}
         />
         <Route
           exact
-          path='/back-office/personnels'
-          component={PersonelsManagement}
+          path='/back-office/masterdata/personnels'
+          component={AcademicsManagement}
+        />
+        <Route
+          exact
+          path='/back-office/testpage'
+          component={TestPage}
+        />
+        <Route
+          exact
+          path='/back-office/mainmenu'
+          component={ShortCutPage}
         />
         {/* <Route exact path="/app" component={BlankPage} /> */}
         <Route
