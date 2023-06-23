@@ -22,5 +22,6 @@ export ErrorWrap from './Error/ErrorWrap';
 export InputJoy from './Input/InputJoy';
 // Modal
 export JoyModal from './Modal/JoyModal';
+export ConfirmDelModal from './Modal/ConfirmDelModal';
 // Button
 export DeleteButton from './Button/DeleteButton';

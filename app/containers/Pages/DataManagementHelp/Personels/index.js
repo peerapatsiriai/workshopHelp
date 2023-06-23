@@ -12,6 +12,7 @@ import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
 import CollegianTab from './Tabs/CollegianTab';
 
 function PersonelsPage() {
+  // initialState
   const initialState = {
     co_code: '',
     co_fname_th: '',
@@ -21,6 +22,10 @@ function PersonelsPage() {
     co_email: '',
     co_tel: '',
     faculty_institutes_fi_id: '',
+  };
+  const initialDeleteState = {
+    table: 'tabcollegians',
+    primary: '',
   };
   // สำหรับ Responsive
   const theme = useTheme();
@@ -39,6 +44,8 @@ function PersonelsPage() {
   const [rows, setRows] = useState([]);
   const [selectDisabledCo, setSelectDisabledCo] = useState(false);
   const [state, setState] = useState(initialState);
+
+  const [deleteState, setDeleteState] = useState(initialDeleteState);
 
   // dummy
   const columnsFCollegians = [
@@ -71,7 +78,14 @@ function PersonelsPage() {
       field: 'Delete',
       headerName: 'Delete',
       width: 100,
-      renderCell: () => <DeleteButton handleClick={() => setOpenDelCo(true)} />,
+      renderCell: (cellValues) => (
+        <DeleteButton
+          handleClick={() => {
+            setOpenDelCo(true);
+            setDeleteState((pre) => ({ ...pre, primary: cellValues.row.co_id }));
+          }}
+        />
+      ),
       // renderCell ใช้สำหรับสร้างปุ่มภายในตาราง
     },
   ];
@@ -403,13 +417,23 @@ function PersonelsPage() {
   // สำหรับกด Submit หน้าลบข้อมูล Collegian
   const handleDeleteCollegianSubmit = () => {
     axios
-      .post('http://192.168.1.168:8000/api/method/frappe.help-api.delete')
+      .post('http://192.168.1.168:8000/api/method/frappe.help-api.delete', deleteState)
       .then((response) => {
         console.log(response);
+        console.log('deleteState: ', deleteState);
         setOpenDelCo(false);
+
+        // ลบค่า ในออบเจ็กต์
       })
       .catch((error) => {
         console.log(error);
+      })
+      .finally(() => {
+        const idToDelete = deleteState.primary;
+        console.log('idToDelete: ', idToDelete);
+        const objectToDelete = rows.filter((obj) => obj.co_id !== idToDelete);
+        console.log('objectToDelete: ', objectToDelete);
+        setRows(objectToDelete);
       });
   };
 
@@ -687,7 +711,7 @@ function PersonelsPage() {
                     rows={rows}
                     columns={columnsFCollegians}
                     handleUpdate={handleEditCollegianSubmit}
-                    handleClose={handleClose}
+                    handleCloseUpd={handleClose}
                     setSelectDisabledCo={setSelectDisabledCo}
                     openDelCo={openDelCo}
                     setOpenDelCo={setOpenDelCo}

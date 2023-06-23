@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { JoyModal } from 'dan-components';
+import { JoyModal, ConfirmDelModal } from 'dan-components';
 import { Box, Button, Typography, useMediaQuery } from '@mui/material';
 import { useTheme } from '@emotion/react';
 import { DataGrid } from '@mui/x-data-grid';
@@ -15,7 +15,7 @@ function CollegianTab(props) {
     setOpenIns,
     handleUpdate,
     handleDelete,
-    handleClose,
+    handleCloseUpd,
     setSelectDisabledCo,
     openDelCo,
     setOpenDelCo,
@@ -97,7 +97,7 @@ function CollegianTab(props) {
           open={openUpd}
           handleClose={() => {
             setOpenUpd(false);
-            handleClose();
+            handleCloseUpd();
           }}
           content={ContentModal}
           header={'Update Collegian'}
@@ -105,16 +105,12 @@ function CollegianTab(props) {
           subDetail={true}
           handleSubmit={handleUpdate}
         />
-        <JoyModal
+        <ConfirmDelModal
           open={openDelCo}
           handleClose={() => {
             setOpenDelCo(false);
           }}
-          content={'test'}
-          header={'Delete Row Collegian'}
-          labelBtn={'Delete'}
           handleSubmit={handleDelete}
-          subDetail={false}
         />
         {/* ทำแค่ตัวนี้ก่อน */}
       </Box>
@@ -132,8 +128,8 @@ CollegianTab.propTypes = {
   setOpenIns: PropTypes.func.isRequired,
   handleUpdate: PropTypes.func.isRequired,
   handleDelete: PropTypes.func.isRequired,
-  handleClose: PropTypes.func.isRequired,
-  setSelectDisabledCo: PropTypes.bool.isRequired,
+  handleCloseUpd: PropTypes.func.isRequired,
+  setSelectDisabledCo: PropTypes.func.isRequired,
   openDelCo: PropTypes.bool.isRequired,
   setOpenDelCo: PropTypes.func.isRequired,
 };
