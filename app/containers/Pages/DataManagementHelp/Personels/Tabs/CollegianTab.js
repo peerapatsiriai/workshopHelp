@@ -14,8 +14,11 @@ function CollegianTab(props) {
     setOpenUpd,
     setOpenIns,
     handleUpdate,
+    handleDelete,
     handleClose,
     setSelectDisabledCo,
+    openDelCo,
+    setOpenDelCo,
   } = props;
   // สำหรับ Responsive
   const theme = useTheme();
@@ -102,6 +105,17 @@ function CollegianTab(props) {
           subDetail={true}
           handleSubmit={handleUpdate}
         />
+        <JoyModal
+          open={openDelCo}
+          handleClose={() => {
+            setOpenDelCo(false);
+          }}
+          content={'test'}
+          header={'Delete Row Collegian'}
+          labelBtn={'Delete'}
+          handleSubmit={handleDelete}
+          subDetail={false}
+        />
         {/* ทำแค่ตัวนี้ก่อน */}
       </Box>
     </div>
@@ -117,8 +131,11 @@ CollegianTab.propTypes = {
   setOpenUpd: PropTypes.any.isRequired,
   setOpenIns: PropTypes.func.isRequired,
   handleUpdate: PropTypes.func.isRequired,
+  handleDelete: PropTypes.func.isRequired,
   handleClose: PropTypes.func.isRequired,
   setSelectDisabledCo: PropTypes.bool.isRequired,
+  openDelCo: PropTypes.bool.isRequired,
+  setOpenDelCo: PropTypes.func.isRequired,
 };
 
 export default CollegianTab;

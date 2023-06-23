@@ -33,6 +33,7 @@ function PersonelsPage() {
   const description = brand.desc;
   const [openInsCo, setOpenInsCo] = React.useState(false); // สำหรับใช้ควบคุม Modal insert
   const [openUpdCo, setOpenUpdCo] = React.useState(false); // สำหรับใช้ควบคุม Modal update
+  const [openDelCo, setOpenDelCo] = React.useState(false); // สำหรับใช้ควบคุม Modal Delete
 
   // สำหรับรับค่า
   const [rows, setRows] = useState([]);
@@ -70,7 +71,7 @@ function PersonelsPage() {
       field: 'Delete',
       headerName: 'Delete',
       width: 100,
-      renderCell: () => <DeleteButton />,
+      renderCell: () => <DeleteButton handleClick={() => setOpenDelCo(true)} />,
       // renderCell ใช้สำหรับสร้างปุ่มภายในตาราง
     },
   ];
@@ -354,6 +355,7 @@ function PersonelsPage() {
     console.log(state);
   }, [state]);
 
+  // สำหรับกด Submit หน้าเพิ่มข้อมูล Collegian
   const handleInsertCollegianSubmit = (e) => {
     e.preventDefault();
     axios
@@ -371,6 +373,7 @@ function PersonelsPage() {
       });
   };
 
+  // สำหรับกด Submit หน้าแก้ไขข้อมูล Collegian
   const handleEditCollegianSubmit = () => {
     axios
       .post('http://192.168.1.168:8000/api/method/frappe.help-api.editcollegian', state)
@@ -391,6 +394,19 @@ function PersonelsPage() {
           objectToUpdate.faculty_institutes_fi_id = state.faculty_institutes_fi_id;
         }
         setState(initialState);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  // สำหรับกด Submit หน้าลบข้อมูล Collegian
+  const handleDeleteCollegianSubmit = () => {
+    axios
+      .post('http://192.168.1.168:8000/api/method/frappe.help-api.delete')
+      .then((response) => {
+        console.log(response);
+        setOpenDelCo(false);
       })
       .catch((error) => {
         console.log(error);
@@ -673,6 +689,9 @@ function PersonelsPage() {
                     handleUpdate={handleEditCollegianSubmit}
                     handleClose={handleClose}
                     setSelectDisabledCo={setSelectDisabledCo}
+                    openDelCo={openDelCo}
+                    setOpenDelCo={setOpenDelCo}
+                    handleDelete={handleDeleteCollegianSubmit}
                   />
                 </TabPanel>
                 <TabPanel
