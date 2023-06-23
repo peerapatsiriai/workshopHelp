@@ -21,9 +21,9 @@ import SchoolIcon from '@mui/icons-material/School';
 // import DataTable from '../../../../components/Tables/DataTable';
 import axios from 'axios';
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
-import InputJoy from '../../../../components/Input/InputJoy';
+// import InputJoy from '../../../../components/Input/InputJoy';
 import JoyModal from '../../../../components/Modal/JoyModal';
-import AcademicsTab from './Tab/AcademicsTab';
+// import AcademicsTab from './Tab/AcademicsTab';
 import FacultyTab from './Tab/FacultyTab';
 
 function AcademicsPage() {
@@ -55,41 +55,6 @@ function AcademicsPage() {
       });
   }, []);
 
-  // dummy
-  const rows = [
-    { id: 1, col1: 'Hello', col2: 'World' },
-    { id: 2, col1: 'DataGridPro', col2: 'is Awesome' },
-    { id: 3, col1: 'MUI', col2: 'is Amazing' },
-    { id: 4, col1: 'Hello', col2: 'World' },
-    { id: 5, col1: 'DataGridPro', col2: 'is Awesome' },
-    { id: 6, col1: 'MUI', col2: 'is Amazing' },
-    { id: 7, col1: 'Hello', col2: 'World' },
-    { id: 8, col1: 'DataGridPro', col2: 'is Awesome' },
-    { id: 9, col1: 'MUI', col2: 'is Amazing' },
-    { id: 10, col1: 'Hello', col2: 'World' },
-    { id: 11, col1: 'DataGridPro', col2: 'is Awesome' },
-    { id: 12, col1: 'MUI', col2: 'is Amazing' },
-    { id: 13, col1: 'Hello', col2: 'World' },
-    { id: 14, col1: 'DataGridPro', col2: 'is Awesome' },
-    { id: 15, col1: 'MUI', col2: 'is Amazing' },
-  ];
-  const columns = [
-    { field: 'col1', headerName: 'Column 1', width: 150 },
-    { field: 'col2', headerName: 'Column 2', width: 150 },
-    {
-      field: 'col3',
-      headerName: 'Edit',
-      width: 150,
-      // renderCell: () => <Button variant="text" onClick={() => setOpenUpd(true)}>...</Button>
-      // renderCell: (cellValues) => <Button variant="text" onClick={() => setState(cellValues.row)}>...</Button>
-      renderCell: (cellValues) => (
-        <Button variant='text' onClick={() => console.log(cellValues.row)}>
-          ...
-        </Button>
-      ),
-      // renderCell ใช้สำหรับสร้างปุ่มภายในตาราง
-    },
-  ];
   const columnsFaculty = [
     { field: 'fi_name_th', headerName: 'Name(TH)', width: 150 },
     { field: 'fi_name_en', headerName: 'Name(EN)', width: 150 },
@@ -98,44 +63,17 @@ function AcademicsPage() {
       field: 'col',
       headerName: 'Edit',
       width: 150,
-      // renderCell: () => <Button variant="text" onClick={() => setOpenUpd(true)}>...</Button>
-      // renderCell: (cellValues) => <Button variant="text" onClick={() => setState(cellValues.row)}>...</Button>
-      renderCell: (cellValues) => (
-        <Button variant='text' onClick={() => console.log(cellValues.row)}>
+      renderCell: () => (
+        <Button variant='text' onClick={() => setOpenUpd(true)}>
           ...
         </Button>
       ),
       // renderCell ใช้สำหรับสร้างปุ่มภายในตาราง
     },
   ];
+
   const getRowId = (row) => row.fi_id;
   const LengthFaculty = facultyData.length;
-  // dummy
-  const testContentModal = (
-    <Box>
-      <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-        <InputJoy
-          label={'test1'}
-          placeholder={'test1'}
-          type={'text'}
-          size={'sm'}
-        />
-        <InputJoy label={''} placeholder={'test1'} type={'text'} size={'sm'} />
-      </Box>
-      <InputJoy
-        label={'test2'}
-        placeholder={'test2'}
-        type={'number'}
-        size={'md'}
-      />
-      <InputJoy
-        label={'test3'}
-        placeholder={'test3'}
-        type={'password'}
-        size={'lg'}
-      />
-    </Box>
-  ); // dummy ลองเอาไปใส่ Modal
   // color
   const primaryColor = '#1c1c1c';
 
@@ -144,6 +82,89 @@ function AcademicsPage() {
   }, [state]);
 
   const ContentInsertFaculty = (
+    <Box>
+      <Box
+        sx={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-end' }}>
+        <Box sx={{ flexDirection: 'column', width: '50%', ml: 2 }}>
+          <FormLabel
+            sx={(themes) => ({
+              '--FormLabel-color': themes.vars.palette.primary.plainColor,
+              mb: 0.5,
+            })}>
+            Academic Name
+          </FormLabel>
+          <Input
+            label='Academic Name'
+            placeholder='Thai Name'
+            size='sm'
+            value={state.fi_name_th || ''}
+            onChange={(event) => {
+              setState((pre) => ({ ...pre, fi_name_th: event.target.value }));
+            }}
+            sx={{ mr: 1 }}
+          />
+        </Box>
+        <Box
+          sx={{
+            flexDirection: 'column',
+            width: '50%',
+          }}>
+          {/* <InputJoy placeholder='Engligsh Name' /> */}
+          <Input
+            placeholder='Engligsh Name'
+            size='sm'
+            value={state.fi_name_en || ''}
+            onChange={(event) => {
+              setState((pre) => ({ ...pre, fi_name_en: event.target.value }));
+            }}
+            sx={{ ml: 1 }}
+          />
+        </Box>
+      </Box>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignContent: 'flex-start',
+          width: '45%',
+          mt: 3,
+          ml: 2,
+        }}>
+        <FormLabel
+          sx={(themes) => ({
+            '--FormLabel-color': themes.vars.palette.primary.plainColor,
+            mb: 0.5,
+          })}>
+          Academic
+        </FormLabel>
+        <Select
+          placeholder='เทคโนโลยีราชมงคลล้านนา'
+          indicator={<KeyboardArrowDown />}
+          value={state.academics_ac_id || ''}
+          onChange={(event, value) => {
+            setState((pre) => ({ ...pre, academics_ac_id: value }));
+          }}
+          size='sm'
+          sx={{
+            mt: 0.5,
+            fontStyle: 'normal',
+            [`& .${selectClasses.indicatorexpanded}`]: {
+              transition: '0.2s',
+              [`&.${selectClasses.expanded}`]: {
+                transform: 'rotate(-180deg)',
+              },
+            },
+          }}>
+          {facultyData?.map((contentFac, value) => (
+            <Option key={value} value={contentFac.academics_ac_id}>
+              {contentFac.ac_name_th}
+            </Option>
+          ))}
+        </Select>
+      </Box>
+    </Box>
+  );
+  const ContentEditFaculty = (
     <Box>
       <Box
         sx={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-end' }}>
@@ -544,15 +565,7 @@ function AcademicsPage() {
                   </Tab>
                 </TabList>
                 <TabPanel value={0} sx={{ p: 2 }}>
-                  <AcademicsTab
-                    setState={setState}
-                    ContentModal={testContentModal}
-                    setOpenUpd={setOpenUpd}
-                    openUpd={openUpd}
-                    setOpenIns={setOpenIns}
-                    rows={rows}
-                    columns={columns}
-                  />
+                  AcademicsTab
                 </TabPanel>
                 <TabPanel value={1} sx={{ p: 2 }}>
                   <b>Academic Type</b> tab panel
@@ -561,7 +574,7 @@ function AcademicsPage() {
                 <TabPanel value={2} sx={{ p: 2 }}>
                   <FacultyTab
                     setState={setState}
-                    ContentModal={testContentModal}
+                    ContentModal={ContentEditFaculty}
                     setOpenUpd={setOpenUpd}
                     openUpd={openUpd}
                     setOpenIns={setOpenIns}
@@ -583,7 +596,7 @@ function AcademicsPage() {
           handleClose={() => setOpenIns(false)}
           content={ContentInsertFaculty}
           handleSubmit={handleInsertCollegianSubmitFaculty}
-          header={'ทดสอบ Insert Form'}
+          header={'Add New Institute'}
           labelBtn={'Insert'}
           subDetail={false}
         />
