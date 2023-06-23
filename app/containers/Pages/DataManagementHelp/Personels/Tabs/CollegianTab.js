@@ -6,7 +6,17 @@ import { useTheme } from '@emotion/react';
 import { DataGrid } from '@mui/x-data-grid';
 
 function CollegianTab(props) {
-  const { rows, columns, ContentModal, openUpd, setOpenUpd, setOpenIns, handleUpdate, handleClose } = props;
+  const {
+    rows,
+    columns,
+    ContentModal,
+    openUpd,
+    setOpenUpd,
+    setOpenIns,
+    handleUpdate,
+    handleClose,
+    setSelectDisabledCo,
+  } = props;
   // สำหรับ Responsive
   const theme = useTheme();
   const onlySmallScreen = useMediaQuery(theme.breakpoints.up('sm'));
@@ -31,7 +41,10 @@ function CollegianTab(props) {
       >
         <Box sx={{ display: 'flex', flexDirection: 'row' }}>
           <Button
-            onClick={() => setOpenIns(true)}
+            onClick={() => {
+              setOpenIns(true);
+              setSelectDisabledCo(false);
+            }}
             sx={{
               px: 2,
               background: 'black',
@@ -105,6 +118,7 @@ CollegianTab.propTypes = {
   setOpenIns: PropTypes.func.isRequired,
   handleUpdate: PropTypes.func.isRequired,
   handleClose: PropTypes.func.isRequired,
+  setSelectDisabledCo: PropTypes.bool.isRequired,
 };
 
 export default CollegianTab;

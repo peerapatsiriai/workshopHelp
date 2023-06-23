@@ -36,6 +36,7 @@ function PersonelsPage() {
 
   // สำหรับรับค่า
   const [rows, setRows] = useState([]);
+  const [selectDisabledCo, setSelectDisabledCo] = useState(false);
   const [state, setState] = useState(initialState);
 
   // dummy
@@ -57,6 +58,7 @@ function PersonelsPage() {
             setOpenUpdCo(true);
             setState(cellValues.row);
             setState((pre) => ({ ...pre, primarykey: cellValues.row.co_id }));
+            setSelectDisabledCo(true);
           }}
         >
           ...
@@ -177,6 +179,7 @@ function PersonelsPage() {
             indicator={<KeyboardArrowDown />}
             value={state.faculty_institutes_fi_id || ''}
             onChange={(event, value) => setState((pre) => ({ ...pre, faculty_institutes_fi_id: value }))}
+            disabled={selectDisabledCo}
             sx={{
               mx: 1,
               size: 'sm',
@@ -200,6 +203,7 @@ function PersonelsPage() {
             indicator={<KeyboardArrowDown />}
             value={state.curriculums_cur_id || ''}
             onChange={(event, value) => setState((pre) => ({ ...pre, curriculums_cur_id: value }))}
+            disabled={selectDisabledCo}
             sx={{
               mx: 1,
               size: 'sm',
@@ -661,6 +665,7 @@ function PersonelsPage() {
                     columns={columnsFCollegians}
                     handleUpdate={handleEditCollegianSubmit}
                     handleClose={handleClose}
+                    setSelectDisabledCo={setSelectDisabledCo}
                   />
                 </TabPanel>
                 <TabPanel
