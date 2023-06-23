@@ -36,7 +36,8 @@
     "arrow-parens": 0,
     "object-curly-newline": "off",
     "prefer-arrow-callback": "off",
-    "implicit-arrow-linebreak": 0
+    "implicit-arrow-linebreak": 0,
+    "linebreak-style": 0
   },
   "plugins": ["react", "import", "flowtype"],
   "settings": {

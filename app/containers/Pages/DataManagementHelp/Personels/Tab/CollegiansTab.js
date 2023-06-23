@@ -1,36 +1,34 @@
-import {
-  Box,
-  Button,
-  Typography,
-  useMediaQuery
-} from '@mui/material';
 import React from 'react';
-import { useTheme } from '@emotion/react';
 import PropTypes from 'prop-types';
-import DataTable from '../../../../../components/Tables/DataTable';
+import { JoyModal } from 'dan-components';
+import { Box, Button, Typography, useMediaQuery } from '@mui/material';
+import { useTheme } from '@emotion/react';
+import { DataGrid } from '@mui/x-data-grid';
 
 function CollegianTab(props) {
-  const {
-    setState,
-    ContentModal,
-    setOpenUpd,
-    openUpd,
-    setOpenIns,
-    rows, // ใช้สำหรับรับเอาข้อมูลเนื้อหาในตาราง จากด้านนอกมาแสดงภายใน Modal
-    columns, // ใช้สำหรับรับเอาหัวตารางหรือ columns จากด้านนอกมาแสดงภายใน Modal
-  } = props;
+  const { rows, columns, ContentModal, openUpd, setOpenUpd, setOpenIns } = props;
+  // สำหรับ Responsive
   const theme = useTheme();
   const onlySmallScreen = useMediaQuery(theme.breakpoints.up('sm'));
   const onlyMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
   const onlyLargeScreen = useMediaQuery(theme.breakpoints.up('lg'));
+
   return (
     <div>
-      <Box sx={{
-        display: 'flex',
-        justifyContent: onlyLargeScreen ? 'space-between' : onlyMediumScreen ? 'space-between' : onlySmallScreen ? 'center' : 'center',
-        width: '100%',
-        p: 2,
-      }}>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: onlyLargeScreen
+            ? 'space-between'
+            : onlyMediumScreen
+            ? 'space-between'
+            : onlySmallScreen
+            ? 'center'
+            : 'center',
+          width: '100%',
+          p: 2,
+        }}
+      >
         <Box sx={{ display: 'flex', flexDirection: 'row' }}>
           <Button
             onClick={() => setOpenIns(true)}
@@ -43,48 +41,64 @@ function CollegianTab(props) {
                 background: '#fff',
                 color: 'black',
               },
-            }}>
-            <Typography sx={{
-              fontSize: 12,
-              textTransform: 'capitalize',
-              fontWeight: 'bold',
-            }}>
-                + Add Colligain
+            }}
+          >
+            <Typography
+              sx={{
+                fontSize: 12,
+                textTransform: 'capitalize',
+                fontWeight: 'bold',
+              }}
+            >
+              + Add Colegian
             </Typography>
           </Button>
           <Button sx={{ ml: 2 }}>
-            <Typography sx={{
-              fontSize: 12,
-              textTransform: 'capitalize',
-              fontWeight: 'bold',
-            }}>
-                Export
-            </Typography></Button>
+            <Typography
+              sx={{
+                fontSize: 12,
+                textTransform: 'capitalize',
+                fontWeight: 'bold',
+              }}
+            >
+              Export
+            </Typography>
+          </Button>
         </Box>
       </Box>
       <Box sx={{ display: 'flex', width: '100%' }}>
         {/* ทำแค่ตัวนี้ก่อน */}
-        <DataTable
+        <DataGrid
           rows={rows}
           columns={columns}
+          getRowId={(row) => row.co_id}
+          initialState={{
+            pagination: { paginationModel: { pageSize: 10 } },
+          }}
+          pageSizeOptions={[10, 25, 50]}
+        />
+        <JoyModal
           open={openUpd}
           handleClose={() => setOpenUpd(false)}
-          modalContent={ContentModal} // สามารถใส่เข้ามาเป็น UI ได้เลย
-          modalHeader={'ทดสอบ Update Form'}
-          stateUpdate={setState}
+          content={ContentModal}
+          header={'Update Collegian'}
+          labelBtn={'Update'}
+          subDetail={true}
         />
         {/* ทำแค่ตัวนี้ก่อน */}
       </Box>
     </div>
   );
 }
+
 CollegianTab.propTypes = {
   rows: PropTypes.array.isRequired,
   columns: PropTypes.array.isRequired,
   ContentModal: PropTypes.any,
   setState: PropTypes.any,
-  openUpd: PropTypes.bool.isRequired,
-  setOpenUpd: PropTypes.func.isRequired,
+  openUpd: PropTypes.any.isRequired,
+  setOpenUpd: PropTypes.any.isRequired,
   setOpenIns: PropTypes.func.isRequired,
 };
+
 export default CollegianTab;
