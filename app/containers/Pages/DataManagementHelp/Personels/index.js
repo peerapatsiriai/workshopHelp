@@ -2,13 +2,7 @@ import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import brand from 'dan-api/dummy/brand';
 import { PapperBlock } from 'dan-components';
-import {
-  Box,
-  Button,
-  Hidden,
-  Typography,
-  useMediaQuery
-} from '@mui/material';
+import { Box, Button, Hidden, Typography, useMediaQuery } from '@mui/material';
 import TableChartIcon from '@mui/icons-material/TableChart';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import { useTheme } from '@emotion/react';
@@ -17,13 +11,13 @@ import {
   Tab,
   TabList,
   TabPanel,
-  Tabs
+  Tabs,
 } from '@mui/joy';
 // import SearchIcon from '@mui/icons-material/Search';
 // import DataTable from '../../../../components/Tables/DataTable';
 import InputJoy from '../../../../components/Input/InputJoy';
 import JoyModal from '../../../../components/Modal/JoyModal';
-import ColligianTab from './Tab/CollegiansTab';
+import CollegiansTab from './Tab/CollegiansTab';
 
 function PersonelsPage() {
   // สำหรับ Responsive
@@ -60,15 +54,26 @@ function PersonelsPage() {
     { field: 'col2', headerName: 'Column 2', width: 150 },
     {
       field: 'col3',
-      headerName:
-      'Edit',
+      headerName: 'Edit',
       width: 150,
-      renderCell: () => <Button variant="text" onClick={() => setOpenUpd(true)}>...</Button>
+      renderCell: () => (
+        <Button
+          variant='text'
+          onClick={() => setOpenUpd(true)}
+        >
+          ...
+        </Button>
+      ),
       // renderCell ใช้สำหรับสร้างปุ่มภายในตาราง
     },
   ];
   // dummy
-  const testContentModal = (< InputJoy label={'test'} placeholder={'check'}/>); // dummy ลองเอาไปใส่ Modal
+  const testContentModal = (
+    <InputJoy
+      label={'test'}
+      placeholder={'check'}
+    />
+  ); // dummy ลองเอาไปใส่ Modal
 
   useEffect(() => {
     console.log(state);
@@ -78,112 +83,172 @@ function PersonelsPage() {
     <div>
       <Helmet>
         <title>{title}</title>
-        <meta name="description" content={description} />
-        <meta property="og:title" content={title} />
-        <meta property="og:description" content={description} />
-        <meta property="twitter:title" content={title} />
-        <meta property="twitter:description" content={description} />
+        <meta
+          name='description'
+          content={description}
+        />
+        <meta
+          property='og:title'
+          content={title}
+        />
+        <meta
+          property='og:description'
+          content={description}
+        />
+        <meta
+          property='twitter:title'
+          content={title}
+        />
+        <meta
+          property='twitter:description'
+          content={description}
+        />
       </Helmet>
-      <PapperBlock title="Table Group" desc='' >
+      <PapperBlock
+        title='Table Group'
+        desc=''
+      >
         {/* {onlyLargeScreen ? 'LargeScreen ' : onlyMediumScreen ? 'MediumScreen ' : onlySmallScreen ? 'SmallScreen' : 'xs'} */}
         <Box
           sx={{
             display: 'flex',
             flexDirection: 'column',
             width: '100%',
-          }}>
+          }}
+        >
           <Box
             sx={{
               display: 'flex',
               flexDirection: onlyLargeScreen ? 'row' : onlyMediumScreen ? 'row' : onlySmallScreen ? 'column' : 'column',
               width: '100%',
-            }}>
-            <Box sx={{
-              display: 'flex',
-              flexDirection: onlyLargeScreen ? 'column' : onlyMediumScreen ? 'column' : onlySmallScreen ? 'row' : 'row',
-              width: onlyLargeScreen ? '25%' : onlyMediumScreen ? '25%' : onlySmallScreen ? '100%' : '100%',
-              textAlign: onlyLargeScreen ? 'left' : onlyMediumScreen ? 'left' : onlySmallScreen ? 'center' : 'center',
-            }}>
-              <Box sx={{
+            }}
+          >
+            <Box
+              sx={{
                 display: 'flex',
-                flexDirection: 'row',
-                height: '50%',
-                width: '100%',
-                background: '#FAFAFA',
-                borderTopLeftRadius: 20,
-                justifyContent: onlyLargeScreen ? 'left' : onlyMediumScreen ? 'left' : onlySmallScreen ? 'left' : 'left',
-                textAlign: onlyLargeScreen ? 'left' : onlyMediumScreen ? 'left' : onlySmallScreen ? 'left' : 'left'
-              }}>
-                <Box sx={{
-                  ml: onlyLargeScreen ? 0 : onlyMediumScreen ? 0 : onlySmallScreen ? 2 : 2,
+                flexDirection: onlyLargeScreen
+                  ? 'column'
+                  : onlyMediumScreen
+                  ? 'column'
+                  : onlySmallScreen
+                  ? 'row'
+                  : 'row',
+                width: onlyLargeScreen ? '25%' : onlyMediumScreen ? '25%' : onlySmallScreen ? '100%' : '100%',
+                textAlign: onlyLargeScreen ? 'left' : onlyMediumScreen ? 'left' : onlySmallScreen ? 'center' : 'center',
+              }}
+            >
+              <Box
+                sx={{
                   display: 'flex',
-                  justifyContent: 'right',
-                  width: onlyLargeScreen ? '30%' : onlyMediumScreen ? '30%' : onlySmallScreen ? '10%' : '10%',
-                }}>
-                  <Box sx={{
-                    ml: 3,
-                    mt: 3.5,
-                    mb: onlyLargeScreen ? 3 : onlyMediumScreen ? 3 : onlySmallScreen ? 0 : 0,
-                    p: 1.5,
-                    width: 45,
-                    height: 45,
-                    borderRadius: 4,
-                    background: 'lightgray',
+                  flexDirection: 'row',
+                  height: '50%',
+                  width: '100%',
+                  background: '#FAFAFA',
+                  borderTopLeftRadius: 20,
+                  justifyContent: onlyLargeScreen
+                    ? 'left'
+                    : onlyMediumScreen
+                    ? 'left'
+                    : onlySmallScreen
+                    ? 'left'
+                    : 'left',
+                  textAlign: onlyLargeScreen ? 'left' : onlyMediumScreen ? 'left' : onlySmallScreen ? 'left' : 'left',
+                }}
+              >
+                <Box
+                  sx={{
+                    ml: onlyLargeScreen ? 0 : onlyMediumScreen ? 0 : onlySmallScreen ? 2 : 2,
                     display: 'flex',
-                    justifyContent: 'center',
-                  }}>
-                    <AccountBalanceIcon style={{ color: 'black' }} fontSize={'large'}/>
+                    justifyContent: 'right',
+                    width: onlyLargeScreen ? '30%' : onlyMediumScreen ? '30%' : onlySmallScreen ? '10%' : '10%',
+                  }}
+                >
+                  <Box
+                    sx={{
+                      ml: 3,
+                      mt: 3.5,
+                      mb: onlyLargeScreen ? 3 : onlyMediumScreen ? 3 : onlySmallScreen ? 0 : 0,
+                      p: 1.5,
+                      width: 45,
+                      height: 45,
+                      borderRadius: 4,
+                      background: 'lightgray',
+                      display: 'flex',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <AccountBalanceIcon
+                      style={{ color: 'black' }}
+                      fontSize={'large'}
+                    />
                   </Box>
                 </Box>
-                <Box sx={{
-                  p: 1,
-                  m: 2,
-                  mt: 2,
-                }}>
-                  <Typography sx={{
-                    fontSize: 16,
-                    fontWeight: 'bold',
-                    color: 'black'
-                  }}>
+                <Box
+                  sx={{
+                    p: 1,
+                    m: 2,
+                    mt: 2,
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontSize: 16,
+                      fontWeight: 'bold',
+                      color: 'black',
+                    }}
+                  >
                     Personels
                   </Typography>
-                  <Typography style={{
-                    lineHeight: '11px',
-                    color: 'black',
-                    opacity: '60%',
-                  }} sx={{ fontSize: 12, mt: 0.5 }}>
+                  <Typography
+                    style={{
+                      lineHeight: '11px',
+                      color: 'black',
+                      opacity: '60%',
+                    }}
+                    sx={{ fontSize: 12, mt: 0.5 }}
+                  >
                     Last updated
                   </Typography>
-                  <Typography sx={{
-                    fontSize: 12,
-                    color: 'black',
-                    opacity: '60%',
-                    mt: 0.5,
-                  }} >on March 13th,2023</Typography>
+                  <Typography
+                    sx={{
+                      fontSize: 12,
+                      color: 'black',
+                      opacity: '60%',
+                      mt: 0.5,
+                    }}
+                  >
+                    on March 13th,2023
+                  </Typography>
                 </Box>
                 <Hidden mdUp>
-                  <Box sx={{
-                    ml: 3,
-                    mt: 1,
-                    mb: onlyLargeScreen ? 3 : onlyMediumScreen ? 3 : onlySmallScreen ? 0 : 0,
-                    p: 2.5,
-                    pl: 0,
-                  }}>
+                  <Box
+                    sx={{
+                      ml: 3,
+                      mt: 1,
+                      mb: onlyLargeScreen ? 3 : onlyMediumScreen ? 3 : onlySmallScreen ? 0 : 0,
+                      p: 2.5,
+                      pl: 0,
+                    }}
+                  >
                     <Typography sx={{ fontSize: 28, fontWeight: 'bold', color: 'black' }}>2 Tables</Typography>
                   </Box>
                 </Hidden>
               </Box>
               <Hidden mdDown>
-                <Box sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  height: '50%',
-                  p: 2,
-                  background: '#FAFAFA',
-                }}>
-                  <Box sx={{
-                    ml: 3,
-                  }}>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height: '50%',
+                    p: 2,
+                    background: '#FAFAFA',
+                  }}
+                >
+                  <Box
+                    sx={{
+                      ml: 3,
+                    }}
+                  >
                     <Typography sx={{ fontSize: 28, fontWeight: 'bold', color: 'black' }}>2 Tables</Typography>
                     <Typography sx={{ fontSize: 14, color: 'black', opacity: '60%' }}>XX records</Typography>
                   </Box>
@@ -191,41 +256,49 @@ function PersonelsPage() {
               </Hidden>
             </Box>
             <Hidden mdDown>
-              <Box sx={{
-                display: 'flex',
-                width: onlyLargeScreen ? '75%' : onlyMediumScreen ? '75%' : onlySmallScreen ? '100%' : '100%',
-                background: '#FAFAFA',
-                p: 2,
-                textAlign: 'left',
-                borderTopRightRadius: 20,
-              }}>
-                <Box sx={{
+              <Box
+                sx={{
                   display: 'flex',
-                  flexDirection: 'row',
-                  mt: 12,
-                  pl: 4
-                }}>
-                  <TableChartIcon sx={{ fontSize: 42, color: 'black' }}/>
-                  <Typography sx={{
-                    // fontWeight: 'bold',
-                    color: 'black',
-                    fontSize: 28,
-                    m: 0.5,
-                    ml: 1.5
-                  }}>
+                  width: onlyLargeScreen ? '75%' : onlyMediumScreen ? '75%' : onlySmallScreen ? '100%' : '100%',
+                  background: '#FAFAFA',
+                  p: 2,
+                  textAlign: 'left',
+                  borderTopRightRadius: 20,
+                }}
+              >
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    mt: 12,
+                    pl: 4,
+                  }}
+                >
+                  <TableChartIcon sx={{ fontSize: 42, color: 'black' }} />
+                  <Typography
+                    sx={{
+                      // fontWeight: 'bold',
+                      color: 'black',
+                      fontSize: 28,
+                      m: 0.5,
+                      ml: 1.5,
+                    }}
+                  >
                     Data Management
                   </Typography>
                 </Box>
               </Box>
             </Hidden>
           </Box>
-          <Box sx={{
-            display: 'flex',
-            width: '100%',
-          }}>
+          <Box
+            sx={{
+              display: 'flex',
+              width: '100%',
+            }}
+          >
             <Box sx={{ width: '100%' }}>
               <Tabs
-                aria-label="Basic tabs"
+                aria-label='Basic tabs'
                 defaultValue={0}
               >
                 <TabList
@@ -239,28 +312,36 @@ function PersonelsPage() {
                     px: 2,
                     display: 'flex',
                     flexWrap: 'wrap',
-                  }}>
-                  <Tab sx={{
-                    borderRadius: 0,
-                    borderStartStartRadius: 20,
-                    color: 'black',
-                    borderBottom: 2,
-                    borderColor: 'gray'
-                  }}>
+                  }}
+                >
+                  <Tab
+                    sx={{
+                      borderRadius: 0,
+                      borderStartStartRadius: 20,
+                      color: 'black',
+                      borderBottom: 2,
+                      borderColor: 'gray',
+                    }}
+                  >
                     Colegians
                   </Tab>
-                  <Tab sx={{
-                    borderRadius: 0,
-                    borderStartStartRadius: 20,
-                    color: 'black',
-                    borderBottom: 2,
-                    borderColor: 'gray'
-                  }}>
-                  Instrutors
+                  <Tab
+                    sx={{
+                      borderRadius: 0,
+                      borderStartStartRadius: 20,
+                      color: 'black',
+                      borderBottom: 2,
+                      borderColor: 'gray',
+                    }}
+                  >
+                    Instrutors
                   </Tab>
                 </TabList>
-                <TabPanel value={0} sx={{ p: 2 }}>
-                  <ColligianTab
+                <TabPanel
+                  value={0}
+                  sx={{ p: 2 }}
+                >
+                  <CollegiansTab
                     setState={setState}
                     ContentModal={testContentModal}
                     setOpenUpd={setOpenUpd}
@@ -270,7 +351,10 @@ function PersonelsPage() {
                     columns={columns}
                   />
                 </TabPanel>
-                <TabPanel value={1} sx={{ p: 2 }}>
+                <TabPanel
+                  value={1}
+                  sx={{ p: 2 }}
+                >
                   ssss
                 </TabPanel>
               </Tabs>
