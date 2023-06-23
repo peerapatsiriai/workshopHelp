@@ -215,9 +215,9 @@ function PersonelsPage() {
               },
             }}
           >
-            <Option value='1'>วิศวกรรมอุตสาหการ</Option>
-            <Option value='2'>วิศวกรรมแม่พิมพ์</Option>
-            <Option value='3'>วิศวกรรมโยธา</Option>
+            <Option value='1'>วิทยาลัยเทคโนโลยีและสหวิทยาการ</Option>
+            <Option value='2'>คณะศิลปกรรมกรรมและสถาปัตยกรรมศาสตร์</Option>
+            <Option value='3'>คณะวิศวกรรมศาสตร์</Option>
           </Select>
         </Box>
       </Box>
