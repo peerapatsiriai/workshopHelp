@@ -40,12 +40,12 @@ function PersonelsPage() {
 
   // dummy
   const columnsFCollegians = [
-    { field: 'co_code', headerName: 'Code', width: 150 },
-    { field: 'co_fname_th', headerName: 'First Name', width: 200 },
-    { field: 'co_lname_th', headerName: 'Last Name', width: 200 },
+    { field: 'co_code', headerName: 'Code', width: 120 },
+    { field: 'co_fname_th', headerName: 'First Name', width: 150 },
+    { field: 'co_lname_th', headerName: 'Last Name', width: 150 },
     { field: 'co_email', headerName: 'Email', width: 300 },
-    { field: 'co_tel', headerName: 'Tel', width: 150 },
-    { field: 'curriculums_cur_id', headerName: 'Curriculum', width: 200 },
+    { field: 'co_tel', headerName: 'Tel', width: 120 },
+    { field: 'cur_name_th', headerName: 'Curriculum', width: 300 },
     {
       field: 'col3',
       headerName: 'Edit',
