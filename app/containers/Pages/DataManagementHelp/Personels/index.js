@@ -353,6 +353,7 @@ function PersonelsPage() {
         // console.log('t: ', response.data.message.Primarykey);
         const newState = { co_id: response.data.message.Primarykey, ...state };
         setRows((pre) => [newState, ...pre]);
+        setState(initialState);
       })
       .catch((error) => {
         console.log(error);
