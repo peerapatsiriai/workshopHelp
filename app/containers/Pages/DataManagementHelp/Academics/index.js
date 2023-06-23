@@ -582,9 +582,7 @@ function AcademicsPage() {
           open={openIns}
           handleClose={() => setOpenIns(false)}
           content={ContentInsertFaculty}
-          handleInsertCollegianSubmitFaculty={
-            handleInsertCollegianSubmitFaculty
-          }
+          handleSubmit={handleInsertCollegianSubmitFaculty}
           header={'ทดสอบ Insert Form'}
           labelBtn={'Insert'}
           subDetail={false}
