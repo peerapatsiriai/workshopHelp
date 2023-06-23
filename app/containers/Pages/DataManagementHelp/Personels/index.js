@@ -27,16 +27,14 @@ function PersonelsPage() {
   // สำหรับรับค่า
   const [rows, setRows] = useState([]);
   const [state, setState] = useState({
-    myFormFields: {
-      co_code: '',
-      co_fname_th: '',
-      co_lname_th: '',
-      co_fname_en: '',
-      co_lname_en: '',
-      co_email: '',
-      co_tel: '',
-      faculty_institutes_fi_id: '',
-    },
+    co_code: '',
+    co_fname_th: '',
+    co_lname_th: '',
+    co_fname_en: '',
+    co_lname_en: '',
+    co_email: '',
+    co_tel: '',
+    faculty_institutes_fi_id: '',
   });
 
   // dummy
@@ -84,6 +82,7 @@ function PersonelsPage() {
             size='md'
             value={state.co_fname_th || ''}
             onChange={(event) => setState((pre) => ({ ...pre, co_fname_th: event.target.value }))}
+            sx={{ mx: 1 }}
           />
         </Box>
         <Box sx={{ width: '50%' }}>
@@ -95,6 +94,7 @@ function PersonelsPage() {
             size='md'
             value={state.co_lname_th || ''}
             onChange={(event) => setState((pre) => ({ ...pre, co_lname_th: event.target.value }))}
+            sx={{ mx: 1 }}
           />
         </Box>
       </Box>
@@ -107,7 +107,8 @@ function PersonelsPage() {
             placeholder='Type in here…'
             size='md'
             value={state.co_fname_en}
-            onChange={(event) => setState({ co_fname_en: event.target.value })}
+            onChange={(event) => setState((pre) => ({ ...pre, co_fname_en: event.target.value }))}
+            sx={{ mx: 1 }}
           />
         </Box>
         <Box sx={{ width: '50%' }}>
@@ -118,7 +119,8 @@ function PersonelsPage() {
             placeholder='Type in here…'
             size='md'
             value={state.co_lname_en}
-            onChange={(event) => setState({ co_lname_en: event.target.value })}
+            onChange={(event) => setState((pre) => ({ ...pre, co_lname_en: event.target.value }))}
+            sx={{ mx: 1 }}
           />
         </Box>
       </Box>
@@ -131,7 +133,8 @@ function PersonelsPage() {
             placeholder='Type in here…'
             size='md'
             value={state.co_code}
-            onChange={(event) => setState({ co_code: event.target.value })}
+            onChange={(event) => setState((pre) => ({ ...pre, co_code: event.target.value }))}
+            sx={{ mx: 1 }}
           />
         </Box>
         <Box sx={{ width: '50%' }}>
@@ -142,7 +145,8 @@ function PersonelsPage() {
             placeholder='Type in here…'
             size='md'
             value={state.co_email}
-            onChange={(event) => setState({ co_email: event.target.value })}
+            onChange={(event) => setState((pre) => ({ ...pre, co_email: event.target.value }))}
+            sx={{ mx: 1 }}
           />
         </Box>
       </Box>
@@ -155,19 +159,21 @@ function PersonelsPage() {
             placeholder='Type in here…'
             size='md'
             value={state.co_tel}
-            onChange={(event) => setState({ co_tel: event.target.value })}
+            onChange={(event) => setState((pre) => ({ ...pre, co_tel: event.target.value }))}
+            sx={{ mx: 1 }}
           />
         </Box>
       </Box>
-      <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1, ml: 2 }}>
+      <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
         <Box sx={{ width: '50%' }}>
-          <Typography sx={{ fontSize: 12, mb: 0.5 }}>Faculty Institutes</Typography>
+          <Typography sx={{ fontSize: 12, mb: 0.5, ml: 2 }}>Faculty Institutes</Typography>
           <Select
             placeholder='Type in here…'
             indicator={<KeyboardArrowDown />}
+            value={state.faculty_institutes_fi_id || ''}
+            onChange={(event, value) => setState((pre) => ({ ...pre, faculty_institutes_fi_id: value }))}
             sx={{
-              mr: 5,
-              border: 1,
+              mx: 1,
               size: 'sm',
               [`& .${selectClasses.indicator}`]: {
                 transition: '0.2s',
@@ -177,9 +183,9 @@ function PersonelsPage() {
               },
             }}
           >
-            <Option value='1'>คณะวิศวกรรมศาสตร์</Option>
-            <Option value='2'>คณะบริหารธุรกิจและศิลปศาสตร์</Option>
-            <Option value='3'>คณะวิทยาศาสตร์และเทคโนโลยีการเกษตร</Option>
+            <Option value='10'>คณะวิศวกรรมศาสตร์</Option>
+            <Option value='11'>คณะบริหารธุรกิจและศิลปศาสตร์</Option>
+            <Option value='12'>คณะวิทยาศาสตร์และเทคโนโลยีการเกษตร</Option>
           </Select>
         </Box>
         <Box sx={{ width: '50%' }}>
@@ -187,10 +193,10 @@ function PersonelsPage() {
           <Select
             placeholder='Type in here…'
             indicator={<KeyboardArrowDown />}
+            value={state.curriculums_cur_id || ''}
+            onChange={(event, value) => setState((pre) => ({ ...pre, curriculums_cur_id: value }))}
             sx={{
-              ml: 2,
-              mr: 5,
-              border: 1,
+              mx: 1,
               size: 'sm',
               [`& .${selectClasses.indicator}`]: {
                 transition: '0.2s',
