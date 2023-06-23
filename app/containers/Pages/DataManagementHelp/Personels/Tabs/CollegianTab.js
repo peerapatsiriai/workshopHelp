@@ -6,7 +6,7 @@ import { useTheme } from '@emotion/react';
 import { DataGrid } from '@mui/x-data-grid';
 
 function CollegianTab(props) {
-  const { rows, columns, ContentModal, openUpd, setOpenUpd, setOpenIns } = props;
+  const { rows, columns, ContentModal, openUpd, setOpenUpd, setOpenIns, handleUpdate, handleClose } = props;
   // สำหรับ Responsive
   const theme = useTheme();
   const onlySmallScreen = useMediaQuery(theme.breakpoints.up('sm'));
@@ -79,11 +79,15 @@ function CollegianTab(props) {
         />
         <JoyModal
           open={openUpd}
-          handleClose={() => setOpenUpd(false)}
+          handleClose={() => {
+            setOpenUpd(false);
+            handleClose();
+          }}
           content={ContentModal}
           header={'Update Collegian'}
           labelBtn={'Update'}
           subDetail={true}
+          handleSubmit={handleUpdate}
         />
         {/* ทำแค่ตัวนี้ก่อน */}
       </Box>
@@ -99,6 +103,8 @@ CollegianTab.propTypes = {
   openUpd: PropTypes.any.isRequired,
   setOpenUpd: PropTypes.any.isRequired,
   setOpenIns: PropTypes.func.isRequired,
+  handleUpdate: PropTypes.func.isRequired,
+  handleClose: PropTypes.func.isRequired,
 };
 
 export default CollegianTab;

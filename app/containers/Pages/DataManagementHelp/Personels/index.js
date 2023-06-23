@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import brand from 'dan-api/dummy/brand';
-import { PapperBlock, InputJoy, JoyModal } from 'dan-components';
+import { PapperBlock, JoyModal } from 'dan-components';
 import { Box, Hidden, Typography, useMediaQuery, Button } from '@mui/material';
 import TableChartIcon from '@mui/icons-material/TableChart';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
@@ -12,6 +12,16 @@ import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
 import CollegianTab from './Tabs/CollegianTab';
 
 function PersonelsPage() {
+  const initialState = {
+    co_code: '',
+    co_fname_th: '',
+    co_lname_th: '',
+    co_fname_en: '',
+    co_lname_en: '',
+    co_email: '',
+    co_tel: '',
+    faculty_institutes_fi_id: '',
+  };
   // สำหรับ Responsive
   const theme = useTheme();
   const onlySmallScreen = useMediaQuery(theme.breakpoints.up('sm'));
@@ -26,16 +36,7 @@ function PersonelsPage() {
 
   // สำหรับรับค่า
   const [rows, setRows] = useState([]);
-  const [state, setState] = useState({
-    co_code: '',
-    co_fname_th: '',
-    co_lname_th: '',
-    co_fname_en: '',
-    co_lname_en: '',
-    co_email: '',
-    co_tel: '',
-    faculty_institutes_fi_id: '',
-  });
+  const [state, setState] = useState(initialState);
 
   // dummy
   const columnsFCollegians = [
@@ -49,10 +50,14 @@ function PersonelsPage() {
       field: 'col3',
       headerName: 'Edit',
       width: 150,
-      renderCell: () => (
+      renderCell: (cellValues) => (
         <Button
           variant='text'
-          onClick={() => setOpenUpdCo(true)}
+          onClick={() => {
+            setOpenUpdCo(true);
+            setState(cellValues.row);
+            setState((pre) => ({ ...pre, primarykey: cellValues.row.co_id }));
+          }}
         >
           ...
         </Button>
@@ -70,7 +75,7 @@ function PersonelsPage() {
 
   // modal
   // สำหรับ ใส่ใน Insert Form Modal
-  const CollegianContentInsertModal = (
+  const CollegianContentModal = (
     <Box>
       <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
         <Box sx={{ width: '50%' }}>
@@ -217,136 +222,153 @@ function PersonelsPage() {
 
   // Modal Content
   // สำหรับ ใส่ใน Edit Form Modal
-  const CollegianContentEditModal = (
-    <Box>
-      <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
-        <Box sx={{ flexDirection: 'column', width: '50%' }}>
-          <InputJoy
-            label='First Name(TH)'
-            placeholder='Type in here…'
-            type={'text'}
-            size={'md'}
-          />
-        </Box>
-        <Box sx={{ flexDirection: 'column', width: '50%', mb: 1 }}>
-          <InputJoy
-            label='Last Name(TH)'
-            placeholder='Type in here…'
-            type={'text'}
-            size={'md'}
-          />
-        </Box>
-      </Box>
-      <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
-        <Box sx={{ flexDirection: 'column', width: '50%' }}>
-          <InputJoy
-            label='First Name(ENG)'
-            placeholder='Type in here…'
-            type={'text'}
-            size={'md'}
-          />
-        </Box>
-        <Box sx={{ flexDirection: 'column', width: '50%', mb: 1 }}>
-          <InputJoy
-            label='Last Name(ENG)'
-            placeholder='Type in here…'
-            type={'text'}
-            size={'md'}
-          />
-        </Box>
-      </Box>
-      <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
-        <Box sx={{ flexDirection: 'column', width: '50%' }}>
-          <InputJoy
-            label='Collegian Code'
-            placeholder='Type in here…'
-            type={'text'}
-            size={'md'}
-          />
-        </Box>
-        <Box sx={{ flexDirection: 'column', width: '50%', mb: 1 }}>
-          <InputJoy
-            label='Email'
-            placeholder='Type in here…'
-            type={'text'}
-            size={'md'}
-          />
-        </Box>
-      </Box>
-      <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
-        <Box sx={{ flexDirection: 'column', width: '50%' }}>
-          <InputJoy
-            label='Telphone'
-            placeholder='Type in here…'
-            type={'text'}
-            size={'md'}
-          />
-        </Box>
-      </Box>
-      <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
-        <Box sx={{ flexDirection: 'column', width: '50%' }}>
-          <Typography sx={{ fontSize: 12, mb: 0.5, ml: 2 }}>Faculty Institutes</Typography>
-          <Select
-            placeholder='Type in here…'
-            indicator={<KeyboardArrowDown />}
-            size='sm'
-            sx={{
-              ml: 2,
-              border: 1,
-              mr: 5,
-              [`& .${selectClasses.indicator}`]: {
-                transition: '0.2s',
-                [`&.${selectClasses.expanded}`]: {
-                  transform: 'rotate(-180deg)',
-                },
-              },
-            }}
-          >
-            <Option value='1'>คณะวิศวกรรมศาสตร์</Option>
-            <Option value='2'>คณะบริหารธุรกิจและศิลปศาสตร์</Option>
-            <Option value='3'>คณะวิทยาศาสตร์และเทคโนโลยีการเกษตร</Option>
-          </Select>
-        </Box>
-        <Box sx={{ flexDirection: 'column', width: '50%' }}>
-          <Typography sx={{ fontSize: 12, mb: 0.5, ml: 2 }}>Curriculum</Typography>
-          <Select
-            placeholder='Type in here…'
-            indicator={<KeyboardArrowDown />}
-            size='sm'
-            sx={{
-              ml: 2,
-              mr: 5,
-              border: 1,
-              [`& .${selectClasses.indicator}`]: {
-                transition: '0.2s',
-                [`&.${selectClasses.expanded}`]: {
-                  transform: 'rotate(-180deg)',
-                },
-              },
-            }}
-          >
-            <Option value='1'>วิศวกรรมอุตสาหการ</Option>
-            <Option value='2'>วิศวกรรมแม่พิมพ์</Option>
-            <Option value='3'>วิศวกรรมโยธา</Option>
-          </Select>
-        </Box>
-      </Box>
-    </Box>
-  );
+  // const CollegianContentEditModal = (
+  //   <Box>
+  //     <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
+  //       <Box sx={{ flexDirection: 'column', width: '50%' }}>
+  //         <InputJoy
+  //           label='First Name(TH)'
+  //           placeholder='Type in here…'
+  //           type={'text'}
+  //           size={'md'}
+  //         />
+  //       </Box>
+  //       <Box sx={{ flexDirection: 'column', width: '50%', mb: 1 }}>
+  //         <InputJoy
+  //           label='Last Name(TH)'
+  //           placeholder='Type in here…'
+  //           type={'text'}
+  //           size={'md'}
+  //         />
+  //       </Box>
+  //     </Box>
+  //     <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
+  //       <Box sx={{ flexDirection: 'column', width: '50%' }}>
+  //         <InputJoy
+  //           label='First Name(ENG)'
+  //           placeholder='Type in here…'
+  //           type={'text'}
+  //           size={'md'}
+  //         />
+  //       </Box>
+  //       <Box sx={{ flexDirection: 'column', width: '50%', mb: 1 }}>
+  //         <InputJoy
+  //           label='Last Name(ENG)'
+  //           placeholder='Type in here…'
+  //           type={'text'}
+  //           size={'md'}
+  //         />
+  //       </Box>
+  //     </Box>
+  //     <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
+  //       <Box sx={{ flexDirection: 'column', width: '50%' }}>
+  //         <InputJoy
+  //           label='Collegian Code'
+  //           placeholder='Type in here…'
+  //           type={'text'}
+  //           size={'md'}
+  //         />
+  //       </Box>
+  //       <Box sx={{ flexDirection: 'column', width: '50%', mb: 1 }}>
+  //         <InputJoy
+  //           label='Email'
+  //           placeholder='Type in here…'
+  //           type={'text'}
+  //           size={'md'}
+  //         />
+  //       </Box>
+  //     </Box>
+  //     <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
+  //       <Box sx={{ flexDirection: 'column', width: '50%' }}>
+  //         <InputJoy
+  //           label='Telphone'
+  //           placeholder='Type in here…'
+  //           type={'text'}
+  //           size={'md'}
+  //         />
+  //       </Box>
+  //     </Box>
+  //     <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
+  //       <Box sx={{ flexDirection: 'column', width: '50%' }}>
+  //         <Typography sx={{ fontSize: 12, mb: 0.5, ml: 2 }}>Faculty Institutes</Typography>
+  //         <Select
+  //           placeholder='Type in here…'
+  //           indicator={<KeyboardArrowDown />}
+  //           size='sm'
+  //           sx={{
+  //             ml: 2,
+  //             border: 1,
+  //             mr: 5,
+  //             [`& .${selectClasses.indicator}`]: {
+  //               transition: '0.2s',
+  //               [`&.${selectClasses.expanded}`]: {
+  //                 transform: 'rotate(-180deg)',
+  //               },
+  //             },
+  //           }}
+  //         >
+  //           <Option value='1'>คณะวิศวกรรมศาสตร์</Option>
+  //           <Option value='2'>คณะบริหารธุรกิจและศิลปศาสตร์</Option>
+  //           <Option value='3'>คณะวิทยาศาสตร์และเทคโนโลยีการเกษตร</Option>
+  //         </Select>
+  //       </Box>
+  //       <Box sx={{ flexDirection: 'column', width: '50%' }}>
+  //         <Typography sx={{ fontSize: 12, mb: 0.5, ml: 2 }}>Curriculum</Typography>
+  //         <Select
+  //           placeholder='Type in here…'
+  //           indicator={<KeyboardArrowDown />}
+  //           size='sm'
+  //           sx={{
+  //             ml: 2,
+  //             mr: 5,
+  //             border: 1,
+  //             [`& .${selectClasses.indicator}`]: {
+  //               transition: '0.2s',
+  //               [`&.${selectClasses.expanded}`]: {
+  //                 transform: 'rotate(-180deg)',
+  //               },
+  //             },
+  //           }}
+  //         >
+  //           <Option value='1'>วิศวกรรมอุตสาหการ</Option>
+  //           <Option value='2'>วิศวกรรมแม่พิมพ์</Option>
+  //           <Option value='3'>วิศวกรรมโยธา</Option>
+  //         </Select>
+  //       </Box>
+  //     </Box>
+  //   </Box>
+  // );
 
   useEffect(() => {
     console.log(state);
   }, [state]);
 
-  const handleInsertCollegianSubmit = () => {
+  const handleInsertCollegianSubmit = (e) => {
+    e.preventDefault();
     axios
       .post('http://192.168.1.168:8000/api/method/frappe.help-api.insertcollegian', state)
+      .then((response) => {
+        console.log(response);
+        setOpenInsCo(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const handleEditCollegianSubmit = () => {
+    axios
+      .post('http://192.168.1.168:8000/api/method/frappe.help-api.editcollegian', state)
       .then((response) => {
         console.log(response);
       })
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  const handleClose = () => {
+    setState(initialState);
   };
 
   return (
@@ -612,12 +634,14 @@ function PersonelsPage() {
                 >
                   <CollegianTab
                     setState={setState}
-                    ContentModal={CollegianContentEditModal}
+                    ContentModal={CollegianContentModal}
                     setOpenUpd={setOpenUpdCo}
                     openUpd={openUpdCo}
                     setOpenIns={setOpenInsCo}
                     rows={rows}
                     columns={columnsFCollegians}
+                    handleUpdate={handleEditCollegianSubmit}
+                    handleClose={handleClose}
                   />
                 </TabPanel>
                 <TabPanel
@@ -633,8 +657,11 @@ function PersonelsPage() {
         {/* สำหรับ insert */}
         <JoyModal
           open={openInsCo}
-          handleClose={() => setOpenInsCo(false)}
-          content={CollegianContentInsertModal}
+          handleClose={() => {
+            setOpenInsCo(false);
+            setState(initialState);
+          }}
+          content={CollegianContentModal}
           header={'Add New Collegian'}
           labelBtn={'Submit'}
           handleSubmit={handleInsertCollegianSubmit}
