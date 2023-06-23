@@ -8,7 +8,7 @@ export const MasterDataPage = loadable(() => import('./Pages/DataManagementHelp/
   fallback: <Loading />,
 });
 
-export const ShortCutPage = loadable(() => import('./Pages/ShortCutPage'), {
+export const ShortCutPage = loadable(() => import('./Pages/DataManagementHelp/ShortCutPage'), {
   fallback: <Loading />,
 });
 

@@ -38,7 +38,17 @@ function Application(props) {
         />
         <Route
           exact
-          path='/back-office/academics'
+          path='/back-office/masterdata/academics'
+          component={AcademicsManagement}
+        />
+        <Route
+          exact
+          path='/back-office/masterdata/curriculums'
+          component={AcademicsManagement}
+        />
+        <Route
+          exact
+          path='/back-office/masterdata/personnels'
           component={AcademicsManagement}
         />
         <Route

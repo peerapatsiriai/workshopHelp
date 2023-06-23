@@ -54,21 +54,21 @@ function MasterDataPage() {
           }}
         >
           <Menudark
-            linkPath={'/back-office/academics'}
+            linkPath={'/back-office/masterdata/academics'}
             menuIcon={AcademicIcon}
             name={'Academics'}
             countTable={4}
             countRecord={295}
           />
           <Menulight
-            linkPath={'/back-office/curriculums'}
+            linkPath={'/back-office/masterdata/curriculums'}
             menuIcon={CurriculumIcon}
             name={'Curriculums'}
             countTable={5}
             countRecord={5821}
           />
           <Menulight
-            linkPath={'/back-office/personnels'}
+            linkPath={'/back-office/masterdata/personnels'}
             menuIcon={PersonnelIcon}
             name={'Personnels'}
             countTable={2}
