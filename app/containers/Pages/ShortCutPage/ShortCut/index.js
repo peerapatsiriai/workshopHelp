@@ -14,7 +14,7 @@ function Shortcut(props) {
     <>
       <Box
         sx={{
-          width: onlyLargeScreen ? '30%' : onlyMediumScreen ? '30%' : onlySmallScreen ? '45%' : '45%',
+          width: onlyLargeScreen ? '30%' : onlyMediumScreen ? '45%' : onlySmallScreen ? '45%' : '100%',
           m: 1,
           mt: 0,
           background: 'white',

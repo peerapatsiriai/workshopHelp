@@ -203,7 +203,7 @@ function TestPage() {
               }}
             >
               <Shortcut
-                linkPath='/back-office/academics'
+                linkPath='/back-office/masterdata'
                 icon={icon1}
                 header={'Master Data'}
                 paragraph={'Describe what this feature does, and how it benefits your customers.'}

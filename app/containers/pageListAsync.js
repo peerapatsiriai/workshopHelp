@@ -4,6 +4,10 @@ import React from 'react';
 import Loading from 'dan-components/Loading';
 import loadable from '../utils/loadable';
 
+export const MasterDataPage = loadable(() => import('./Pages/DataManagementHelp/MasterDataPage'), {
+  fallback: <Loading />,
+});
+
 export const ShortCutPage = loadable(() => import('./Pages/ShortCutPage'), {
   fallback: <Loading />,
 });

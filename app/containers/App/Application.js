@@ -14,6 +14,7 @@ import {
   AcademicsManagement,
   TestPage,
   ShortCutPage,
+  MasterDataPage,
 } from '../pageListAsync';
 
 function Application(props) {
@@ -29,6 +30,11 @@ function Application(props) {
           exact
           path='/back-office/'
           component={ShortCutPage}
+        />
+        <Route
+          exact
+          path='/back-office/masterdata'
+          component={MasterDataPage}
         />
         <Route
           exact

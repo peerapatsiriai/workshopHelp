@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet';
 import brand from 'dan-api/dummy/brand';
 import { PapperBlock } from 'dan-components';
 import DeleteButton from '../../../components/Button/DeleteButton';
+import ConfirmDelModal from '../../../components/Modal/ConfirmDelModal';
 
 // import ConfirmDelModal from '../../../components/Modal/ConfirmDelModal';
 
@@ -40,6 +41,7 @@ function TestPage() {
       >
         {/* <ConfirmDelModal/> */}
         <DeleteButton />
+        <ConfirmDelModal />
       </PapperBlock>
     </div>
   );
