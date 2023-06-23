@@ -21,8 +21,8 @@ function PersonelsPage() {
   // สำหรับ Responsive
   const title = brand.name + ' - Blank Page';
   const description = brand.desc;
-  const [openIns, setOpenIns] = React.useState(false); // สำหรับใช้ควบคุม Modal insert
-  const [openUpd, setOpenUpd] = React.useState(false); // สำหรับใช้ควบคุม Modal update
+  const [openInsCo, setOpenInsCo] = React.useState(false); // สำหรับใช้ควบคุม Modal insert
+  const [openUpdCo, setOpenUpdCo] = React.useState(false); // สำหรับใช้ควบคุม Modal update
 
   // สำหรับรับค่า
   const [rows, setRows] = useState([]);
@@ -52,7 +52,7 @@ function PersonelsPage() {
       renderCell: () => (
         <Button
           variant='text'
-          onClick={() => setOpenUpd(true)}
+          onClick={() => setOpenUpdCo(true)}
         >
           ...
         </Button>
@@ -613,9 +613,9 @@ function PersonelsPage() {
                   <CollegianTab
                     setState={setState}
                     ContentModal={CollegianContentEditModal}
-                    setOpenUpd={setOpenUpd}
-                    openUpd={openUpd}
-                    setOpenIns={setOpenIns}
+                    setOpenUpd={setOpenUpdCo}
+                    openUpd={openUpdCo}
+                    setOpenIns={setOpenInsCo}
                     rows={rows}
                     columns={columnsFCollegians}
                   />
@@ -632,8 +632,8 @@ function PersonelsPage() {
         </Box>
         {/* สำหรับ insert */}
         <JoyModal
-          open={openIns}
-          handleClose={() => setOpenIns(false)}
+          open={openInsCo}
+          handleClose={() => setOpenInsCo(false)}
           content={CollegianContentInsertModal}
           header={'Add New Collegian'}
           labelBtn={'Submit'}
