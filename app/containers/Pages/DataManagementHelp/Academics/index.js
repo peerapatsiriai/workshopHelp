@@ -45,7 +45,7 @@ function AcademicsPage() {
     { id: 12, col1: 'MUI', col2: 'is Amazing' },
     { id: 13, col1: 'Hello', col2: 'World' },
     { id: 14, col1: 'DataGridPro', col2: 'is Awesome' },
-    { id: 15, col1: 'MUI', col2: 'is Amazing' },
+    { id: 15, col1: 'MUI', col2: 'is Amazingg' },
   ];
   const columns = [
     { field: 'col1', headerName: 'Column 1', width: 150 },
@@ -139,7 +139,13 @@ function AcademicsPage() {
           <Box
             sx={{
               display: 'flex',
-              flexDirection: onlyLargeScreen ? 'row' : onlyMediumScreen ? 'row' : onlySmallScreen ? 'column' : 'column',
+              flexDirection: onlyLargeScreen
+                ? 'row'
+                : onlyMediumScreen
+                ? 'row'
+                : onlySmallScreen
+                ? 'column'
+                : 'column',
               width: '100%',
             }}
           >
@@ -153,8 +159,20 @@ function AcademicsPage() {
                   : onlySmallScreen
                   ? 'row'
                   : 'row',
-                width: onlyLargeScreen ? '25%' : onlyMediumScreen ? '25%' : onlySmallScreen ? '100%' : '100%',
-                textAlign: onlyLargeScreen ? 'left' : onlyMediumScreen ? 'left' : onlySmallScreen ? 'center' : 'center',
+                width: onlyLargeScreen
+                  ? '25%'
+                  : onlyMediumScreen
+                  ? '25%'
+                  : onlySmallScreen
+                  ? '100%'
+                  : '100%',
+                textAlign: onlyLargeScreen
+                  ? 'left'
+                  : onlyMediumScreen
+                  ? 'left'
+                  : onlySmallScreen
+                  ? 'center'
+                  : 'center',
               }}
             >
               <Box
@@ -172,22 +190,46 @@ function AcademicsPage() {
                     : onlySmallScreen
                     ? 'left'
                     : 'left',
-                  textAlign: onlyLargeScreen ? 'left' : onlyMediumScreen ? 'left' : onlySmallScreen ? 'left' : 'left',
+                  textAlign: onlyLargeScreen
+                    ? 'left'
+                    : onlyMediumScreen
+                    ? 'left'
+                    : onlySmallScreen
+                    ? 'left'
+                    : 'left',
                 }}
               >
                 <Box
                   sx={{
-                    ml: onlyLargeScreen ? 0 : onlyMediumScreen ? 0 : onlySmallScreen ? 2 : 2,
+                    ml: onlyLargeScreen
+                      ? 0
+                      : onlyMediumScreen
+                      ? 0
+                      : onlySmallScreen
+                      ? 2
+                      : 2,
                     display: 'flex',
                     justifyContent: 'right',
-                    width: onlyLargeScreen ? '30%' : onlyMediumScreen ? '30%' : onlySmallScreen ? '10%' : '10%',
+                    width: onlyLargeScreen
+                      ? '30%'
+                      : onlyMediumScreen
+                      ? '30%'
+                      : onlySmallScreen
+                      ? '10%'
+                      : '10%',
                   }}
                 >
                   <Box
                     sx={{
                       ml: 3,
                       mt: 3.5,
-                      mb: onlyLargeScreen ? 3 : onlyMediumScreen ? 3 : onlySmallScreen ? 0 : 0,
+                      mb: onlyLargeScreen
+                        ? 3
+                        : onlyMediumScreen
+                        ? 3
+                        : onlySmallScreen
+                        ? 0
+                        : 0,
                       p: 1.5,
                       width: 45,
                       height: 45,
@@ -245,12 +287,22 @@ function AcademicsPage() {
                     sx={{
                       ml: 3,
                       mt: 1,
-                      mb: onlyLargeScreen ? 3 : onlyMediumScreen ? 3 : onlySmallScreen ? 0 : 0,
+                      mb: onlyLargeScreen
+                        ? 3
+                        : onlyMediumScreen
+                        ? 3
+                        : onlySmallScreen
+                        ? 0
+                        : 0,
                       p: 2.5,
                       pl: 0,
                     }}
                   >
-                    <Typography sx={{ fontSize: 28, fontWeight: 'bold', color: 'white' }}>4 Tables</Typography>
+                    <Typography
+                      sx={{ fontSize: 28, fontWeight: 'bold', color: 'white' }}
+                    >
+                      4 Tables
+                    </Typography>
                   </Box>
                 </Hidden>
               </Box>
@@ -269,8 +321,16 @@ function AcademicsPage() {
                       ml: 3,
                     }}
                   >
-                    <Typography sx={{ fontSize: 28, fontWeight: 'bold', color: 'white' }}>4 Tables</Typography>
-                    <Typography sx={{ fontSize: 14, color: 'white', opacity: '60%' }}>XX records</Typography>
+                    <Typography
+                      sx={{ fontSize: 28, fontWeight: 'bold', color: 'white' }}
+                    >
+                      4 Tables
+                    </Typography>
+                    <Typography
+                      sx={{ fontSize: 14, color: 'white', opacity: '60%' }}
+                    >
+                      XX records
+                    </Typography>
                   </Box>
                 </Box>
               </Hidden>
@@ -279,7 +339,13 @@ function AcademicsPage() {
               <Box
                 sx={{
                   display: 'flex',
-                  width: onlyLargeScreen ? '75%' : onlyMediumScreen ? '75%' : onlySmallScreen ? '100%' : '100%',
+                  width: onlyLargeScreen
+                    ? '75%'
+                    : onlyMediumScreen
+                    ? '75%'
+                    : onlySmallScreen
+                    ? '100%'
+                    : '100%',
                   background: primaryColor,
                   p: 2,
                   textAlign: 'left',
@@ -323,7 +389,13 @@ function AcademicsPage() {
               >
                 <TabList
                   sx={{
-                    pl: onlyLargeScreen ? '30%' : onlyMediumScreen ? '30%' : onlySmallScreen ? '0%' : '0%',
+                    pl: onlyLargeScreen
+                      ? '30%'
+                      : onlyMediumScreen
+                      ? '30%'
+                      : onlySmallScreen
+                      ? '0%'
+                      : '0%',
                     borderBottomRightRadius: 0,
                     borderBottomLeftRadius: 0,
                     borderTopLeftRadius: 0,
