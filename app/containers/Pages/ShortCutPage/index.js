@@ -3,12 +3,7 @@ import { Helmet } from 'react-helmet';
 import { useTheme } from '@emotion/react';
 import brand from 'dan-api/dummy/brand';
 import { PapperBlock } from 'dan-components';
-import {
-  Box,
-  IconButton,
-  Typography,
-  useMediaQuery
-} from '@mui/material';
+import { Box, IconButton, Typography, useMediaQuery } from '@mui/material';
 import PieChartIcon from '@mui/icons-material/PieChart';
 import EventNoteIcon from '@mui/icons-material/EventNote';
 import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
@@ -88,13 +83,31 @@ function TestPage() {
     <div>
       <Helmet>
         <title>{title}</title>
-        <meta name='description' content={description} />
-        <meta property='og:title' content={title} />
-        <meta property='og:description' content={description} />
-        <meta property='twitter:title' content={title} />
-        <meta property='twitter:description' content={description} />
+        <meta
+          name='description'
+          content={description}
+        />
+        <meta
+          property='og:title'
+          content={title}
+        />
+        <meta
+          property='og:description'
+          content={description}
+        />
+        <meta
+          property='twitter:title'
+          content={title}
+        />
+        <meta
+          property='twitter:description'
+          content={description}
+        />
       </Helmet>
-      <PapperBlock title='Shortcut Page' desc='Some text description'>
+      <PapperBlock
+        title='Shortcut Page'
+        desc='Some text description'
+      >
         {/* <ConfirmDelModal/> */}
         <Box
           sx={{
@@ -102,13 +115,7 @@ function TestPage() {
             flexDirection: 'column',
             width: '100%',
             height: '150vh',
-            px: onlyLargeScreen
-              ? 3
-              : onlyMediumScreen
-                ? 3
-                : onlySmallScreen
-                  ? 0
-                  : 0,
+            px: onlyLargeScreen ? 3 : onlyMediumScreen ? 3 : onlySmallScreen ? 0 : 0,
           }}
         >
           <Box
@@ -163,9 +170,7 @@ function TestPage() {
               >
                 {' '}
                 <IconButton>
-                  <ViewModuleRoundedIcon
-                    sx={{ color: 'black', fontSize: 22 }}
-                  />
+                  <ViewModuleRoundedIcon sx={{ color: 'black', fontSize: 22 }} />
                 </IconButton>
               </Box>
               <Box
@@ -201,44 +206,37 @@ function TestPage() {
                 linkPath='/back-office/academics'
                 icon={icon1}
                 header={'Master Data'}
-                paragraph={
-                  'Describe what this feature does, and how it benefits your customers.'
-                }
+                paragraph={'Describe what this feature does, and how it benefits your customers.'}
               />
               <Shortcut
+                linkPath='/back-office'
                 icon={icon2}
                 header={'Study Plan'}
-                paragraph={
-                  'Describe what this feature does, and how it benefits your customers.'
-                }
+                paragraph={'Describe what this feature does, and how it benefits your customers.'}
               />
               <Shortcut
+                linkPath='/back-office'
                 icon={icon3}
                 header={'Users'}
-                paragraph={
-                  'Describe what this feature does, and how it benefits your customers.'
-                }
+                paragraph={'Describe what this feature does, and how it benefits your customers.'}
               />
               <Shortcut
+                linkPath='/back-office'
                 icon={icon4}
                 header={'Co-operation'}
-                paragraph={
-                  'Describe what this feature does, and how it benefits your customers.'
-                }
+                paragraph={'Describe what this feature does, and how it benefits your customers.'}
               />
               <Shortcut
+                linkPath='/back-office'
                 icon={icon5}
                 header={'Overview'}
-                paragraph={
-                  'Describe what this feature does, and how it benefits your customers.'
-                }
+                paragraph={'Describe what this feature does, and how it benefits your customers.'}
               />
               <Shortcut
+                linkPath='/back-office'
                 icon={icon6}
                 header={'Etc'}
-                paragraph={
-                  'Describe what this feature does, and how it benefits your customers.'
-                }
+                paragraph={'Describe what this feature does, and how it benefits your customers.'}
               />
             </Box>
           </Box>

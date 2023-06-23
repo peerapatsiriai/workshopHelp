@@ -1,23 +1,15 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import brand from 'dan-api/dummy/brand';
-import { PapperBlock } from 'dan-components';
-import { Box, Button, Hidden, Typography, useMediaQuery } from '@mui/material';
+import { PapperBlock, InputJoy, JoyModal } from 'dan-components';
+import { Box, Hidden, Typography, useMediaQuery, Button } from '@mui/material';
 import TableChartIcon from '@mui/icons-material/TableChart';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import axios from 'axios';
 import { useTheme } from '@emotion/react';
-import {
-  // Input,
-  Tab,
-  TabList,
-  TabPanel,
-  Tabs,
-} from '@mui/joy';
-// import SearchIcon from '@mui/icons-material/Search';
-// import DataTable from '../../../../components/Tables/DataTable';
-import InputJoy from '../../../../components/Input/InputJoy';
-import JoyModal from '../../../../components/Modal/JoyModal';
-import CollegiansTab from './Tab/CollegiansTab';
+import { Tab, TabList, TabPanel, Tabs, Select, selectClasses, Option, Input } from '@mui/joy';
+import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
+import CollegianTab from './Tabs/CollegianTab';
 
 function PersonelsPage() {
   // สำหรับ Responsive
@@ -25,33 +17,36 @@ function PersonelsPage() {
   const onlySmallScreen = useMediaQuery(theme.breakpoints.up('sm'));
   const onlyMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
   const onlyLargeScreen = useMediaQuery(theme.breakpoints.up('lg'));
+
   // สำหรับ Responsive
   const title = brand.name + ' - Blank Page';
   const description = brand.desc;
   const [openIns, setOpenIns] = React.useState(false); // สำหรับใช้ควบคุม Modal insert
   const [openUpd, setOpenUpd] = React.useState(false); // สำหรับใช้ควบคุม Modal update
-  const [state, setState] = React.useState([]);
+
+  // สำหรับรับค่า
+  const [rows, setRows] = useState([]);
+  const [state, setState] = useState({
+    myFormFields: {
+      co_code: '',
+      co_fname_th: '',
+      co_lname_th: '',
+      co_fname_en: '',
+      co_lname_en: '',
+      co_email: '',
+      co_tel: '',
+      faculty_institutes_fi_id: '',
+    },
+  });
+
   // dummy
-  const rows = [
-    { id: 1, col1: 'Hello', col2: 'World' },
-    { id: 2, col1: 'DataGridPro', col2: 'is Awesome' },
-    { id: 3, col1: 'MUI', col2: 'is Amazing' },
-    { id: 4, col1: 'Hello', col2: 'World' },
-    { id: 5, col1: 'DataGridPro', col2: 'is Awesome' },
-    { id: 6, col1: 'MUI', col2: 'is Amazing' },
-    { id: 7, col1: 'Hello', col2: 'World' },
-    { id: 8, col1: 'DataGridPro', col2: 'is Awesome' },
-    { id: 9, col1: 'MUI', col2: 'is Amazing' },
-    { id: 10, col1: 'Hello', col2: 'World' },
-    { id: 11, col1: 'DataGridPro', col2: 'is Awesome' },
-    { id: 12, col1: 'MUI', col2: 'is Amazing' },
-    { id: 13, col1: 'Hello', col2: 'World' },
-    { id: 14, col1: 'DataGridPro', col2: 'is Awesome' },
-    { id: 15, col1: 'MUI', col2: 'is Amazing' },
-  ];
-  const columns = [
-    { field: 'col1', headerName: 'Column 1', width: 150 },
-    { field: 'col2', headerName: 'Column 2', width: 150 },
+  const columnsFCollegians = [
+    { field: 'co_code', headerName: 'Code', width: 150 },
+    { field: 'co_fname_th', headerName: 'First Name', width: 200 },
+    { field: 'co_lname_th', headerName: 'Last Name', width: 200 },
+    { field: 'co_email', headerName: 'Email', width: 300 },
+    { field: 'co_tel', headerName: 'Tel', width: 150 },
+    { field: 'curriculums_cur_id', headerName: 'Curriculum', width: 200 },
     {
       field: 'col3',
       headerName: 'Edit',
@@ -67,17 +62,285 @@ function PersonelsPage() {
       // renderCell ใช้สำหรับสร้างปุ่มภายในตาราง
     },
   ];
-  // dummy
-  const testContentModal = (
-    <InputJoy
-      label={'test'}
-      placeholder={'check'}
-    />
-  ); // dummy ลองเอาไปใส่ Modal
+
+  useEffect(() => {
+    axios.get('http://192.168.1.168:8000/api/method/frappe.help-api.getAllcollegians').then((response) => {
+      setRows(response.data.message.Data);
+      console.log(response.data.message.Data);
+    });
+  }, []);
+
+  // modal
+  // สำหรับ ใส่ใน Insert Form Modal
+  const CollegianContentInsertModal = (
+    <Box>
+      <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
+        <Box sx={{ width: '50%' }}>
+          <Box sx={{ ml: 2 }}>
+            <Typography sx={{ fontSize: 12, mb: 0.5 }}>First Name(TH)</Typography>
+          </Box>
+          <Input
+            placeholder='Type in here…'
+            size='md'
+            value={state.co_fname_th || ''}
+            onChange={(event) => setState((pre) => ({ ...pre, co_fname_th: event.target.value }))}
+          />
+        </Box>
+        <Box sx={{ width: '50%' }}>
+          <Box sx={{ ml: 2 }}>
+            <Typography sx={{ fontSize: 12, mb: 0.5 }}>Last Name(TH)</Typography>
+          </Box>
+          <Input
+            placeholder='Type in here…'
+            size='md'
+            value={state.co_lname_th || ''}
+            onChange={(event) => setState((pre) => ({ ...pre, co_lname_th: event.target.value }))}
+          />
+        </Box>
+      </Box>
+      <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
+        <Box sx={{ width: '50%' }}>
+          <Box sx={{ ml: 2 }}>
+            <Typography sx={{ fontSize: 12, mb: 0.5 }}>First Name(EN)</Typography>
+          </Box>
+          <Input
+            placeholder='Type in here…'
+            size='md'
+            value={state.co_fname_en}
+            onChange={(event) => setState({ co_fname_en: event.target.value })}
+          />
+        </Box>
+        <Box sx={{ width: '50%' }}>
+          <Box sx={{ ml: 2 }}>
+            <Typography sx={{ fontSize: 12, mb: 0.5 }}>Last Name(EN)</Typography>
+          </Box>
+          <Input
+            placeholder='Type in here…'
+            size='md'
+            value={state.co_lname_en}
+            onChange={(event) => setState({ co_lname_en: event.target.value })}
+          />
+        </Box>
+      </Box>
+      <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
+        <Box sx={{ width: '50%' }}>
+          <Box sx={{ ml: 2 }}>
+            <Typography sx={{ fontSize: 12, mb: 0.5 }}>Collegian Code</Typography>
+          </Box>
+          <Input
+            placeholder='Type in here…'
+            size='md'
+            value={state.co_code}
+            onChange={(event) => setState({ co_code: event.target.value })}
+          />
+        </Box>
+        <Box sx={{ width: '50%' }}>
+          <Box sx={{ ml: 2 }}>
+            <Typography sx={{ fontSize: 12, mb: 0.5 }}>Email</Typography>
+          </Box>
+          <Input
+            placeholder='Type in here…'
+            size='md'
+            value={state.co_email}
+            onChange={(event) => setState({ co_email: event.target.value })}
+          />
+        </Box>
+      </Box>
+      <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
+        <Box sx={{ width: '50%' }}>
+          <Box sx={{ ml: 2 }}>
+            <Typography sx={{ fontSize: 12, mb: 0.5 }}>Telphone</Typography>
+          </Box>
+          <Input
+            placeholder='Type in here…'
+            size='md'
+            value={state.co_tel}
+            onChange={(event) => setState({ co_tel: event.target.value })}
+          />
+        </Box>
+      </Box>
+      <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1, ml: 2 }}>
+        <Box sx={{ width: '50%' }}>
+          <Typography sx={{ fontSize: 12, mb: 0.5 }}>Faculty Institutes</Typography>
+          <Select
+            placeholder='Type in here…'
+            indicator={<KeyboardArrowDown />}
+            sx={{
+              mr: 5,
+              border: 1,
+              size: 'sm',
+              [`& .${selectClasses.indicator}`]: {
+                transition: '0.2s',
+                [`&.${selectClasses.expanded}`]: {
+                  transform: 'rotate(-180deg)',
+                },
+              },
+            }}
+          >
+            <Option value='1'>คณะวิศวกรรมศาสตร์</Option>
+            <Option value='2'>คณะบริหารธุรกิจและศิลปศาสตร์</Option>
+            <Option value='3'>คณะวิทยาศาสตร์และเทคโนโลยีการเกษตร</Option>
+          </Select>
+        </Box>
+        <Box sx={{ width: '50%' }}>
+          <Typography sx={{ fontSize: 12, mb: 0.5, ml: 2 }}>Curriculum</Typography>
+          <Select
+            placeholder='Type in here…'
+            indicator={<KeyboardArrowDown />}
+            sx={{
+              ml: 2,
+              mr: 5,
+              border: 1,
+              size: 'sm',
+              [`& .${selectClasses.indicator}`]: {
+                transition: '0.2s',
+                [`&.${selectClasses.expanded}`]: {
+                  transform: 'rotate(-180deg)',
+                },
+              },
+            }}
+          >
+            <Option value='1'>วิศวกรรมอุตสาหการ</Option>
+            <Option value='2'>วิศวกรรมแม่พิมพ์</Option>
+            <Option value='3'>วิศวกรรมโยธา</Option>
+          </Select>
+        </Box>
+      </Box>
+    </Box>
+  );
+  // Modal Content
+  // สำหรับ ใส่ใน Edit Form Modal
+  const CollegianContentEditModal = (
+    <Box>
+      <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
+        <Box sx={{ flexDirection: 'column', width: '50%' }}>
+          <InputJoy
+            label='First Name(TH)'
+            placeholder='Type in here…'
+            type={'text'}
+            size={'md'}
+          />
+        </Box>
+        <Box sx={{ flexDirection: 'column', width: '50%', mb: 1 }}>
+          <InputJoy
+            label='Last Name(TH)'
+            placeholder='Type in here…'
+            type={'text'}
+            size={'md'}
+          />
+        </Box>
+      </Box>
+      <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
+        <Box sx={{ flexDirection: 'column', width: '50%' }}>
+          <InputJoy
+            label='First Name(ENG)'
+            placeholder='Type in here…'
+            type={'text'}
+            size={'md'}
+          />
+        </Box>
+        <Box sx={{ flexDirection: 'column', width: '50%', mb: 1 }}>
+          <InputJoy
+            label='Last Name(ENG)'
+            placeholder='Type in here…'
+            type={'text'}
+            size={'md'}
+          />
+        </Box>
+      </Box>
+      <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
+        <Box sx={{ flexDirection: 'column', width: '50%' }}>
+          <InputJoy
+            label='Collegian Code'
+            placeholder='Type in here…'
+            type={'text'}
+            size={'md'}
+          />
+        </Box>
+        <Box sx={{ flexDirection: 'column', width: '50%', mb: 1 }}>
+          <InputJoy
+            label='Email'
+            placeholder='Type in here…'
+            type={'text'}
+            size={'md'}
+          />
+        </Box>
+      </Box>
+      <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
+        <Box sx={{ flexDirection: 'column', width: '50%' }}>
+          <InputJoy
+            label='Telphone'
+            placeholder='Type in here…'
+            type={'text'}
+            size={'md'}
+          />
+        </Box>
+      </Box>
+      <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
+        <Box sx={{ flexDirection: 'column', width: '50%' }}>
+          <Typography sx={{ fontSize: 12, mb: 0.5, ml: 2 }}>Faculty Institutes</Typography>
+          <Select
+            placeholder='Type in here…'
+            indicator={<KeyboardArrowDown />}
+            size='sm'
+            sx={{
+              ml: 2,
+              border: 1,
+              mr: 5,
+              [`& .${selectClasses.indicator}`]: {
+                transition: '0.2s',
+                [`&.${selectClasses.expanded}`]: {
+                  transform: 'rotate(-180deg)',
+                },
+              },
+            }}
+          >
+            <Option value='1'>คณะวิศวกรรมศาสตร์</Option>
+            <Option value='2'>คณะบริหารธุรกิจและศิลปศาสตร์</Option>
+            <Option value='3'>คณะวิทยาศาสตร์และเทคโนโลยีการเกษตร</Option>
+          </Select>
+        </Box>
+        <Box sx={{ flexDirection: 'column', width: '50%' }}>
+          <Typography sx={{ fontSize: 12, mb: 0.5, ml: 2 }}>Curriculum</Typography>
+          <Select
+            placeholder='Type in here…'
+            indicator={<KeyboardArrowDown />}
+            size='sm'
+            sx={{
+              ml: 2,
+              mr: 5,
+              border: 1,
+              [`& .${selectClasses.indicator}`]: {
+                transition: '0.2s',
+                [`&.${selectClasses.expanded}`]: {
+                  transform: 'rotate(-180deg)',
+                },
+              },
+            }}
+          >
+            <Option value='1'>วิศวกรรมอุตสาหการ</Option>
+            <Option value='2'>วิศวกรรมแม่พิมพ์</Option>
+            <Option value='3'>วิศวกรรมโยธา</Option>
+          </Select>
+        </Box>
+      </Box>
+    </Box>
+  );
 
   useEffect(() => {
     console.log(state);
   }, [state]);
+
+  const handleInsertCollegianSubmit = () => {
+    axios
+      .post('http://192.168.1.168:8000/api/method/frappe.help-api.insertcollegian', state)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <div>
@@ -108,7 +371,6 @@ function PersonelsPage() {
         title='Table Group'
         desc=''
       >
-        {/* {onlyLargeScreen ? 'LargeScreen ' : onlyMediumScreen ? 'MediumScreen ' : onlySmallScreen ? 'SmallScreen' : 'xs'} */}
         <Box
           sx={{
             display: 'flex',
@@ -341,21 +603,21 @@ function PersonelsPage() {
                   value={0}
                   sx={{ p: 2 }}
                 >
-                  <CollegiansTab
+                  <CollegianTab
                     setState={setState}
-                    ContentModal={testContentModal}
+                    ContentModal={CollegianContentEditModal}
                     setOpenUpd={setOpenUpd}
                     openUpd={openUpd}
                     setOpenIns={setOpenIns}
                     rows={rows}
-                    columns={columns}
+                    columns={columnsFCollegians}
                   />
                 </TabPanel>
                 <TabPanel
                   value={1}
                   sx={{ p: 2 }}
                 >
-                  ssss
+                  <b>Academic Type</b> tab panel
                 </TabPanel>
               </Tabs>
             </Box>
@@ -365,10 +627,11 @@ function PersonelsPage() {
         <JoyModal
           open={openIns}
           handleClose={() => setOpenIns(false)}
-          content={'testinsert'}
-          header={'ทดสอบ Insert Form'}
-          labelBtn={'Insert'}
-          subDetail={false}
+          content={CollegianContentInsertModal}
+          header={'Add New Collegian'}
+          labelBtn={'Submit'}
+          handleSubmit={handleInsertCollegianSubmit}
+          subDetail={true}
         />
       </PapperBlock>
     </div>
