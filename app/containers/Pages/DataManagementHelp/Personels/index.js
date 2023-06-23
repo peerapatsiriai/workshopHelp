@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import brand from 'dan-api/dummy/brand';
-import { PapperBlock, JoyModal } from 'dan-components';
+import { PapperBlock, JoyModal, DeleteButton } from 'dan-components';
 import { Box, Hidden, Typography, useMediaQuery, Button } from '@mui/material';
 import TableChartIcon from '@mui/icons-material/TableChart';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
@@ -48,9 +48,9 @@ function PersonelsPage() {
     { field: 'co_tel', headerName: 'Tel', width: 120 },
     { field: 'cur_name_th', headerName: 'Curriculum', width: 300 },
     {
-      field: 'col3',
+      field: 'Edit',
       headerName: 'Edit',
-      width: 150,
+      width: 100,
       renderCell: (cellValues) => (
         <Button
           variant='text'
@@ -64,6 +64,13 @@ function PersonelsPage() {
           ...
         </Button>
       ),
+      // renderCell ใช้สำหรับสร้างปุ่มภายในตาราง
+    },
+    {
+      field: 'Delete',
+      headerName: 'Delete',
+      width: 100,
+      renderCell: () => <DeleteButton />,
       // renderCell ใช้สำหรับสร้างปุ่มภายในตาราง
     },
   ];
