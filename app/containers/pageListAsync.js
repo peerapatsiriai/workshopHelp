@@ -4,6 +4,18 @@ import React from 'react';
 import Loading from 'dan-components/Loading';
 import loadable from '../utils/loadable';
 
+export const MasterDataPage = loadable(() => import('./Pages/DataManagementHelp/MasterDataPage'), {
+  fallback: <Loading />,
+});
+
+export const ShortCutPage = loadable(() => import('./Pages/DataManagementHelp/ShortCutPage'), {
+  fallback: <Loading />,
+});
+
+export const TestPage = loadable(() => import('./Pages/DataManagementHelp/ShortCutPage'), {
+  fallback: <Loading />,
+});
+
 export const PersonelsManagement = loadable(() => import('./Pages/DataManagementHelp/Personels/index'), {
   fallback: <Loading />,
 });

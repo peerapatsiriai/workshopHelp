@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import brand from 'dan-api/dummy/brand';
 import { PapperBlock } from 'dan-components';
@@ -14,9 +14,10 @@ import {
 import TableChartIcon from '@mui/icons-material/TableChart';
 import SchoolIcon from '@mui/icons-material/School';
 // import SearchIcon from '@mui/icons-material/Search';
-import DataTable from '../../../../components/Tables/DataTable';
+// import DataTable from '../../../../components/Tables/DataTable';
 import InputJoy from '../../../../components/Input/InputJoy';
 import JoyModal from '../../../../components/Modal/JoyModal';
+import AcademicsTab from './Tab/AcademicsTab';
 
 function AcademicsPage() {
   // สำหรับ Responsive
@@ -29,6 +30,7 @@ function AcademicsPage() {
   const description = brand.desc;
   const [openIns, setOpenIns] = React.useState(false); // สำหรับใช้ควบคุม Modal insert
   const [openUpd, setOpenUpd] = React.useState(false); // สำหรับใช้ควบคุม Modal update
+  const [state, setState] = React.useState([]);
   // dummy
   const rows = [
     { id: 1, col1: 'Hello', col2: 'World' },
@@ -47,6 +49,12 @@ function AcademicsPage() {
     { id: 14, col1: 'DataGridPro', col2: 'is Awesome' },
     { id: 15, col1: 'MUI', col2: 'is Amazing' },
   ];
+
+  const [dataRows, setDataRows] = React.useState(rows.reverse());
+  const testAddnewRow = () => {
+    const dummyRow = { id: 16, col1: 'test', col2: 'test' };
+    setDataRows((pre) => [dummyRow, ...pre]);
+  };
   const columns = [
     { field: 'col1', headerName: 'Column 1', width: 150 },
     { field: 'col2', headerName: 'Column 2', width: 150 },
@@ -54,10 +62,13 @@ function AcademicsPage() {
       field: 'col3',
       headerName: 'Edit',
       width: 150,
+      // renderCell: () => <Button variant="text" onClick={() => setOpenUpd(true)}>...</Button>
+      // renderCell: (cellValues) => <Button variant="text" onClick={() => setState(cellValues.row)}>...</Button>
       renderCell: () => (
         <Button
           variant='text'
-          onClick={() => setOpenUpd(true)}
+          // onClick={() => console.log(cellValues.row)}
+          onClick={() => testAddnewRow()}
         >
           ...
         </Button>
@@ -98,6 +109,10 @@ function AcademicsPage() {
   ); // dummy ลองเอาไปใส่ Modal
   // color
   const primaryColor = '#1c1c1c';
+
+  useEffect(() => {
+    console.log(state);
+  }, [state]);
 
   return (
     <div>
@@ -383,69 +398,15 @@ function AcademicsPage() {
                   value={0}
                   sx={{ p: 2 }}
                 >
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      justifyContent: onlyLargeScreen
-                        ? 'space-between'
-                        : onlyMediumScreen
-                        ? 'space-between'
-                        : onlySmallScreen
-                        ? 'center'
-                        : 'center',
-                      width: '100%',
-                      p: 2,
-                    }}
-                  >
-                    <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-                      <Button
-                        onClick={() => setOpenIns(true)}
-                        sx={{
-                          px: 2,
-                          background: 'black',
-                          color: 'white',
-                          borderRadius: 5,
-                          '&:hover': {
-                            background: '#fff',
-                            color: 'black',
-                          },
-                        }}
-                      >
-                        <Typography
-                          sx={{
-                            fontSize: 12,
-                            textTransform: 'capitalize',
-                            fontWeight: 'bold',
-                          }}
-                        >
-                          + Add Academic
-                        </Typography>
-                      </Button>
-                      <Button sx={{ ml: 2 }}>
-                        <Typography
-                          sx={{
-                            fontSize: 12,
-                            textTransform: 'capitalize',
-                            fontWeight: 'bold',
-                          }}
-                        >
-                          Export
-                        </Typography>
-                      </Button>
-                    </Box>
-                  </Box>
-                  <Box sx={{ display: 'flex', width: '100%' }}>
-                    {/* ทำแค่ตัวนี้ก่อน */}
-                    <DataTable
-                      rows={rows}
-                      columns={columns}
-                      open={openUpd}
-                      handleClose={() => setOpenUpd(false)}
-                      modalContent={testContentModal} // สามารถใส่เข้ามาเป็น UI ได้เลย
-                      modalHeader={'ทดสอบ Update Form'}
-                    />
-                    {/* ทำแค่ตัวนี้ก่อน */}
-                  </Box>
+                  <AcademicsTab
+                    setState={setState}
+                    ContentModal={testContentModal}
+                    setOpenUpd={setOpenUpd}
+                    openUpd={openUpd}
+                    setOpenIns={setOpenIns}
+                    rows={dataRows}
+                    columns={columns}
+                  />
                 </TabPanel>
                 <TabPanel
                   value={1}
