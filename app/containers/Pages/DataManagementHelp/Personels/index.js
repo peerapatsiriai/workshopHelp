@@ -350,6 +350,9 @@ function PersonelsPage() {
       .then((response) => {
         console.log(response);
         setOpenInsCo(false);
+        // console.log('t: ', response.data.message.Primarykey);
+        const newState = { co_id: response.data.message.Primarykey, ...state };
+        setRows((pre) => [newState, ...pre]);
       })
       .catch((error) => {
         console.log(error);
