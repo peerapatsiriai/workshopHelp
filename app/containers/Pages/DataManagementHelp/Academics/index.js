@@ -17,14 +17,15 @@ import {
 } from '@mui/joy';
 import TableChartIcon from '@mui/icons-material/TableChart';
 import SchoolIcon from '@mui/icons-material/School';
-// import SearchIcon from '@mui/icons-material/Search';
-// import DataTable from '../../../../components/Tables/DataTable';
 import axios from 'axios';
+// import SearchIcon from '@mui/icons-material/Search';
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
-// import InputJoy from '../../../../components/Input/InputJoy';
-import JoyModal from '../../../../components/Modal/JoyModal';
-// import AcademicsTab from './Tab/AcademicsTab';
 import FacultyTab from './Tab/FacultyTab';
+import JoyModal from '../../../../components/Modal/JoyModal';
+
+// import AcademicsTab from './Tab/AcademicsTab';
+// import InputJoy from '../../../../components/Input/InputJoy';
+// import DataTable from '../../../../components/Tables/DataTable';
 
 function AcademicsPage() {
   // สำหรับ Responsive
@@ -43,17 +44,10 @@ function AcademicsPage() {
     ac_name_th: '',
   });
   const [facultyData, setFacultyData] = React.useState([]);
-
-  useEffect(() => {
-    axios
-      .get(
-        'http://192.168.1.168:8000/api/method/frappe.help-api.getAllfacultys'
-      )
-      .then((res) => {
-        setFacultyData(res.data.message.Data);
-        console.log(res.data.message.Data);
-      });
-  }, []);
+  const getRowId = (row) => row.fi_id;
+  const LengthFaculty = facultyData.length;
+  // color
+  const primaryColor = '#1c1c1c';
 
   const columnsFaculty = [
     { field: 'fi_name_th', headerName: 'Name(TH)', width: 150 },
@@ -72,10 +66,16 @@ function AcademicsPage() {
     },
   ];
 
-  const getRowId = (row) => row.fi_id;
-  const LengthFaculty = facultyData.length;
-  // color
-  const primaryColor = '#1c1c1c';
+  useEffect(() => {
+    axios
+      .get(
+        'http://192.168.1.168:8000/api/method/frappe.help-api.getAllfacultys'
+      )
+      .then((res) => {
+        setFacultyData(res.data.message.Data);
+        console.log(res.data.message.Data);
+      });
+  }, []);
 
   useEffect(() => {
     console.log(state);
@@ -109,7 +109,6 @@ function AcademicsPage() {
             flexDirection: 'column',
             width: '50%',
           }}>
-          {/* <InputJoy placeholder='Engligsh Name' /> */}
           <Input
             placeholder='Engligsh Name'
             size='sm'
@@ -248,7 +247,7 @@ function AcademicsPage() {
     </Box>
   );
 
-  const handleInsertCollegianSubmitFaculty = () => {
+  const handleInsertFacultySubmit = () => {
     axios
       .post(
         'http://192.168.1.168:8000/api/method/frappe.help-api.insertfaculty',
@@ -261,6 +260,20 @@ function AcademicsPage() {
         console.log(error);
       });
   };
+  // const handleEditFacultyUpdate = () => {
+  //   axios
+  //     .put(
+  //       'http://192.168.1.168:8000/api/method/frappe.help-api.editfaculty',
+  //       state
+  //     )
+  //     .then((response) => {
+  //       console.log(response);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // };
+
   return (
     <div>
       <Helmet>
@@ -595,7 +608,7 @@ function AcademicsPage() {
           open={openIns}
           handleClose={() => setOpenIns(false)}
           content={ContentInsertFaculty}
-          handleSubmit={handleInsertCollegianSubmitFaculty}
+          handleSubmit={handleInsertFacultySubmit}
           header={'Add New Institute'}
           labelBtn={'Insert'}
           subDetail={false}
