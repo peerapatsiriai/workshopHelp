@@ -12,10 +12,6 @@ export const TestPage = loadable(() => import('./Pages/TestPage/index'), {
   fallback: <Loading />,
 });
 
-export const PersonelsManagement = loadable(() => import('./Pages/DataManagementHelp/Personels'), {
-  fallback: <Loading />,
-});
-
 export const AcademicsManagement = loadable(() => import('./Pages/DataManagementHelp/Academics'), {
   fallback: <Loading />,
 });
