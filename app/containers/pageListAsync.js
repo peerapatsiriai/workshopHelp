@@ -16,7 +16,7 @@ export const TestPage = loadable(() => import('./Pages/DataManagementHelp/ShortC
   fallback: <Loading />,
 });
 
-export const PersonelsManagement = loadable(() => import('./Pages/DataManagementHelp/Personels'), {
+export const PersonelsPage = loadable(() => import('./Pages/DataManagementHelp/Personels'), {
   fallback: <Loading />,
 });
 
