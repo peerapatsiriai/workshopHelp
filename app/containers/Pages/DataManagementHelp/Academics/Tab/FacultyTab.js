@@ -3,19 +3,22 @@ import React from 'react';
 import { useTheme } from '@emotion/react';
 import PropTypes from 'prop-types';
 import { DataGrid } from '@mui/x-data-grid';
-import JoyModal from '../../../../../components/Modal/JoyModal';
+import { JoyModal, ConfirmDelModal } from 'dan-components';
 // import DataTable from '../../../../../components/Tables/DataTable';
 
 function FacultyTab(props) {
   const {
-    setState,
+    getRowDataFacultyr,
+    ColumnsDataFaculty,
     ContentModal,
-    setOpenUpd,
-    openUpd,
-    setOpenIns,
-    facultyData, // ใช้สำหรับรับเอาข้อมูลเนื้อหาในตาราง จากด้านนอกมาแสดงภายใน Modal
-    columnsFaculty, // ใช้สำหรับรับเอาหัวตารางหรือ columns จากด้านนอกมาแสดงภายใน Modal
-    getRowId,
+    setOpenUpdFac,
+    setOpenInsFac,
+    handleUpdate,
+    handleDelete,
+    handleCloseUpd,
+    setSelectDisabledFac,
+    openDelFac,
+    setOpenDelFac,
   } = props;
   const theme = useTheme();
   const onlySmallScreen = useMediaQuery(theme.breakpoints.up('sm'));
@@ -35,10 +38,14 @@ function FacultyTab(props) {
             : 'center',
           width: '100%',
           p: 2,
-        }}>
+        }}
+      >
         <Box sx={{ display: 'flex', flexDirection: 'row' }}>
           <Button
-            onClick={() => setOpenIns(true)}
+            onClick={() => {
+              setOpenInsFac(true);
+              setSelectDisabledFac(false);
+            }}
             sx={{
               px: 2,
               background: 'black',
@@ -48,13 +55,15 @@ function FacultyTab(props) {
                 background: '#fff',
                 color: 'black',
               },
-            }}>
+            }}
+          >
             <Typography
               sx={{
                 fontSize: 12,
                 textTransform: 'capitalize',
                 fontWeight: 'bold',
-              }}>
+              }}
+            >
               + Add Faculty
             </Typography>
           </Button>
@@ -64,7 +73,8 @@ function FacultyTab(props) {
                 fontSize: 12,
                 textTransform: 'capitalize',
                 fontWeight: 'bold',
-              }}>
+              }}
+            >
               Export
             </Typography>
           </Button>
@@ -73,22 +83,31 @@ function FacultyTab(props) {
       <Box sx={{ display: 'flex', width: '100%' }}>
         {/* ทำแค่ตัวนี้ก่อน */}
         <DataGrid
-          rows={facultyData}
-          columns={columnsFaculty}
-          open={openUpd}
-          handleClose={() => setOpenUpd(false)}
-          modalContent={ContentModal} // สามารถใส่เข้ามาเป็น UI ได้เลย
-          modalHeader={'ทดสอบ Update Form'}
-          stateUpdate={setState}
-          getRowId={getRowId}
+          rows={getRowDataFacultyr}
+          columns={ColumnsDataFaculty}
+          getRowId={(row) => row.fi_id}
+          initialState={{
+            pagination: { paginationModel: { pageSize: 10 } },
+          }}
         />
         <JoyModal
-          open={openUpd}
-          handleClose={() => setOpenUpd(false)}
+          open={setOpenUpdFac}
+          handleClose={() => {
+            setOpenUpdFac(false);
+            handleCloseUpd();
+          }}
           content={ContentModal}
           header={'Update Collegian'}
           labelBtn={'Update'}
           subDetail={true}
+          handleSubmit={handleUpdate}
+        />
+        <ConfirmDelModal
+          open={openDelFac}
+          handleClose={() => {
+            setOpenDelFac(false);
+          }}
+          handleSubmit={handleDelete}
         />
         {/* ทำแค่ตัวนี้ก่อน */}
       </Box>
@@ -96,13 +115,18 @@ function FacultyTab(props) {
   );
 }
 FacultyTab.propTypes = {
-  setOpenIns: PropTypes.func.isRequired,
-  facultyData: PropTypes.array.isRequired,
-  columnsFaculty: PropTypes.array.isRequired,
-  openUpd: PropTypes.bool.isRequired,
-  setState: PropTypes.any,
+  getRowDataFacultyr: PropTypes.array.isRequired,
+  ColumnsDataFaculty: PropTypes.array.isRequired,
   ContentModal: PropTypes.any,
-  setOpenUpd: PropTypes.func.isRequired,
-  getRowId: PropTypes.func.isRequired,
+  setStartFaculty: PropTypes.any,
+  openUpdFac: PropTypes.any.isRequired,
+  setOpenUpdFac: PropTypes.any.isRequired,
+  setOpenInsFac: PropTypes.func.isRequired,
+  handleUpdate: PropTypes.func.isRequired,
+  handleDelete: PropTypes.func.isRequired,
+  handleCloseUpd: PropTypes.func.isRequired,
+  setSelectDisabledFac: PropTypes.func.isRequired,
+  openDelFac: PropTypes.bool.isRequired,
+  setOpenDelFac: PropTypes.func.isRequired,
 };
 export default FacultyTab;
