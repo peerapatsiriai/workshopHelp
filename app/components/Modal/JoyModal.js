@@ -26,8 +26,11 @@ function JoyModal(props) {
         aria-describedby='modal-desc'
         open={open}
         onClose={handleClose}
-        sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-      >
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
         <Sheet
           variant='outlined'
           sx={{
@@ -36,8 +39,7 @@ function JoyModal(props) {
             borderRadius: 'md',
             p: 3,
             boxShadow: 'lg',
-          }}
-        >
+          }}>
           <ModalClose
             variant='outlined'
             sx={{
@@ -57,9 +59,8 @@ function JoyModal(props) {
                   variant='body2'
                   sx={{
                     ml: 2,
-                    opacity: '60%'
-                  }}
-                >
+                    opacity: '60%',
+                  }}>
                   Created On March 10/2/2023 : 15:59:41
                 </Typography>
               </Box>
@@ -69,26 +70,28 @@ function JoyModal(props) {
                   variant='body2'
                   sx={{
                     ml: 2,
-                    opacity: '60%'
-                  }}
-                >
+                    opacity: '60%',
+                  }}>
                   Last updated On March 22/2/2023 : 21:32:51
                 </Typography>
               </Box>
-            </Box>)
-          }
-          <Box sx={{ p: 2, width: '100%' }}>
-            {content}
-          </Box>
-          <Box sx={{
-            width: '100%',
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'end',
-            p: 2,
-          }}>
-            <Button variant="solid" onClick={handleSubmit}>{labelBtn}</Button>
-            <Button variant="outlined" sx={{ ml: 1 }} onClick={handleClose}>Cancel</Button>
+            </Box>
+          )}
+          <Box sx={{ p: 2, width: '100%' }}>{content}</Box>
+          <Box
+            sx={{
+              width: '100%',
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'end',
+              p: 2,
+            }}>
+            <Button variant='solid' onClick={handleSubmit}>
+              {labelBtn}
+            </Button>
+            <Button variant='outlined' sx={{ ml: 1 }} onClick={handleClose}>
+              Cancel
+            </Button>
           </Box>
         </Sheet>
       </Modal>

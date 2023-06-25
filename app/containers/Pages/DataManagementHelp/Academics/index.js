@@ -1,14 +1,25 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import brand from 'dan-api/dummy/brand';
-import { PapperBlock, DeleteButton } from 'dan-components';
+import { PapperBlock } from 'dan-components';
 import { Box, Button, Hidden, Typography, useMediaQuery } from '@mui/material';
 import { useTheme } from '@emotion/react';
 import axios from 'axios';
-import { Input, Tab, TabList, TabPanel, Tabs, FormLabel, selectClasses, Option, Select } from '@mui/joy';
+import {
+  Input,
+  Tab,
+  TabList,
+  TabPanel,
+  Tabs,
+  FormLabel,
+  selectClasses,
+  Option,
+  Select,
+} from '@mui/joy';
 import TableChartIcon from '@mui/icons-material/TableChart';
 import SchoolIcon from '@mui/icons-material/School';
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
+import DeleteButton from '../../../../components/Button/DeleteButton';
 import JoyModal from '../../../../components/Modal/JoyModal';
 import FacultyTab from './Tab/FacultyTab';
 
@@ -21,16 +32,8 @@ function AcademicsPage() {
   // สำหรับ Responsive
   const title = brand.name + ' - Blank Page';
   const description = brand.desc;
-  const [openInsFac, setOpenInsFac] = React.useState(false); // สำหรับใช้ควบคุม Modal insert
-  const [openUpdFac, setOpenUpdFac] = React.useState(false); // สำหรับใช้ควบคุม Modal update
-  const [openDelFac, setOpenDelFac] = React.useState(false); // สำหรับใช้ควบคุม Modal update
-  const [state, setState] = React.useState([]);
   // color
   const primaryColor = '#1c1c1c';
-
-  useEffect(() => {
-    console.log(state);
-  }, [state]);
 
   // FacultyTab Start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   const initialStateFaculty = {
@@ -42,11 +45,14 @@ function AcademicsPage() {
     table: 'tabfaculty_institutes',
     primary: '',
   };
-  const [getRowDataFaculty, setGetRowDataFaculty] = React.useState([]);
-  const [selectDisabledFac, setSelectDisabledFac] = React.useState(false);
-  const [startFaculty, setStartFaculty] = React.useState(initialStateFaculty);
-  const [deleteFaculty, setDeleteFaculty] = React.useState(initialDeleteFaculty);
+  const [openInsFac, setOpenInsFac] = useState(false); // สำหรับใช้ควบคุม Modal insert
+  const [openUpdFac, setOpenUpdFac] = useState(false); // สำหรับใช้ควบคุม Modal update
+  const [openDelFac, setOpenDelFac] = useState(false); // สำหรับใช้ควบคุม Modal Delets
 
+  const [getRowDataFaculty, setGetRowDataFaculty] = useState([]);
+  const [selectDisabledFac, setSelectDisabledFac] = useState(false);
+  const [startFaculty, setStartFaculty] = useState(initialStateFaculty);
+  const [deleteFaculty, setDeleteFaculty] = useState(initialDeleteFaculty);
   const ColumnsDataFaculty = [
     { field: 'fi_name_th', headerName: 'Name(TH)', width: 150 },
     { field: 'fi_name_en', headerName: 'Name(EN)', width: 150 },
@@ -61,10 +67,12 @@ function AcademicsPage() {
           onClick={() => {
             setOpenUpdFac(true);
             setStartFaculty(cellValues.row);
-            setStartFaculty((per) => ({ ...per, primarykey: cellValues.row.fi_id }));
+            setStartFaculty((per) => ({
+              ...per,
+              primarykey: cellValues.row.fi_id,
+            }));
             setSelectDisabledFac(true);
-          }}
-        >
+          }}>
           ...
         </Button>
       ),
@@ -78,7 +86,10 @@ function AcademicsPage() {
         <DeleteButton
           handleClick={() => {
             setOpenDelFac(true);
-            setDeleteFaculty((per) => ({ ...per, primary: cellValues.row.fi_id }));
+            setDeleteFaculty((per) => ({
+              ...per,
+              primary: cellValues.row.fi_id,
+            }));
           }}
         />
       ),
@@ -87,31 +98,42 @@ function AcademicsPage() {
   ];
 
   useEffect(() => {
-    axios.get('http://192.168.1.168:8000/api/method/frappe.help-api.getAllfacultys').then((res) => {
-      setGetRowDataFaculty(res.data.message.Data);
-      console.log(res.data.message.Data);
-    });
+    axios
+      .get(
+        'http://192.168.1.168:8000/api/method/frappe.help-api.getAllfacultys'
+      )
+      .then((res) => {
+        setGetRowDataFaculty(res.data.message.Data);
+        console.log(res.data.message.Data);
+      });
   }, []);
+
+  useEffect(() => {
+    console.log(startFaculty);
+  }, [startFaculty]);
 
   const ContentInsertFaculty = (
     <Box>
-      <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-end' }}>
+      <Box
+        sx={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-end' }}>
         <Box sx={{ flexDirection: 'column', width: '50%', ml: 2 }}>
           <FormLabel
             sx={(themes) => ({
               '--FormLabel-color': themes.vars.palette.primary.plainColor,
               mb: 0.5,
-            })}
-          >
+            })}>
             Academic Name
           </FormLabel>
           <Input
             label='Academic Name'
             placeholder='Thai Name'
             size='sm'
-            value={state.fi_name_th || ''}
+            value={startFaculty.fi_name_th || ''}
             onChange={(event) => {
-              setState((pre) => ({ ...pre, fi_name_th: event.target.value }));
+              setStartFaculty((pre) => ({
+                ...pre,
+                fi_name_th: event.target.value,
+              }));
             }}
             sx={{ mr: 1 }}
           />
@@ -120,14 +142,16 @@ function AcademicsPage() {
           sx={{
             flexDirection: 'column',
             width: '50%',
-          }}
-        >
+          }}>
           <Input
             placeholder='Engligsh Name'
             size='sm'
-            value={state.fi_name_en || ''}
+            value={startFaculty.fi_name_en || ''}
             onChange={(event) => {
-              setState((pre) => ({ ...pre, fi_name_en: event.target.value }));
+              setStartFaculty((pre) => ({
+                ...pre,
+                fi_name_en: event.target.value,
+              }));
             }}
             sx={{ ml: 1 }}
           />
@@ -141,22 +165,20 @@ function AcademicsPage() {
           width: '45%',
           mt: 3,
           ml: 2,
-        }}
-      >
+        }}>
         <FormLabel
           sx={(themes) => ({
             '--FormLabel-color': themes.vars.palette.primary.plainColor,
             mb: 0.5,
-          })}
-        >
+          })}>
           Academic
         </FormLabel>
         <Select
           placeholder='เทคโนโลยีราชมงคลล้านนา'
           indicator={<KeyboardArrowDown />}
-          value={state.academics_ac_id || ''}
+          value={startFaculty.academics_ac_id || ''}
           onChange={(event, value) => {
-            setState((pre) => ({ ...pre, academics_ac_id: value }));
+            setStartFaculty((pre) => ({ ...pre, academics_ac_id: value }));
           }}
           disabled={selectDisabledFac}
           size='sm'
@@ -169,13 +191,9 @@ function AcademicsPage() {
                 transform: 'rotate(-180deg)',
               },
             },
-          }}
-        >
+          }}>
           {getRowDataFaculty?.map((contentFac, value) => (
-            <Option
-              key={value}
-              value={contentFac.academics_ac_id}
-            >
+            <Option key={value} value={contentFac.academics_ac_id}>
               {contentFac.ac_name_th}
             </Option>
           ))}
@@ -183,18 +201,21 @@ function AcademicsPage() {
       </Box>
     </Box>
   );
-  useEffect(() => {
-    console.log(startFaculty);
-  }, [startFaculty]);
 
   const handleInsertFacultySubmit = (e) => {
     e.preventDefault();
     axios
-      .post('http://192.168.1.168:8000/api/method/frappe.help-api.insertfaculty')
+      .post(
+        'http://192.168.1.168:8000/api/method/frappe.help-api.insertfaculty',
+        startFaculty
+      )
       .then((res) => {
         console.log(res);
         setOpenInsFac(false);
-        const newStateFaculty = { fi_id: res.data.message.Primarykey, ...startFaculty };
+        const newStateFaculty = {
+          academics_ac_id: res.data.message.Primarykey,
+          ...startFaculty,
+        };
         setGetRowDataFaculty((pre) => [newStateFaculty, ...pre]);
         setStartFaculty(initialStateFaculty);
       })
@@ -205,16 +226,21 @@ function AcademicsPage() {
 
   const hendleEditFacultySubmit = () => {
     axios
-      .put('http://192.168.1.168:8000/api/method/frappe.help-api.editfaculty')
+      .post(
+        'http://192.168.1.168:8000/api/method/frappe.help-api.editfaculty',
+        startFaculty
+      )
       .then((res) => {
         console.log(res);
         setOpenUpdFac(false);
-        const ObjectToUpDateFaculty = getRowDataFaculty.find((obj) => obj.fi_id === startFaculty.fi_id);
+        const ObjectToUpDateFaculty = getRowDataFaculty.find(
+          (obj) => obj.fi_id === startFaculty.fi_id
+        );
 
         // แก้ไขค่า ในออบเจ็กต์
         if (ObjectToUpDateFaculty) {
-          ObjectToUpDateFaculty.fi_name_th = startFaculty.ac_name_th;
-          ObjectToUpDateFaculty.fi_name_en = startFaculty.ac_name_en;
+          ObjectToUpDateFaculty.fi_name_th = startFaculty.fi_name_th;
+          ObjectToUpDateFaculty.fi_name_en = startFaculty.fi_name_en;
           ObjectToUpDateFaculty.ac_name_th = startFaculty.ac_name_th;
         }
         setStartFaculty(initialStateFaculty);
@@ -226,7 +252,10 @@ function AcademicsPage() {
 
   const handleDeleteFacultySubmit = () => {
     axios
-      .delete('http://192.168.1.168:8000/api/method/frappe.help-api.delete')
+      .post(
+        'http://192.168.1.168:8000/api/method/frappe.help-api.delete',
+        deleteFaculty
+      )
       .then((res) => {
         console.log(res);
         console.log('DeleteFaculty: ', deleteFaculty);
@@ -239,7 +268,9 @@ function AcademicsPage() {
       .finally(() => {
         const idToDeleteFac = deleteFaculty.primary;
         console.log('idToDelete: ', idToDeleteFac);
-        const ObjectToDelte = getRowDataFaculty.filter((obj) => obj.fi_id !== idToDeleteFac);
+        const ObjectToDelte = getRowDataFaculty.filter(
+          (obj) => obj.fi_id !== idToDeleteFac
+        );
         console.log('ObjectToDelte: ', ObjectToDelte);
         setGetRowDataFaculty(ObjectToDelte);
       });
@@ -254,46 +285,32 @@ function AcademicsPage() {
     <div>
       <Helmet>
         <title>{title}</title>
-        <meta
-          name='description'
-          content={description}
-        />
-        <meta
-          property='og:title'
-          content={title}
-        />
-        <meta
-          property='og:description'
-          content={description}
-        />
-        <meta
-          property='twitter:title'
-          content={title}
-        />
-        <meta
-          property='twitter:description'
-          content={description}
-        />
+        <meta name='description' content={description} />
+        <meta property='og:title' content={title} />
+        <meta property='og:description' content={description} />
+        <meta property='twitter:title' content={title} />
+        <meta property='twitter:description' content={description} />
       </Helmet>
-      <PapperBlock
-        title='Table Group'
-        desc=''
-      >
+      <PapperBlock title='Table Group' desc=''>
         {/* {onlyLargeScreen ? 'LargeScreen ' : onlyMediumScreen ? 'MediumScreen ' : onlySmallScreen ? 'SmallScreen' : 'xs'} */}
         <Box
           sx={{
             display: 'flex',
             flexDirection: 'column',
             width: '100%',
-          }}
-        >
+          }}>
           <Box
             sx={{
               display: 'flex',
-              flexDirection: onlyLargeScreen ? 'row' : onlyMediumScreen ? 'row' : onlySmallScreen ? 'column' : 'column',
+              flexDirection: onlyLargeScreen
+                ? 'row'
+                : onlyMediumScreen
+                ? 'row'
+                : onlySmallScreen
+                ? 'column'
+                : 'column',
               width: '100%',
-            }}
-          >
+            }}>
             <Box
               sx={{
                 display: 'flex',
@@ -304,10 +321,21 @@ function AcademicsPage() {
                   : onlySmallScreen
                   ? 'row'
                   : 'row',
-                width: onlyLargeScreen ? '25%' : onlyMediumScreen ? '25%' : onlySmallScreen ? '100%' : '100%',
-                textAlign: onlyLargeScreen ? 'left' : onlyMediumScreen ? 'left' : onlySmallScreen ? 'center' : 'center',
-              }}
-            >
+                width: onlyLargeScreen
+                  ? '25%'
+                  : onlyMediumScreen
+                  ? '25%'
+                  : onlySmallScreen
+                  ? '100%'
+                  : '100%',
+                textAlign: onlyLargeScreen
+                  ? 'left'
+                  : onlyMediumScreen
+                  ? 'left'
+                  : onlySmallScreen
+                  ? 'center'
+                  : 'center',
+              }}>
               <Box
                 sx={{
                   display: 'flex',
@@ -323,22 +351,44 @@ function AcademicsPage() {
                     : onlySmallScreen
                     ? 'left'
                     : 'left',
-                  textAlign: onlyLargeScreen ? 'left' : onlyMediumScreen ? 'left' : onlySmallScreen ? 'left' : 'left',
-                }}
-              >
+                  textAlign: onlyLargeScreen
+                    ? 'left'
+                    : onlyMediumScreen
+                    ? 'left'
+                    : onlySmallScreen
+                    ? 'left'
+                    : 'left',
+                }}>
                 <Box
                   sx={{
-                    ml: onlyLargeScreen ? 0 : onlyMediumScreen ? 0 : onlySmallScreen ? 2 : 2,
+                    ml: onlyLargeScreen
+                      ? 0
+                      : onlyMediumScreen
+                      ? 0
+                      : onlySmallScreen
+                      ? 2
+                      : 2,
                     display: 'flex',
                     justifyContent: 'right',
-                    width: onlyLargeScreen ? '30%' : onlyMediumScreen ? '30%' : onlySmallScreen ? '10%' : '10%',
-                  }}
-                >
+                    width: onlyLargeScreen
+                      ? '30%'
+                      : onlyMediumScreen
+                      ? '30%'
+                      : onlySmallScreen
+                      ? '10%'
+                      : '10%',
+                  }}>
                   <Box
                     sx={{
                       ml: 3,
                       mt: 3.5,
-                      mb: onlyLargeScreen ? 3 : onlyMediumScreen ? 3 : onlySmallScreen ? 0 : 0,
+                      mb: onlyLargeScreen
+                        ? 3
+                        : onlyMediumScreen
+                        ? 3
+                        : onlySmallScreen
+                        ? 0
+                        : 0,
                       p: 1.5,
                       width: 45,
                       height: 45,
@@ -346,12 +396,8 @@ function AcademicsPage() {
                       background: 'gray',
                       display: 'flex',
                       justifyContent: 'center',
-                    }}
-                  >
-                    <SchoolIcon
-                      style={{ color: 'white' }}
-                      fontSize={'large'}
-                    />
+                    }}>
+                    <SchoolIcon style={{ color: 'white' }} fontSize={'large'} />
                   </Box>
                 </Box>
                 <Box
@@ -359,15 +405,13 @@ function AcademicsPage() {
                     p: 1,
                     m: 2,
                     mt: 2,
-                  }}
-                >
+                  }}>
                   <Typography
                     sx={{
                       fontSize: 16,
                       fontWeight: 'bold',
                       color: 'white',
-                    }}
-                  >
+                    }}>
                     Academics
                   </Typography>
                   <Typography
@@ -376,8 +420,7 @@ function AcademicsPage() {
                       color: 'white',
                       opacity: '60%',
                     }}
-                    sx={{ fontSize: 12, mt: 0.5 }}
-                  >
+                    sx={{ fontSize: 12, mt: 0.5 }}>
                     Last updated
                   </Typography>
                   <Typography
@@ -386,8 +429,7 @@ function AcademicsPage() {
                       color: 'white',
                       opacity: '60%',
                       mt: 0.5,
-                    }}
-                  >
+                    }}>
                     on March 13th,2023
                   </Typography>
                 </Box>
@@ -396,12 +438,20 @@ function AcademicsPage() {
                     sx={{
                       ml: 3,
                       mt: 1,
-                      mb: onlyLargeScreen ? 3 : onlyMediumScreen ? 3 : onlySmallScreen ? 0 : 0,
+                      mb: onlyLargeScreen
+                        ? 3
+                        : onlyMediumScreen
+                        ? 3
+                        : onlySmallScreen
+                        ? 0
+                        : 0,
                       p: 2.5,
                       pl: 0,
-                    }}
-                  >
-                    <Typography sx={{ fontSize: 28, fontWeight: 'bold', color: 'white' }}>4 Tables</Typography>
+                    }}>
+                    <Typography
+                      sx={{ fontSize: 28, fontWeight: 'bold', color: 'white' }}>
+                      4 Tables
+                    </Typography>
                   </Box>
                 </Hidden>
               </Box>
@@ -413,15 +463,19 @@ function AcademicsPage() {
                     height: '50%',
                     p: 2,
                     background: primaryColor,
-                  }}
-                >
+                  }}>
                   <Box
                     sx={{
                       ml: 3,
-                    }}
-                  >
-                    <Typography sx={{ fontSize: 28, fontWeight: 'bold', color: 'white' }}>4 Tables</Typography>
-                    <Typography sx={{ fontSize: 14, color: 'white', opacity: '60%' }}>XX records</Typography>
+                    }}>
+                    <Typography
+                      sx={{ fontSize: 28, fontWeight: 'bold', color: 'white' }}>
+                      4 Tables
+                    </Typography>
+                    <Typography
+                      sx={{ fontSize: 14, color: 'white', opacity: '60%' }}>
+                      XX records
+                    </Typography>
                   </Box>
                 </Box>
               </Hidden>
@@ -430,21 +484,25 @@ function AcademicsPage() {
               <Box
                 sx={{
                   display: 'flex',
-                  width: onlyLargeScreen ? '75%' : onlyMediumScreen ? '75%' : onlySmallScreen ? '100%' : '100%',
+                  width: onlyLargeScreen
+                    ? '75%'
+                    : onlyMediumScreen
+                    ? '75%'
+                    : onlySmallScreen
+                    ? '100%'
+                    : '100%',
                   background: primaryColor,
                   p: 2,
                   textAlign: 'left',
                   borderTopRightRadius: 20,
-                }}
-              >
+                }}>
                 <Box
                   sx={{
                     display: 'flex',
                     flexDirection: 'row',
                     mt: 12,
                     pl: 4,
-                  }}
-                >
+                  }}>
                   <TableChartIcon sx={{ fontSize: 42, color: 'white' }} />
                   <Typography
                     sx={{
@@ -453,8 +511,7 @@ function AcademicsPage() {
                       fontSize: 28,
                       m: 0.5,
                       ml: 1.5,
-                    }}
-                  >
+                    }}>
                     Data Management
                   </Typography>
                 </Box>
@@ -465,16 +522,18 @@ function AcademicsPage() {
             sx={{
               display: 'flex',
               width: '100%',
-            }}
-          >
+            }}>
             <Box sx={{ width: '100%' }}>
-              <Tabs
-                aria-label='Basic tabs'
-                defaultValue={0}
-              >
+              <Tabs aria-label='Basic tabs' defaultValue={0}>
                 <TabList
                   sx={{
-                    pl: onlyLargeScreen ? '30%' : onlyMediumScreen ? '30%' : onlySmallScreen ? '0%' : '0%',
+                    pl: onlyLargeScreen
+                      ? '30%'
+                      : onlyMediumScreen
+                      ? '30%'
+                      : onlySmallScreen
+                      ? '0%'
+                      : '0%',
                     borderBottomRightRadius: 0,
                     borderBottomLeftRadius: 0,
                     borderTopLeftRadius: 0,
@@ -483,8 +542,7 @@ function AcademicsPage() {
                     px: 2,
                     display: 'flex',
                     flexWrap: 'wrap',
-                  }}
-                >
+                  }}>
                   <Tab
                     sx={{
                       borderRadius: 0,
@@ -492,8 +550,7 @@ function AcademicsPage() {
                       color: 'gray',
                       borderBottom: 2,
                       borderColor: 'gray',
-                    }}
-                  >
+                    }}>
                     Academics
                   </Tab>
                   <Tab
@@ -503,8 +560,7 @@ function AcademicsPage() {
                       color: 'gray',
                       borderBottom: 2,
                       borderColor: 'gray',
-                    }}
-                  >
+                    }}>
                     Academic Type
                   </Tab>
                   <Tab
@@ -514,8 +570,7 @@ function AcademicsPage() {
                       color: 'gray',
                       borderBottom: 2,
                       borderColor: 'gray',
-                    }}
-                  >
+                    }}>
                     Faculty
                   </Tab>
                   <Tab
@@ -525,35 +580,25 @@ function AcademicsPage() {
                       color: 'gray',
                       borderBottom: 2,
                       borderColor: 'gray',
-                    }}
-                  >
+                    }}>
                     Departments
                   </Tab>
                 </TabList>
-                <TabPanel
-                  value={0}
-                  sx={{ p: 2 }}
-                >
+                <TabPanel value={0} sx={{ p: 2 }}>
                   AcademicsTab
                 </TabPanel>
-                <TabPanel
-                  value={1}
-                  sx={{ p: 2 }}
-                >
+                <TabPanel value={1} sx={{ p: 2 }}>
                   <b>Academic Type</b> tab panel
                 </TabPanel>
-                <TabPanel
-                  value={2}
-                  sx={{ p: 2 }}
-                >
+                <TabPanel value={2} sx={{ p: 2 }}>
                   <FacultyTab
-                    setStartFaculty={setStartFaculty}
+                    setStart={setStartFaculty}
                     ContentModal={ContentInsertFaculty}
-                    setOpenUpdFac={setOpenUpdFac}
-                    openUpdFac={openUpdFac}
-                    setOpenInsFac={setOpenInsFac}
-                    getRowDataFacultyr={getRowDataFaculty}
-                    ColumnsDataFaculty={ColumnsDataFaculty}
+                    setOpenUpd={setOpenUpdFac}
+                    openUpd={openUpdFac}
+                    setOpenIns={setOpenInsFac}
+                    rows={getRowDataFaculty}
+                    columns={ColumnsDataFaculty}
                     handleUpdate={hendleEditFacultySubmit}
                     handleCloseUpd={handleClose}
                     setSelectDisabledFac={setSelectDisabledFac}
@@ -562,10 +607,7 @@ function AcademicsPage() {
                     handleDelete={handleDeleteFacultySubmit}
                   />
                 </TabPanel>
-                <TabPanel
-                  value={3}
-                  sx={{ p: 2 }}
-                >
+                <TabPanel value={3} sx={{ p: 2 }}>
                   <b>Departments</b> tab panel
                 </TabPanel>
               </Tabs>
@@ -583,7 +625,7 @@ function AcademicsPage() {
           header={'Add New Institute'}
           labelBtn={'Insert'}
           handleSubmit={handleInsertFacultySubmit}
-          subDetail={false}
+          subDetail={true}
         />
       </PapperBlock>
     </div>

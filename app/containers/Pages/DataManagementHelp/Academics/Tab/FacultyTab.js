@@ -3,16 +3,17 @@ import React from 'react';
 import { useTheme } from '@emotion/react';
 import PropTypes from 'prop-types';
 import { DataGrid } from '@mui/x-data-grid';
-import { JoyModal, ConfirmDelModal } from 'dan-components';
-// import DataTable from '../../../../../components/Tables/DataTable';
+import JoyModal from '../../../../../components/Modal/JoyModal';
+import ConfirmDelModal from '../../../../../components/Modal/ConfirmDelModal';
 
 function FacultyTab(props) {
   const {
-    getRowDataFacultyr,
-    ColumnsDataFaculty,
+    rows,
+    columns,
     ContentModal,
-    setOpenUpdFac,
-    setOpenInsFac,
+    openUpd,
+    setOpenUpd,
+    setOpenIns,
     handleUpdate,
     handleDelete,
     handleCloseUpd,
@@ -38,12 +39,11 @@ function FacultyTab(props) {
             : 'center',
           width: '100%',
           p: 2,
-        }}
-      >
+        }}>
         <Box sx={{ display: 'flex', flexDirection: 'row' }}>
           <Button
             onClick={() => {
-              setOpenInsFac(true);
+              setOpenIns(true);
               setSelectDisabledFac(false);
             }}
             sx={{
@@ -55,15 +55,13 @@ function FacultyTab(props) {
                 background: '#fff',
                 color: 'black',
               },
-            }}
-          >
+            }}>
             <Typography
               sx={{
                 fontSize: 12,
                 textTransform: 'capitalize',
                 fontWeight: 'bold',
-              }}
-            >
+              }}>
               + Add Faculty
             </Typography>
           </Button>
@@ -73,8 +71,7 @@ function FacultyTab(props) {
                 fontSize: 12,
                 textTransform: 'capitalize',
                 fontWeight: 'bold',
-              }}
-            >
+              }}>
               Export
             </Typography>
           </Button>
@@ -83,17 +80,17 @@ function FacultyTab(props) {
       <Box sx={{ display: 'flex', width: '100%' }}>
         {/* ทำแค่ตัวนี้ก่อน */}
         <DataGrid
-          rows={getRowDataFacultyr}
-          columns={ColumnsDataFaculty}
+          rows={rows}
+          columns={columns}
           getRowId={(row) => row.fi_id}
           initialState={{
             pagination: { paginationModel: { pageSize: 10 } },
           }}
         />
         <JoyModal
-          open={setOpenUpdFac}
+          open={openUpd}
           handleClose={() => {
-            setOpenUpdFac(false);
+            setOpenUpd(false);
             handleCloseUpd();
           }}
           content={ContentModal}
@@ -115,13 +112,13 @@ function FacultyTab(props) {
   );
 }
 FacultyTab.propTypes = {
-  getRowDataFacultyr: PropTypes.array.isRequired,
-  ColumnsDataFaculty: PropTypes.array.isRequired,
+  rows: PropTypes.array.isRequired,
+  columns: PropTypes.array.isRequired,
   ContentModal: PropTypes.any,
-  setStartFaculty: PropTypes.any,
-  openUpdFac: PropTypes.any.isRequired,
-  setOpenUpdFac: PropTypes.any.isRequired,
-  setOpenInsFac: PropTypes.func.isRequired,
+  setState: PropTypes.any,
+  openUpd: PropTypes.any.isRequired,
+  setOpenUpd: PropTypes.any.isRequired,
+  setOpenIns: PropTypes.func.isRequired,
   handleUpdate: PropTypes.func.isRequired,
   handleDelete: PropTypes.func.isRequired,
   handleCloseUpd: PropTypes.func.isRequired,
