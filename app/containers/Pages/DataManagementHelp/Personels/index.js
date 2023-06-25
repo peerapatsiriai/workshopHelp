@@ -7,7 +7,16 @@ import TableChartIcon from '@mui/icons-material/TableChart';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import axios from 'axios';
 import { useTheme } from '@emotion/react';
-import { Tab, TabList, TabPanel, Tabs, Select, selectClasses, Option, Input } from '@mui/joy';
+import {
+  Tab,
+  TabList,
+  TabPanel,
+  Tabs,
+  Select,
+  selectClasses,
+  Option,
+  Input,
+} from '@mui/joy';
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
 import CollegianTab from './Tabs/CollegianTab';
 
@@ -67,10 +76,14 @@ function PersonelsPage() {
   ];
 
   useEffect(() => {
-    axios.get('http://192.168.1.168:8000/api/method/frappe.help-api.getAllcollegians').then((response) => {
-      setRows(response.data.message.Data);
-      console.log(response.data.message.Data);
-    });
+    axios
+      .get(
+        'http://192.168.1.168:8000/api/method/frappe.help-api.getAllcollegians'
+      )
+      .then((response) => {
+        setRows(response.data.message.Data);
+        console.log(response.data.message.Data);
+      });
   }, []);
 
   // modal
@@ -80,25 +93,33 @@ function PersonelsPage() {
       <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
         <Box sx={{ width: '50%' }}>
           <Box sx={{ ml: 2 }}>
-            <Typography sx={{ fontSize: 12, mb: 0.5 }}>First Name(TH)</Typography>
+            <Typography sx={{ fontSize: 12, mb: 0.5 }}>
+              First Name(TH)
+            </Typography>
           </Box>
           <Input
             placeholder='Type in here…'
             size='md'
             value={state.co_fname_th || ''}
-            onChange={(event) => setState((pre) => ({ ...pre, co_fname_th: event.target.value }))}
+            onChange={(event) => {
+              setState((pre) => ({ ...pre, co_fname_th: event.target.value }));
+            }}
             sx={{ mx: 1 }}
           />
         </Box>
         <Box sx={{ width: '50%' }}>
           <Box sx={{ ml: 2 }}>
-            <Typography sx={{ fontSize: 12, mb: 0.5 }}>Last Name(TH)</Typography>
+            <Typography sx={{ fontSize: 12, mb: 0.5 }}>
+              Last Name(TH)
+            </Typography>
           </Box>
           <Input
             placeholder='Type in here…'
             size='md'
             value={state.co_lname_th || ''}
-            onChange={(event) => setState((pre) => ({ ...pre, co_lname_th: event.target.value }))}
+            onChange={(event) => {
+              setState((pre) => ({ ...pre, co_lname_th: event.target.value }));
+            }}
             sx={{ mx: 1 }}
           />
         </Box>
@@ -106,25 +127,33 @@ function PersonelsPage() {
       <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
         <Box sx={{ width: '50%' }}>
           <Box sx={{ ml: 2 }}>
-            <Typography sx={{ fontSize: 12, mb: 0.5 }}>First Name(EN)</Typography>
+            <Typography sx={{ fontSize: 12, mb: 0.5 }}>
+              First Name(EN)
+            </Typography>
           </Box>
           <Input
             placeholder='Type in here…'
             size='md'
             value={state.co_fname_en}
-            onChange={(event) => setState((pre) => ({ ...pre, co_fname_en: event.target.value }))}
+            onChange={(event) => {
+              setState((pre) => ({ ...pre, co_fname_en: event.target.value }));
+            }}
             sx={{ mx: 1 }}
           />
         </Box>
         <Box sx={{ width: '50%' }}>
           <Box sx={{ ml: 2 }}>
-            <Typography sx={{ fontSize: 12, mb: 0.5 }}>Last Name(EN)</Typography>
+            <Typography sx={{ fontSize: 12, mb: 0.5 }}>
+              Last Name(EN)
+            </Typography>
           </Box>
           <Input
             placeholder='Type in here…'
             size='md'
             value={state.co_lname_en}
-            onChange={(event) => setState((pre) => ({ ...pre, co_lname_en: event.target.value }))}
+            onChange={(event) => {
+              setState((pre) => ({ ...pre, co_lname_en: event.target.value }));
+            }}
             sx={{ mx: 1 }}
           />
         </Box>
@@ -132,13 +161,17 @@ function PersonelsPage() {
       <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
         <Box sx={{ width: '50%' }}>
           <Box sx={{ ml: 2 }}>
-            <Typography sx={{ fontSize: 12, mb: 0.5 }}>Collegian Code</Typography>
+            <Typography sx={{ fontSize: 12, mb: 0.5 }}>
+              Collegian Code
+            </Typography>
           </Box>
           <Input
             placeholder='Type in here…'
             size='md'
             value={state.co_code}
-            onChange={(event) => setState((pre) => ({ ...pre, co_code: event.target.value }))}
+            onChange={(event) => {
+              setState((pre) => ({ ...pre, co_code: event.target.value }));
+            }}
             sx={{ mx: 1 }}
           />
         </Box>
@@ -150,7 +183,9 @@ function PersonelsPage() {
             placeholder='Type in here…'
             size='md'
             value={state.co_email}
-            onChange={(event) => setState((pre) => ({ ...pre, co_email: event.target.value }))}
+            onChange={(event) => {
+              setState((pre) => ({ ...pre, co_email: event.target.value }));
+            }}
             sx={{ mx: 1 }}
           />
         </Box>
@@ -164,19 +199,25 @@ function PersonelsPage() {
             placeholder='Type in here…'
             size='md'
             value={state.co_tel}
-            onChange={(event) => setState((pre) => ({ ...pre, co_tel: event.target.value }))}
+            onChange={(event) => {
+              setState((pre) => ({ ...pre, co_tel: event.target.value }));
+            }}
             sx={{ mx: 1 }}
           />
         </Box>
       </Box>
       <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
         <Box sx={{ width: '50%' }}>
-          <Typography sx={{ fontSize: 12, mb: 0.5, ml: 2 }}>Faculty Institutes</Typography>
+          <Typography sx={{ fontSize: 12, mb: 0.5, ml: 2 }}>
+            Faculty Institutes
+          </Typography>
           <Select
             placeholder='Type in here…'
             indicator={<KeyboardArrowDown />}
             value={state.faculty_institutes_fi_id || ''}
-            onChange={(event, value) => setState((pre) => ({ ...pre, faculty_institutes_fi_id: value }))}
+            onChange={(event, value) => {
+              setState((pre) => ({ ...pre, faculty_institutes_fi_id: value }));
+            }}
             sx={{
               mx: 1,
               size: 'sm',
@@ -194,12 +235,16 @@ function PersonelsPage() {
           </Select>
         </Box>
         <Box sx={{ width: '50%' }}>
-          <Typography sx={{ fontSize: 12, mb: 0.5, ml: 2 }}>Curriculum</Typography>
+          <Typography sx={{ fontSize: 12, mb: 0.5, ml: 2 }}>
+            Curriculum
+          </Typography>
           <Select
             placeholder='Type in here…'
             indicator={<KeyboardArrowDown />}
             value={state.curriculums_cur_id || ''}
-            onChange={(event, value) => setState((pre) => ({ ...pre, curriculums_cur_id: value }))}
+            onChange={(event, value) => {
+              setState((pre) => ({ ...pre, curriculums_cur_id: value }));
+            }}
             sx={{
               mx: 1,
               size: 'sm',
@@ -346,7 +391,10 @@ function PersonelsPage() {
   const handleInsertCollegianSubmit = (e) => {
     e.preventDefault();
     axios
-      .post('http://192.168.1.168:8000/api/method/frappe.help-api.insertcollegian', state)
+      .post(
+        'http://192.168.1.168:8000/api/method/frappe.help-api.insertcollegian',
+        state
+      )
       .then((response) => {
         console.log(response);
         setOpenInsCo(false);
@@ -358,7 +406,10 @@ function PersonelsPage() {
 
   const handleEditCollegianSubmit = () => {
     axios
-      .post('http://192.168.1.168:8000/api/method/frappe.help-api.editcollegian', state)
+      .post(
+        'http://192.168.1.168:8000/api/method/frappe.help-api.editcollegian',
+        state
+      )
       .then((response) => {
         console.log(response);
       })
@@ -410,7 +461,13 @@ function PersonelsPage() {
           <Box
             sx={{
               display: 'flex',
-              flexDirection: onlyLargeScreen ? 'row' : onlyMediumScreen ? 'row' : onlySmallScreen ? 'column' : 'column',
+              flexDirection: onlyLargeScreen
+                ? 'row'
+                : onlyMediumScreen
+                ? 'row'
+                : onlySmallScreen
+                ? 'column'
+                : 'column',
               width: '100%',
             }}
           >
@@ -424,8 +481,20 @@ function PersonelsPage() {
                   : onlySmallScreen
                   ? 'row'
                   : 'row',
-                width: onlyLargeScreen ? '25%' : onlyMediumScreen ? '25%' : onlySmallScreen ? '100%' : '100%',
-                textAlign: onlyLargeScreen ? 'left' : onlyMediumScreen ? 'left' : onlySmallScreen ? 'center' : 'center',
+                width: onlyLargeScreen
+                  ? '25%'
+                  : onlyMediumScreen
+                  ? '25%'
+                  : onlySmallScreen
+                  ? '100%'
+                  : '100%',
+                textAlign: onlyLargeScreen
+                  ? 'left'
+                  : onlyMediumScreen
+                  ? 'left'
+                  : onlySmallScreen
+                  ? 'center'
+                  : 'center',
               }}
             >
               <Box
@@ -443,22 +512,46 @@ function PersonelsPage() {
                     : onlySmallScreen
                     ? 'left'
                     : 'left',
-                  textAlign: onlyLargeScreen ? 'left' : onlyMediumScreen ? 'left' : onlySmallScreen ? 'left' : 'left',
+                  textAlign: onlyLargeScreen
+                    ? 'left'
+                    : onlyMediumScreen
+                    ? 'left'
+                    : onlySmallScreen
+                    ? 'left'
+                    : 'left',
                 }}
               >
                 <Box
                   sx={{
-                    ml: onlyLargeScreen ? 0 : onlyMediumScreen ? 0 : onlySmallScreen ? 2 : 2,
+                    ml: onlyLargeScreen
+                      ? 0
+                      : onlyMediumScreen
+                      ? 0
+                      : onlySmallScreen
+                      ? 2
+                      : 2,
                     display: 'flex',
                     justifyContent: 'right',
-                    width: onlyLargeScreen ? '30%' : onlyMediumScreen ? '30%' : onlySmallScreen ? '10%' : '10%',
+                    width: onlyLargeScreen
+                      ? '30%'
+                      : onlyMediumScreen
+                      ? '30%'
+                      : onlySmallScreen
+                      ? '10%'
+                      : '10%',
                   }}
                 >
                   <Box
                     sx={{
                       ml: 3,
                       mt: 3.5,
-                      mb: onlyLargeScreen ? 3 : onlyMediumScreen ? 3 : onlySmallScreen ? 0 : 0,
+                      mb: onlyLargeScreen
+                        ? 3
+                        : onlyMediumScreen
+                        ? 3
+                        : onlySmallScreen
+                        ? 0
+                        : 0,
                       p: 1.5,
                       width: 45,
                       height: 45,
@@ -516,12 +609,22 @@ function PersonelsPage() {
                     sx={{
                       ml: 3,
                       mt: 1,
-                      mb: onlyLargeScreen ? 3 : onlyMediumScreen ? 3 : onlySmallScreen ? 0 : 0,
+                      mb: onlyLargeScreen
+                        ? 3
+                        : onlyMediumScreen
+                        ? 3
+                        : onlySmallScreen
+                        ? 0
+                        : 0,
                       p: 2.5,
                       pl: 0,
                     }}
                   >
-                    <Typography sx={{ fontSize: 28, fontWeight: 'bold', color: 'black' }}>2 Tables</Typography>
+                    <Typography
+                      sx={{ fontSize: 28, fontWeight: 'bold', color: 'black' }}
+                    >
+                      2 Tables
+                    </Typography>
                   </Box>
                 </Hidden>
               </Box>
@@ -540,8 +643,16 @@ function PersonelsPage() {
                       ml: 3,
                     }}
                   >
-                    <Typography sx={{ fontSize: 28, fontWeight: 'bold', color: 'black' }}>2 Tables</Typography>
-                    <Typography sx={{ fontSize: 14, color: 'black', opacity: '60%' }}>XX records</Typography>
+                    <Typography
+                      sx={{ fontSize: 28, fontWeight: 'bold', color: 'black' }}
+                    >
+                      2 Tables
+                    </Typography>
+                    <Typography
+                      sx={{ fontSize: 14, color: 'black', opacity: '60%' }}
+                    >
+                      XX records
+                    </Typography>
                   </Box>
                 </Box>
               </Hidden>
@@ -550,7 +661,13 @@ function PersonelsPage() {
               <Box
                 sx={{
                   display: 'flex',
-                  width: onlyLargeScreen ? '75%' : onlyMediumScreen ? '75%' : onlySmallScreen ? '100%' : '100%',
+                  width: onlyLargeScreen
+                    ? '75%'
+                    : onlyMediumScreen
+                    ? '75%'
+                    : onlySmallScreen
+                    ? '100%'
+                    : '100%',
                   background: '#FAFAFA',
                   p: 2,
                   textAlign: 'left',
@@ -594,7 +711,13 @@ function PersonelsPage() {
               >
                 <TabList
                   sx={{
-                    pl: onlyLargeScreen ? '30%' : onlyMediumScreen ? '30%' : onlySmallScreen ? '0%' : '0%',
+                    pl: onlyLargeScreen
+                      ? '30%'
+                      : onlyMediumScreen
+                      ? '30%'
+                      : onlySmallScreen
+                      ? '0%'
+                      : '0%',
                     borderBottomRightRadius: 0,
                     borderBottomLeftRadius: 0,
                     borderTopLeftRadius: 0,

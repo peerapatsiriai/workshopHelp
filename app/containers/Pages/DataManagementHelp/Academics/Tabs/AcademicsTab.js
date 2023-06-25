@@ -1,27 +1,32 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { JoyModal } from 'dan-components';
 import { Box, Button, Typography, useMediaQuery } from '@mui/material';
+import React from 'react';
 import { useTheme } from '@emotion/react';
+import PropTypes from 'prop-types';
+// import DataTable from '../../../../../components/Tables/DataTable';
 import { DataGrid } from '@mui/x-data-grid';
+import JoyModal from '../../../../../components/Modal/JoyModal';
+import ConfirmDelModal from '../../../../../components/Modal/ConfirmDelModal';
 
-function CollegianTab(props) {
+function AcademicsTab(props) {
   const {
-    rows,
-    columns,
+    setState,
     ContentModal,
-    openUpd,
     setOpenUpd,
+    openUpd,
     setOpenIns,
+    Academicrows, // ใช้สำหรับรับเอาข้อมูลเนื้อหาในตาราง จากด้านนอกมาแสดงภายใน Modal
+    Academiccolumns, // ใช้สำหรับรับเอาหัวตารางหรือ columns จากด้านนอกมาแสดงภายใน Modal
+    getRowId,
     handleUpdate,
     handleClose,
+    openDelAc, // delete
+    setOpenDelAc, // delete
+    handleDelete, // delete
   } = props;
-  // สำหรับ Responsive
   const theme = useTheme();
   const onlySmallScreen = useMediaQuery(theme.breakpoints.up('sm'));
   const onlyMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
   const onlyLargeScreen = useMediaQuery(theme.breakpoints.up('lg'));
-
   return (
     <div>
       <Box
@@ -59,7 +64,7 @@ function CollegianTab(props) {
                 fontWeight: 'bold',
               }}
             >
-              + Add Colegian
+              + Add Academic
             </Typography>
           </Button>
           <Button sx={{ ml: 2 }}>
@@ -78,13 +83,14 @@ function CollegianTab(props) {
       <Box sx={{ display: 'flex', width: '100%' }}>
         {/* ทำแค่ตัวนี้ก่อน */}
         <DataGrid
-          rows={rows}
-          columns={columns}
-          getRowId={(row) => row.co_id}
-          initialState={{
-            pagination: { paginationModel: { pageSize: 10 } },
-          }}
-          pageSizeOptions={[10, 25, 50]}
+          rows={Academicrows}
+          columns={Academiccolumns}
+          getRowId={getRowId}
+          open={openUpd}
+          handleClose={() => setOpenUpd(false)}
+          modalContent={ContentModal} // สามารถใส่เข้ามาเป็น UI ได้เลย
+          modalHeader={'ทดสอบ Update Form'}
+          stateUpdate={setState}
         />
         <JoyModal
           open={openUpd}
@@ -98,22 +104,33 @@ function CollegianTab(props) {
           subDetail={true}
           handleSubmit={handleUpdate}
         />
+        <ConfirmDelModal
+          open={openDelAc}
+          handleClose={() => {
+            setOpenDelAc(false);
+          }}
+          handleSubmit={handleDelete}
+        />
         {/* ทำแค่ตัวนี้ก่อน */}
       </Box>
     </div>
   );
 }
-
-CollegianTab.propTypes = {
-  rows: PropTypes.array.isRequired,
-  columns: PropTypes.array.isRequired,
-  ContentModal: PropTypes.any,
-  setState: PropTypes.any,
-  openUpd: PropTypes.any.isRequired,
-  setOpenUpd: PropTypes.any.isRequired,
+AcademicsTab.propTypes = {
   setOpenIns: PropTypes.func.isRequired,
+  Academicrows: PropTypes.array.isRequired,
+  Academiccolumns: PropTypes.array.isRequired,
+  openUpd: PropTypes.bool.isRequired,
+  setState: PropTypes.any,
+  ContentModal: PropTypes.any,
+  setOpenUpd: PropTypes.func.isRequired,
+  getRowId: PropTypes.func.isRequired,
   handleUpdate: PropTypes.func.isRequired,
   handleClose: PropTypes.func.isRequired,
+  handleDelete: PropTypes.func.isRequired, // delete
+  openDelAc: PropTypes.bool.isRequired, // delete
+  setOpenDelAc: PropTypes.func.isRequired, // delete
 };
 
-export default CollegianTab;
+export default AcademicsTab;
+AcademicsTab.js;
