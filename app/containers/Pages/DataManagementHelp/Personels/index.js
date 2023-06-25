@@ -10,6 +10,7 @@ import { useTheme } from '@emotion/react';
 import { Tab, TabList, TabPanel, Tabs, Select, selectClasses, Option, Input } from '@mui/joy';
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
 import CollegianTab from './Tabs/CollegianTab';
+import InstructorTab from './Tabs/InstructorTab';
 
 function PersonelsPage() {
   // initialState
@@ -41,14 +42,15 @@ function PersonelsPage() {
   const [openDelCo, setOpenDelCo] = React.useState(false); // สำหรับใช้ควบคุม Modal Delete
 
   // สำหรับรับค่า
-  const [rows, setRows] = useState([]);
+  const [CollegianRows, setCollegianRows] = useState([]);
+  // const [InstructorRows, setInstructorRows] = useState([]);
   const [selectDisabledCo, setSelectDisabledCo] = useState(false);
   const [state, setState] = useState(initialState);
 
   const [deleteState, setDeleteState] = useState(initialDeleteState);
 
   // dummy
-  const columnsFCollegians = [
+  const columnsForCollegians = [
     { field: 'co_code', headerName: 'Code', width: 120 },
     { field: 'co_fname_th', headerName: 'First Name', width: 150 },
     { field: 'co_lname_th', headerName: 'Last Name', width: 150 },
@@ -90,12 +92,60 @@ function PersonelsPage() {
     },
   ];
 
+  // const columnsForInstructor = [
+  //   { field: 'co_fname_th', headerName: 'First Name', width: 150 },
+  //   { field: 'co_lname_th', headerName: 'Last Name', width: 150 },
+  //   { field: 'co_email', headerName: 'Email', width: 300 },
+  //   { field: 'co_tel', headerName: 'Tel', width: 120 },
+  //   { field: 'cur_name_th', headerName: 'Faculty Institute', width: 300 },
+  //   {
+  //     field: 'Edit',
+  //     headerName: 'Edit',
+  //     width: 100,
+  //     renderCell: (cellValues) => (
+  //       <Button
+  //         variant='text'
+  //         onClick={() => {
+  //           setOpenUpdCo(true);
+  //           setState(cellValues.row);
+  //           setState((pre) => ({ ...pre, primarykey: cellValues.row.co_id }));
+  //           setSelectDisabledCo(true);
+  //         }}
+  //       >
+  //         ...
+  //       </Button>
+  //     ),
+  //     // renderCell ใช้สำหรับสร้างปุ่มภายในตาราง
+  //   },
+  //   {
+  //     field: 'Delete',
+  //     headerName: 'Delete',
+  //     width: 100,
+  //     renderCell: (cellValues) => (
+  //       <DeleteButton
+  //         handleClick={() => {
+  //           setOpenDelCo(true);
+  //           setDeleteState((pre) => ({ ...pre, primary: cellValues.row.co_id }));
+  //         }}
+  //       />
+  //     ),
+  //     // renderCell ใช้สำหรับสร้างปุ่มภายในตาราง
+  //   },
+  // ];
+
   useEffect(() => {
     axios.get('http://192.168.1.168:8000/api/method/frappe.help-api.getAllcollegians').then((response) => {
-      setRows(response.data.message.Data);
+      setCollegianRows(response.data.message.Data);
       console.log(response.data.message.Data);
     });
   }, []);
+
+  // useEffect(() => {
+  //   axios.get('http://192.168.1.168:8000/api/method/frappe.help-api.getAllinstructors').then((response) => {
+  //     setInstructorRows(response.data.message.Data);
+  //     console.log(response.data.message.Data);
+  //   });
+  // }, []);
 
   // modal
   // สำหรับ ใส่ใน Insert Form Modal
@@ -246,125 +296,6 @@ function PersonelsPage() {
     </Box>
   );
 
-  // Modal Content
-  // สำหรับ ใส่ใน Edit Form Modal
-  // const CollegianContentEditModal = (
-  //   <Box>
-  //     <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
-  //       <Box sx={{ flexDirection: 'column', width: '50%' }}>
-  //         <InputJoy
-  //           label='First Name(TH)'
-  //           placeholder='Type in here…'
-  //           type={'text'}
-  //           size={'md'}
-  //         />
-  //       </Box>
-  //       <Box sx={{ flexDirection: 'column', width: '50%', mb: 1 }}>
-  //         <InputJoy
-  //           label='Last Name(TH)'
-  //           placeholder='Type in here…'
-  //           type={'text'}
-  //           size={'md'}
-  //         />
-  //       </Box>
-  //     </Box>
-  //     <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
-  //       <Box sx={{ flexDirection: 'column', width: '50%' }}>
-  //         <InputJoy
-  //           label='First Name(ENG)'
-  //           placeholder='Type in here…'
-  //           type={'text'}
-  //           size={'md'}
-  //         />
-  //       </Box>
-  //       <Box sx={{ flexDirection: 'column', width: '50%', mb: 1 }}>
-  //         <InputJoy
-  //           label='Last Name(ENG)'
-  //           placeholder='Type in here…'
-  //           type={'text'}
-  //           size={'md'}
-  //         />
-  //       </Box>
-  //     </Box>
-  //     <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
-  //       <Box sx={{ flexDirection: 'column', width: '50%' }}>
-  //         <InputJoy
-  //           label='Collegian Code'
-  //           placeholder='Type in here…'
-  //           type={'text'}
-  //           size={'md'}
-  //         />
-  //       </Box>
-  //       <Box sx={{ flexDirection: 'column', width: '50%', mb: 1 }}>
-  //         <InputJoy
-  //           label='Email'
-  //           placeholder='Type in here…'
-  //           type={'text'}
-  //           size={'md'}
-  //         />
-  //       </Box>
-  //     </Box>
-  //     <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
-  //       <Box sx={{ flexDirection: 'column', width: '50%' }}>
-  //         <InputJoy
-  //           label='Telphone'
-  //           placeholder='Type in here…'
-  //           type={'text'}
-  //           size={'md'}
-  //         />
-  //       </Box>
-  //     </Box>
-  //     <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
-  //       <Box sx={{ flexDirection: 'column', width: '50%' }}>
-  //         <Typography sx={{ fontSize: 12, mb: 0.5, ml: 2 }}>Faculty Institutes</Typography>
-  //         <Select
-  //           placeholder='Type in here…'
-  //           indicator={<KeyboardArrowDown />}
-  //           size='sm'
-  //           sx={{
-  //             ml: 2,
-  //             border: 1,
-  //             mr: 5,
-  //             [`& .${selectClasses.indicator}`]: {
-  //               transition: '0.2s',
-  //               [`&.${selectClasses.expanded}`]: {
-  //                 transform: 'rotate(-180deg)',
-  //               },
-  //             },
-  //           }}
-  //         >
-  //           <Option value='1'>คณะวิศวกรรมศาสตร์</Option>
-  //           <Option value='2'>คณะบริหารธุรกิจและศิลปศาสตร์</Option>
-  //           <Option value='3'>คณะวิทยาศาสตร์และเทคโนโลยีการเกษตร</Option>
-  //         </Select>
-  //       </Box>
-  //       <Box sx={{ flexDirection: 'column', width: '50%' }}>
-  //         <Typography sx={{ fontSize: 12, mb: 0.5, ml: 2 }}>Curriculum</Typography>
-  //         <Select
-  //           placeholder='Type in here…'
-  //           indicator={<KeyboardArrowDown />}
-  //           size='sm'
-  //           sx={{
-  //             ml: 2,
-  //             mr: 5,
-  //             border: 1,
-  //             [`& .${selectClasses.indicator}`]: {
-  //               transition: '0.2s',
-  //               [`&.${selectClasses.expanded}`]: {
-  //                 transform: 'rotate(-180deg)',
-  //               },
-  //             },
-  //           }}
-  //         >
-  //           <Option value='1'>วิศวกรรมอุตสาหการ</Option>
-  //           <Option value='2'>วิศวกรรมแม่พิมพ์</Option>
-  //           <Option value='3'>วิศวกรรมโยธา</Option>
-  //         </Select>
-  //       </Box>
-  //     </Box>
-  //   </Box>
-  // );
-
   useEffect(() => {
     console.log(state);
   }, [state]);
@@ -379,7 +310,7 @@ function PersonelsPage() {
         setOpenInsCo(false);
         // console.log('t: ', response.data.message.Primarykey);
         const newState = { co_id: response.data.message.Primarykey, ...state };
-        setRows((pre) => [newState, ...pre]);
+        setCollegianRows((pre) => [newState, ...pre]);
         setState(initialState);
       })
       .catch((error) => {
@@ -394,7 +325,7 @@ function PersonelsPage() {
       .then((response) => {
         console.log(response);
         setOpenUpdCo(false);
-        const objectToUpdate = rows.find((obj) => obj.co_id === state.co_id);
+        const objectToUpdate = CollegianRows.find((obj) => obj.co_id === state.co_id);
 
         // แก้ไขค่า ในออบเจ็กต์
         if (objectToUpdate) {
@@ -431,9 +362,9 @@ function PersonelsPage() {
       .finally(() => {
         const idToDelete = deleteState.primary;
         console.log('idToDelete: ', idToDelete);
-        const objectToDelete = rows.filter((obj) => obj.co_id !== idToDelete);
+        const objectToDelete = CollegianRows.filter((obj) => obj.co_id !== idToDelete);
         console.log('objectToDelete: ', objectToDelete);
-        setRows(objectToDelete);
+        setCollegianRows(objectToDelete);
       });
   };
 
@@ -708,8 +639,8 @@ function PersonelsPage() {
                     setOpenUpd={setOpenUpdCo}
                     openUpd={openUpdCo}
                     setOpenIns={setOpenInsCo}
-                    rows={rows}
-                    columns={columnsFCollegians}
+                    rows={CollegianRows}
+                    columns={columnsForCollegians}
                     handleUpdate={handleEditCollegianSubmit}
                     handleCloseUpd={handleClose}
                     setSelectDisabledCo={setSelectDisabledCo}
@@ -722,7 +653,7 @@ function PersonelsPage() {
                   value={1}
                   sx={{ p: 2 }}
                 >
-                  <b>Academic Type</b> tab panel
+                  <InstructorTab />
                 </TabPanel>
               </Tabs>
             </Box>
