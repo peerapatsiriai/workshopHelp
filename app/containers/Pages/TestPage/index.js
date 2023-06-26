@@ -30,8 +30,17 @@ function TestPage() {
     }
   };
 
+  // const handleChange = (e) => {
+  //   setState((pre) => ({ ...pre, input1: e.target.value }));
+  // };
+
   useEffect(() => {
     console.log(state.input1);
+    if (state.input1 !== '') {
+      setValidation((pre) => ({ ...pre, input1: false }));
+    } else {
+      console.log('Still Null');
+    }
   }, [state.input1]);
 
   return (
