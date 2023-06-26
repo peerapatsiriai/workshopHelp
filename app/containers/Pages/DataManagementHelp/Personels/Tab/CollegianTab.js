@@ -92,11 +92,21 @@ function CollegianTab() {
     });
   }, []);
 
-  const handleChange = (e, key, language) => {
+  const handleChange = (e, key, type) => {
+    const { value } = e.target;
     const getKey = key;
-    let { updatedValue } = e.target.value;
-    if (language === 'TH') {
+    let updatedValue = value;
+    if (type === 'th') {
       updatedValue = updatedValue.replace(/[^ก-๙เ\s]/g, '');
+    } else if (type === 'en') {
+      updatedValue = updatedValue.replace(/[^a-zA-Z\s]/g, '');
+    } else if (type === 'email') {
+      // ถ้ารูปแบบไม่ถูกต้อง แทนที่อักขระที่ไม่ถูกต้องด้วยช่องว่าง
+      updatedValue = updatedValue.replace(/[^A-Za-z0-9.@+-]/g, ' ');
+    } else if (type === 'tel') {
+      updatedValue = updatedValue.replace(/\D/g, ' ');
+    } else if (type === 'code') {
+      updatedValue = updatedValue.replace(/[^a-zA-Z0-9\s]/g, ' ');
     }
     setState((pre) => ({ ...pre, [getKey]: updatedValue }));
   };
@@ -119,7 +129,7 @@ function CollegianTab() {
               },
             }}
             value={state.co_fname_th || ''}
-            onChange={(event) => handleChange(event, 'co_fname_th', 'TH')}
+            onChange={(event) => handleChange(event, 'co_fname_th', 'th')}
             sx={{ mx: 1 }}
           />
         </Box>
@@ -137,7 +147,7 @@ function CollegianTab() {
               },
             }}
             value={state.co_lname_th || ''}
-            onChange={(event) => setState((pre) => ({ ...pre, co_lname_th: event.target.value }))}
+            onChange={(event) => handleChange(event, 'co_lname_th', 'th')}
             sx={{ mx: 1 }}
           />
         </Box>
@@ -157,7 +167,7 @@ function CollegianTab() {
               },
             }}
             value={state.co_fname_en}
-            onChange={(event) => setState((pre) => ({ ...pre, co_fname_en: event.target.value }))}
+            onChange={(event) => handleChange(event, 'co_fname_en', 'en')}
             sx={{ mx: 1 }}
           />
         </Box>
@@ -168,14 +178,14 @@ function CollegianTab() {
           <Input
             placeholder='Type in here…'
             size='md'
-            value={state.co_lname_en}
             type='text'
             slotProps={{
               input: {
                 maxLength: 33,
               },
             }}
-            onChange={(event) => setState((pre) => ({ ...pre, co_lname_en: event.target.value }))}
+            value={state.co_lname_en}
+            onChange={(event) => handleChange(event, 'co_lname_en', 'en')}
             sx={{ mx: 1 }}
           />
         </Box>
@@ -195,7 +205,7 @@ function CollegianTab() {
               },
             }}
             value={state.co_code}
-            onChange={(event) => setState((pre) => ({ ...pre, co_code: event.target.value }))}
+            onChange={(event) => handleChange(event, 'co_code', 'code')}
             sx={{ mx: 1 }}
           />
         </Box>
@@ -216,7 +226,7 @@ function CollegianTab() {
               },
             }}
             value={state.co_email}
-            onChange={(event) => setState((pre) => ({ ...pre, co_email: event.target.value }))}
+            onChange={(event) => handleChange(event, 'co_email', 'email')}
             sx={{ mx: 1 }}
             required
           />
@@ -238,7 +248,7 @@ function CollegianTab() {
               },
             }}
             value={state.co_tel}
-            onChange={(event) => setState((pre) => ({ ...pre, co_tel: event.target.value }))}
+            onChange={(event) => handleChange(event, 'co_tel', 'tel')}
             sx={{ mx: 1 }}
           />
         </Box>
