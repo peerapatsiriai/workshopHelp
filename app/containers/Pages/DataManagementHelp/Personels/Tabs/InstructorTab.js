@@ -14,6 +14,7 @@ function InstructorTab() {
   const onlyMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
   const onlyLargeScreen = useMediaQuery(theme.breakpoints.up('lg'));
 
+  // initialState
   const initialState = {
     ist_fname_th: '',
     ist_lname_th: '',
