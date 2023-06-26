@@ -11,7 +11,7 @@ function Login() {
     setTimeout(() => {
       setValueForm(values);
       console.log(`You submitted:\n\n${valueForm}`);
-      window.location.href = '/app';
+      window.location.href = '/back-office';
     }, 500); // simulate server latency
   };
 

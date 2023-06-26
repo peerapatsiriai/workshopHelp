@@ -4,6 +4,21 @@ import React from 'react';
 import Loading from 'dan-components/Loading';
 import loadable from '../utils/loadable';
 
+export const TestPage = loadable(() =>
+  import('./Pages/TestPage'), {
+    fallback: <Loading />,
+  });
+
+export const PersonelsManagement = loadable(() =>
+  import('./Pages/DataManagementHelp/Personels'), {
+    fallback: <Loading />,
+  });
+
+export const AcademicsManagement = loadable(() =>
+  import('./Pages/DataManagementHelp/Academics'), {
+    fallback: <Loading />,
+  });
+
 export const BlankPage = loadable(() =>
   import('./Pages/BlankPage'), {
     fallback: <Loading />,
