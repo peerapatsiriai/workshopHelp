@@ -39,7 +39,8 @@ function FacultyTab(props) {
             : 'center',
           width: '100%',
           p: 2,
-        }}>
+        }}
+      >
         <Box sx={{ display: 'flex', flexDirection: 'row' }}>
           <Button
             onClick={() => {
@@ -55,13 +56,15 @@ function FacultyTab(props) {
                 background: '#fff',
                 color: 'black',
               },
-            }}>
+            }}
+          >
             <Typography
               sx={{
                 fontSize: 12,
                 textTransform: 'capitalize',
                 fontWeight: 'bold',
-              }}>
+              }}
+            >
               + Add Faculty
             </Typography>
           </Button>
@@ -71,7 +74,8 @@ function FacultyTab(props) {
                 fontSize: 12,
                 textTransform: 'capitalize',
                 fontWeight: 'bold',
-              }}>
+              }}
+            >
               Export
             </Typography>
           </Button>
