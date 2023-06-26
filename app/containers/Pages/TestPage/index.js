@@ -13,20 +13,27 @@ function TestPage() {
   // สำหรับใช้เก็บค่า Validation
   const [validation, setValidation] = useState({
     input1: false, // false คือปกติ true คือแสดงเป็นสีแดง
+    input2: false,
   });
 
   // สำหรับใช้เก็บค่า input
   const [state, setState] = useState({
     input1: '',
+    input2: '',
   });
 
   const onSubmit = () => {
-    if (state.input1 !== '') {
+    if (state.input1 !== '' && state.input2 !== '') {
       // ถ้ากรอกถูกต้องครบหมดจะทำอะไรให้ทำตรงนี้
       console.log('Submit!');
-    } else {
+    }
+    if (state.input1 === '') {
       // ทำให้แสดงสีแดงตรงที่ไม่ได้กรอกข้อความ
       setValidation((pre) => ({ ...pre, input1: true }));
+    }
+    if (state.input2 === '') {
+      // ทำให้แสดงสีแดงตรงที่ไม่ได้กรอกข้อความ
+      setValidation((pre) => ({ ...pre, input2: true }));
     }
   };
 
@@ -39,13 +46,18 @@ function TestPage() {
   };
 
   useEffect(() => {
-    console.log(state.input1);
+    // console.log(state.input1);
     if (state.input1 !== '') {
       setValidation((pre) => ({ ...pre, input1: false }));
     } else {
       console.log('Still Null');
     }
-  }, [state.input1]);
+    if (state.input2 !== '') {
+      setValidation((pre) => ({ ...pre, input2: false }));
+    } else {
+      console.log('Still Null');
+    }
+  }, [state]);
 
   return (
     <div>
@@ -87,6 +99,28 @@ function TestPage() {
             value={state.input1}
             // ถ้าไม่ได้กรอกจะแสดงคำว่า กรุณากรอกชื่อ ถ้ากรอกจะไม่แสดงอะไร
             placeholder={validation.input1 ? 'กรุณากรอกชื่อ' : ''}
+            type={'text'}
+            size='sm'
+            slotProps={{
+              input: {
+                // สำหรับกำหนดค่า min max ที่ inputจะสามารถรับได้
+                minLength: 0,
+                maxLength: 10,
+              },
+            }}
+            sx={{
+              ml: 2,
+              border: 1,
+              width: 350,
+            }}
+          />
+          <Input
+            // false คือปกติ true คือแสดงสีแดง
+            error={validation.input2 || false}
+            onChange={(event) => handleChange(event, 'input2')}
+            value={state.input2}
+            // ถ้าไม่ได้กรอกจะแสดงคำว่า กรุณากรอกชื่อ ถ้ากรอกจะไม่แสดงอะไร
+            placeholder={validation.input2 ? 'กรุณากรอกชื่อ' : ''}
             type={'text'}
             size='sm'
             slotProps={{
