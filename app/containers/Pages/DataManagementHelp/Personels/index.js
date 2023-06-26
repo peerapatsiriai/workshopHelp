@@ -7,8 +7,8 @@ import TableChartIcon from '@mui/icons-material/TableChart';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import { useTheme } from '@emotion/react';
 import { Tab, TabList, TabPanel, Tabs } from '@mui/joy';
-import CollegianTab from './Tabs/CollegianTab';
-import InstructorTab from './Tabs/InstructorTab';
+import CollegianTab from './Tab/CollegianTab';
+import InstructorTab from './Tab/InstructorTab';
 
 function PersonelsPage() {
   // สำหรับ Responsive
