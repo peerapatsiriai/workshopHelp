@@ -99,7 +99,7 @@ function AcademicsTab(props) {
             handleClose();
           }}
           content={ContentModal}
-          header={'Update Collegian'}
+          header={'Update Academic'}
           labelBtn={'Update'}
           subDetail={true}
           handleSubmit={handleUpdate}
