@@ -49,7 +49,7 @@ function Application(props) {
         />
         <Route
           exact
-          path='/back-office/masterdata/personnels'
+          path='/back-office/masterdata/personels'
           component={PersonelsPage}
         />
         <Route
