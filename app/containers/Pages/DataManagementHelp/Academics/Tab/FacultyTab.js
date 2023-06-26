@@ -7,7 +7,7 @@ import { Select, selectClasses, Option, Input } from '@mui/joy';
 import { DataGrid } from '@mui/x-data-grid';
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
 
-function AcademicsTab() {
+function FacultyTab() {
   // สำหรับ Responsive
   const theme = useTheme();
   const onlySmallScreen = useMediaQuery(theme.breakpoints.up('sm'));
@@ -16,15 +16,12 @@ function AcademicsTab() {
 
   // initialState
   const initialState = {
-    ac_name_th: '',
-    ac_lname_th: '',
-    ac_campus: '',
-    ac_address: '',
-    ac_tel: '',
-    academic_type_ac_type_id: '',
+    fi_name_th: '',
+    fi_name_en: '',
+    academics_fi_id: '',
   };
   const initialDeleteState = {
-    table: 'tabacademics',
+    table: 'tabfaculty_institutes',
     primary: '',
   };
 
@@ -41,22 +38,20 @@ function AcademicsTab() {
 
   // set columns
   const columns = [
-    { field: 'ac_name_th', headerName: 'Name(TH)', width: 300 },
-    { field: 'ac_name_en', headerName: 'Name(EN)', width: 350 },
-    { field: 'ac_address', headerName: 'Address', width: 350 },
-    { field: 'ac_tel', headerName: 'Tel', width: 120 },
-    { field: 'academic_type_ac_type_id', headerName: 'Type', width: 50 },
+    { field: 'fi_name_th', headerName: 'Name(TH)', width: 300 },
+    { field: 'fi_name_en', headerName: 'Name(EN)', width: 300 },
+    { field: 'ac_name_th', headerName: 'Academic', width: 400 },
     {
       field: 'Edit',
       headerName: 'Edit',
-      width: 80,
+      width: 100,
       renderCell: (cellValues) => (
         <Button
           variant='text'
           onClick={() => {
             setOpenUpd(true);
             setState(cellValues.row);
-            setState((pre) => ({ ...pre, primarykey: cellValues.row.ac_id }));
+            setState((pre) => ({ ...pre, primarykey: cellValues.row.fi_id }));
             setSelectDisabledCo(true);
           }}
         >
@@ -68,12 +63,12 @@ function AcademicsTab() {
     {
       field: 'Delete',
       headerName: 'Delete',
-      width: 80,
+      width: 100,
       renderCell: (cellValues) => (
         <DeleteButton
           handleClick={() => {
             setOpenDel(true);
-            setDeleteState((pre) => ({ ...pre, primary: cellValues.row.ac_id }));
+            setDeleteState((pre) => ({ ...pre, primary: cellValues.row.fi_id }));
           }}
         />
       ),
@@ -83,7 +78,7 @@ function AcademicsTab() {
 
   // set rows
   useEffect(() => {
-    axios.get('http://192.168.1.168:8000/api/method/frappe.help-api.getAllAcademics').then((response) => {
+    axios.get('http://192.168.1.168:8000/api/method/frappe.help-api.getAllfacultys').then((response) => {
       setRows(response.data.message.Data);
       console.log(response.data.message.Data);
     });
@@ -100,8 +95,8 @@ function AcademicsTab() {
           <Input
             placeholder='Type in here…'
             size='md'
-            value={state.ac_fname_th || ''}
-            onChange={(event) => setState((pre) => ({ ...pre, ac_fname_th: event.target.value }))}
+            value={state.fi_fname_th || ''}
+            onChange={(event) => setState((pre) => ({ ...pre, fi_fname_th: event.target.value }))}
             sx={{ mx: 1 }}
           />
         </Box>
@@ -112,8 +107,8 @@ function AcademicsTab() {
           <Input
             placeholder='Type in here…'
             size='md'
-            value={state.ac_lname_th || ''}
-            onChange={(event) => setState((pre) => ({ ...pre, ac_lname_th: event.target.value }))}
+            value={state.fi_lname_th || ''}
+            onChange={(event) => setState((pre) => ({ ...pre, fi_lname_th: event.target.value }))}
             sx={{ mx: 1 }}
           />
         </Box>
@@ -126,8 +121,8 @@ function AcademicsTab() {
           <Input
             placeholder='Type in here…'
             size='md'
-            value={state.ac_fname_en}
-            onChange={(event) => setState((pre) => ({ ...pre, ac_fname_en: event.target.value }))}
+            value={state.fi_fname_en}
+            onChange={(event) => setState((pre) => ({ ...pre, fi_fname_en: event.target.value }))}
             sx={{ mx: 1 }}
           />
         </Box>
@@ -138,8 +133,8 @@ function AcademicsTab() {
           <Input
             placeholder='Type in here…'
             size='md'
-            value={state.ac_lname_en}
-            onChange={(event) => setState((pre) => ({ ...pre, ac_lname_en: event.target.value }))}
+            value={state.fi_lname_en}
+            onChange={(event) => setState((pre) => ({ ...pre, fi_lname_en: event.target.value }))}
             sx={{ mx: 1 }}
           />
         </Box>
@@ -152,8 +147,8 @@ function AcademicsTab() {
           <Input
             placeholder='Type in here…'
             size='md'
-            value={state.ac_code}
-            onChange={(event) => setState((pre) => ({ ...pre, ac_code: event.target.value }))}
+            value={state.fi_code}
+            onChange={(event) => setState((pre) => ({ ...pre, fi_code: event.target.value }))}
             sx={{ mx: 1 }}
           />
         </Box>
@@ -164,8 +159,8 @@ function AcademicsTab() {
           <Input
             placeholder='Type in here…'
             size='md'
-            value={state.ac_email}
-            onChange={(event) => setState((pre) => ({ ...pre, ac_email: event.target.value }))}
+            value={state.fi_email}
+            onChange={(event) => setState((pre) => ({ ...pre, fi_email: event.target.value }))}
             sx={{ mx: 1 }}
           />
         </Box>
@@ -178,8 +173,8 @@ function AcademicsTab() {
           <Input
             placeholder='Type in here…'
             size='md'
-            value={state.ac_tel}
-            onChange={(event) => setState((pre) => ({ ...pre, ac_tel: event.target.value }))}
+            value={state.fi_tel}
+            onChange={(event) => setState((pre) => ({ ...pre, fi_tel: event.target.value }))}
             sx={{ mx: 1 }}
           />
         </Box>
@@ -245,12 +240,12 @@ function AcademicsTab() {
   const handleInsertSubmit = (e) => {
     e.preventDefault();
     axios
-      .post('http://192.168.1.168:8000/api/method/frappe.help-api.insertacademic', state)
+      .post('http://192.168.1.168:8000/api/method/frappe.help-api.insertfaculty', state)
       .then((response) => {
         console.log(response);
         setOpenIns(false);
         // console.log('t: ', response.data.message.Primarykey);
-        const newState = { ac_id: response.data.message.Primarykey, ...state };
+        const newState = { fi_id: response.data.message.Primarykey, ...state };
         setRows((pre) => [newState, ...pre]);
         setState(initialState);
       })
@@ -262,20 +257,17 @@ function AcademicsTab() {
   // สำหรับกด Submit หน้าแก้ไขข้อมูล
   const handleEditSubmit = () => {
     axios
-      .post('http://192.168.1.168:8000/api/method/frappe.help-api.editacademic', state)
+      .post('http://192.168.1.168:8000/api/method/frappe.help-api.editfaculty', state)
       .then((response) => {
         console.log(response);
         setOpenUpd(false);
-        const objectToUpdate = Rows.find((obj) => obj.ac_id === state.ac_id);
+        const objectToUpdate = Rows.find((obj) => obj.fi_id === state.fi_id);
 
         // แก้ไขค่า ในออบเจ็กต์
         if (objectToUpdate) {
-          objectToUpdate.ac_name_th = state.ac_name_th;
-          objectToUpdate.ac_name_en = state.ac_name_en;
-          objectToUpdate.ac_campus = state.ac_campus;
-          objectToUpdate.ac_address = state.ac_address;
-          objectToUpdate.ac_tel = state.ac_tel;
-          objectToUpdate.academic_type_ac_type_id = state.academic_type_ac_type_id;
+          objectToUpdate.fi_name_th = state.fi_name_th;
+          objectToUpdate.fi_name_en = state.fi_name_en;
+          objectToUpdate.academics_ac_id = state.academics_ac_id;
         }
         setState(initialState);
       })
@@ -301,7 +293,7 @@ function AcademicsTab() {
       .finally(() => {
         const idToDelete = deleteState.primary;
         console.log('idToDelete: ', idToDelete);
-        const objectToDelete = Rows.filter((obj) => obj.ac_id !== idToDelete);
+        const objectToDelete = Rows.filter((obj) => obj.fi_id !== idToDelete);
         console.log('objectToDelete: ', objectToDelete);
         setRows(objectToDelete);
       });
@@ -347,7 +339,7 @@ function AcademicsTab() {
                 fontWeight: 'bold',
               }}
             >
-              + Add Academics
+              + Add Faculty
             </Typography>
           </Button>
           <Button sx={{ ml: 2 }}>
@@ -368,7 +360,7 @@ function AcademicsTab() {
         <DataGrid
           rows={Rows}
           columns={columns}
-          getRowId={(row) => row.ac_id}
+          getRowId={(row) => row.fi_id}
           initialState={{
             pagination: { paginationModel: { pageSize: 10 } },
           }}
@@ -410,4 +402,4 @@ function AcademicsTab() {
   );
 }
 
-export default AcademicsTab;
+export default FacultyTab;

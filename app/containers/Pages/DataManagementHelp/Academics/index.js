@@ -1,23 +1,17 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Helmet } from 'react-helmet';
 import brand from 'dan-api/dummy/brand';
 import { PapperBlock } from 'dan-components';
-import { Box, Button, Hidden, Typography, useMediaQuery } from '@mui/material';
+import { Box, Hidden, Typography, useMediaQuery } from '@mui/material';
 import { useTheme } from '@emotion/react';
-import {
-  // Input,
-  Tab,
-  TabList,
-  TabPanel,
-  Tabs,
-} from '@mui/joy';
+import { Tab, TabList, TabPanel, Tabs } from '@mui/joy';
 import TableChartIcon from '@mui/icons-material/TableChart';
 import SchoolIcon from '@mui/icons-material/School';
-// import SearchIcon from '@mui/icons-material/Search';
-// import DataTable from '../../../../components/Tables/DataTable';
-import InputJoy from '../../../../components/Input/InputJoy';
-import JoyModal from '../../../../components/Modal/JoyModal';
+// import tabs
 import AcademicsTab from './Tab/AcademicsTab';
+import AcademicsTypeTab from './Tab/AcademicsTypeTab';
+import FacultyTab from './Tab/FacultyTab';
+import DepartmentsTab from './Tab/DepartmentsTab';
 
 function AcademicsPage() {
   // สำหรับ Responsive
@@ -25,95 +19,10 @@ function AcademicsPage() {
   const onlySmallScreen = useMediaQuery(theme.breakpoints.up('sm'));
   const onlyMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
   const onlyLargeScreen = useMediaQuery(theme.breakpoints.up('lg'));
-  // สำหรับ Responsive
+
+  const primaryColor = '#1c1c1c';
   const title = brand.name + ' - Blank Page';
   const description = brand.desc;
-  const [openIns, setOpenIns] = React.useState(false); // สำหรับใช้ควบคุม Modal insert
-  const [openUpd, setOpenUpd] = React.useState(false); // สำหรับใช้ควบคุม Modal update
-  const [state, setState] = React.useState([]);
-  // dummy
-  const rows = [
-    { id: 1, col1: 'Hello', col2: 'World' },
-    { id: 2, col1: 'DataGridPro', col2: 'is Awesome' },
-    { id: 3, col1: 'MUI', col2: 'is Amazing' },
-    { id: 4, col1: 'Hello', col2: 'World' },
-    { id: 5, col1: 'DataGridPro', col2: 'is Awesome' },
-    { id: 6, col1: 'MUI', col2: 'is Amazing' },
-    { id: 7, col1: 'Hello', col2: 'World' },
-    { id: 8, col1: 'DataGridPro', col2: 'is Awesome' },
-    { id: 9, col1: 'MUI', col2: 'is Amazing' },
-    { id: 10, col1: 'Hello', col2: 'World' },
-    { id: 11, col1: 'DataGridPro', col2: 'is Awesome' },
-    { id: 12, col1: 'MUI', col2: 'is Amazing' },
-    { id: 13, col1: 'Hello', col2: 'World' },
-    { id: 14, col1: 'DataGridPro', col2: 'is Awesome' },
-    { id: 15, col1: 'MUI', col2: 'is Amazing' },
-  ];
-
-  const [dataRows, setDataRows] = React.useState(rows.reverse());
-  const testAddnewRow = () => {
-    const dummyRow = { id: 16, col1: 'test', col2: 'test' };
-    setDataRows((pre) => [dummyRow, ...pre]);
-  };
-  const columns = [
-    { field: 'col1', headerName: 'Column 1', width: 150 },
-    { field: 'col2', headerName: 'Column 2', width: 150 },
-    {
-      field: 'col3',
-      headerName: 'Edit',
-      width: 150,
-      // renderCell: () => <Button variant="text" onClick={() => setOpenUpd(true)}>...</Button>
-      // renderCell: (cellValues) => <Button variant="text" onClick={() => setState(cellValues.row)}>...</Button>
-      renderCell: () => (
-        <Button
-          variant='text'
-          // onClick={() => console.log(cellValues.row)}
-          onClick={() => testAddnewRow()}
-        >
-          ...
-        </Button>
-      ),
-      // renderCell ใช้สำหรับสร้างปุ่มภายในตาราง
-    },
-  ];
-  // dummy
-  const testContentModal = (
-    <Box>
-      <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-        <InputJoy
-          label={'test1'}
-          placeholder={'test1'}
-          type={'text'}
-          size={'sm'}
-        />
-        <InputJoy
-          label={''}
-          placeholder={'test1'}
-          type={'text'}
-          size={'sm'}
-        />
-      </Box>
-      <InputJoy
-        label={'test2'}
-        placeholder={'test2'}
-        type={'number'}
-        size={'md'}
-      />
-      <InputJoy
-        label={'test3'}
-        placeholder={'test3'}
-        type={'password'}
-        size={'lg'}
-      />
-    </Box>
-  ); // dummy ลองเอาไปใส่ Modal
-  // color
-  const primaryColor = '#1c1c1c';
-
-  useEffect(() => {
-    console.log(state);
-  }, [state]);
-
   return (
     <div>
       <Helmet>
@@ -398,47 +307,30 @@ function AcademicsPage() {
                   value={0}
                   sx={{ p: 2 }}
                 >
-                  <AcademicsTab
-                    setState={setState}
-                    ContentModal={testContentModal}
-                    setOpenUpd={setOpenUpd}
-                    openUpd={openUpd}
-                    setOpenIns={setOpenIns}
-                    rows={dataRows}
-                    columns={columns}
-                  />
+                  <AcademicsTab />
                 </TabPanel>
                 <TabPanel
                   value={1}
                   sx={{ p: 2 }}
                 >
-                  <b>Academic Type</b> tab panel
+                  <AcademicsTypeTab />
                 </TabPanel>
                 <TabPanel
                   value={2}
                   sx={{ p: 2 }}
                 >
-                  <b>Faculty</b> tab panel
+                  <FacultyTab />
                 </TabPanel>
                 <TabPanel
                   value={3}
                   sx={{ p: 2 }}
                 >
-                  <b>Departments</b> tab panel
+                  <DepartmentsTab />
                 </TabPanel>
               </Tabs>
             </Box>
           </Box>
         </Box>
-        {/* สำหรับ insert */}
-        <JoyModal
-          open={openIns}
-          handleClose={() => setOpenIns(false)}
-          content={'testinsert'}
-          header={'ทดสอบ Insert Form'}
-          labelBtn={'Insert'}
-          subDetail={false}
-        />
       </PapperBlock>
     </div>
   );
