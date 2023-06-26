@@ -393,9 +393,7 @@ function CollegianTab() {
         />
         <ConfirmDelModal
           open={openDelCo}
-          handleClose={() => {
-            setOpenDelCo(false);
-          }}
+          handleClose={() => setOpenDelCo(false)}
           handleSubmit={handleDeleteSubmit}
         />
         {/* ทำแค่ตัวนี้ก่อน */}

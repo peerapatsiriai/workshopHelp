@@ -61,7 +61,7 @@ function InstructorTab() {
           onClick={() => {
             setOpenUpdIns(true);
             setState(cellValues.row);
-            setState((pre) => ({ ...pre, primarykey: cellValues.row.co_id }));
+            setState((pre) => ({ ...pre, primarykey: cellValues.row.ist_id }));
             setSelectDisabled(true);
           }}
         >
@@ -122,8 +122,8 @@ function InstructorTab() {
           objectToUpdate.ist_lname_th = state.ist_lname_th;
           objectToUpdate.ist_fname_en = state.ist_fname_en;
           objectToUpdate.ist_lname_en = state.ist_lname_en;
-          objectToUpdate.ist_email = state.co_email;
-          objectToUpdate.ist_tel = state.co_tel;
+          objectToUpdate.ist_email = state.ist_email;
+          objectToUpdate.ist_tel = state.ist_email;
           objectToUpdate.faculty_institutes_fi_id = state.faculty_institutes_fi_id;
         }
         setState(initialState);
@@ -251,7 +251,7 @@ function InstructorTab() {
         console.log(response);
         setOpenInsIns(false);
         // console.log('t: ', response.data.message.Primarykey);
-        const newState = { co_id: response.data.message.Primarykey, ...state };
+        const newState = { ist_id: response.data.message.Primarykey, ...state };
         setInstructorRows((pre) => [newState, ...pre]);
         setState(initialState);
       })
