@@ -92,6 +92,15 @@ function CollegianTab() {
     });
   }, []);
 
+  const handleChange = (e, key, language) => {
+    const getKey = key;
+    let { updatedValue } = e.target.value;
+    if (language === 'TH') {
+      updatedValue = updatedValue.replace(/[^ก-๙เ\s]/g, '');
+    }
+    setState((pre) => ({ ...pre, [getKey]: updatedValue }));
+  };
+
   // content modal
   const ContentModal = (
     <Box>
@@ -110,7 +119,7 @@ function CollegianTab() {
               },
             }}
             value={state.co_fname_th || ''}
-            onChange={(event) => setState((pre) => ({ ...pre, co_fname_th: event.target.value }))}
+            onChange={(event) => handleChange(event, 'co_fname_th', 'TH')}
             sx={{ mx: 1 }}
           />
         </Box>
