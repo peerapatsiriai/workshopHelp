@@ -62,7 +62,7 @@ module.exports = [
       //   link: '/coming-soon',
       //   icon: 'ion-ios-bonfire-outline'
       // },
-    ]
+    ],
   },
   // {
   //   key: 'auth',

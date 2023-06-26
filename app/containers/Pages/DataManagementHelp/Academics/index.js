@@ -61,7 +61,7 @@ function AcademicsPage() {
     { field: 'ac_campus', headerName: 'Campus', width: 150 },
     { field: 'ac_address', headerName: 'Address', width: 150 },
     { field: 'ac_tel', headerName: 'Tel', width: 150 },
-    { field: 'academic_type_ac_type_id', headerName: 'Type', width: 150 },
+    { field: 'academic_type_ac_type_id', headerName: 'Type', width: 50 },
     {
       field: 'col',
       headerName: 'Edit',
@@ -189,9 +189,14 @@ function AcademicsPage() {
               },
             }}
           >
-            <Option value='1'>มหาวิทยาลัยของรัฐ</Option>
-            <Option value='2'>โรงเรียนเอกชน</Option>
-            <Option value='3'>วิทยาลัยชุมชน</Option>
+            {Academicrows?.map((contentAc, value) => (
+              <Option
+                key={value}
+                value={contentAc.ac_type_id}
+              >
+                {contentAc.ac_type_name_th}
+              </Option>
+            ))}
           </Select>
         </Box>
       </Box>
@@ -236,6 +241,7 @@ function AcademicsPage() {
         console.log(error);
       });
   };
+
   // สำหรับกด Submit หน้าลบข้อมูล Academic
   const handleDeleteAcademicSubmit = () => {
     console.log(deleteState);
@@ -258,7 +264,6 @@ function AcademicsPage() {
         setAcademicRows(objectToDelete);
       });
   };
-
   // Academic Edit
   const handleEditAcademicSubmit = () => {
     axios;
@@ -409,8 +414,9 @@ function AcademicsPage() {
 
   // color
   const primaryColor = '#1c1c1c';
+  // Academic API
   useEffect(() => {
-    // Academic API
+    // ประกาศ Academic API กับ Academic Type API
     axios
       .get('http://192.168.1.168:8000/api/method/frappe.help-api.getAllAcademics')
       .then((response) => {
