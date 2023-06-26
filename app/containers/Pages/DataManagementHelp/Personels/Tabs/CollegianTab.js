@@ -200,6 +200,7 @@ function CollegianTab() {
             type='email'
             slotProps={{
               input: {
+                minLength: 0,
                 maxLength: 100,
                 pattern: '.+@globex.com',
                 size: '30',
@@ -223,6 +224,7 @@ function CollegianTab() {
             type='tel'
             slotProps={{
               input: {
+                minLength: 0,
                 maxLength: 10,
               },
             }}
