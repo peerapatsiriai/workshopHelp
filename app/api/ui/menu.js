@@ -18,13 +18,13 @@ module.exports = [
       {
         key: 'academics',
         name: 'Academics Page',
-        link: '/back-office/academics',
+        link: '/back-office/masterdata/academics',
         icon: 'ion-ios-document-outline',
       },
       {
         key: 'personels',
         name: 'Personels Page',
-        link: '/back-office/personels',
+        link: '/back-office/masterdata/personels',
         icon: 'ion-ios-document-outline',
       },
       // {
@@ -62,7 +62,7 @@ module.exports = [
       //   link: '/coming-soon',
       //   icon: 'ion-ios-bonfire-outline'
       // },
-    ]
+    ],
   },
   // {
   //   key: 'auth',

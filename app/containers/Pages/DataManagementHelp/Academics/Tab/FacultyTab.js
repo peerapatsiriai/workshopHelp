@@ -30,19 +30,26 @@ function FacultyTab() {
   const [openUpd, setOpenUpd] = React.useState(false); // สำหรับใช้ควบคุม Modal update
   const [openDel, setOpenDel] = React.useState(false); // สำหรับใช้ควบคุม Modal Delete
 
-  // สำหรับรับค่า
+  // สำหรับ set ค่า State
   const [Rows, setRows] = useState([]);
   const [dataAcademics, setDataAcademics] = useState([]);
   const [selectDisabled, setSelectDisabled] = useState(false);
   const [state, setState] = useState(initialState);
   const [deleteState, setDeleteState] = useState(initialDeleteState);
 
+  // by bill start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+  // by bill spot >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   // get Data Academics for select
   useEffect(() => {
-    axios.get('http://192.168.1.168:8000/api/method/frappe.help-api.getAllfacultys').then((res) => {
-      setDataAcademics(res.data.message.Data);
-      console.log(res.data.message.Data);
-    });
+    axios
+      .get(
+        'http://192.168.1.168:8000/api/method/frappe.help-api.getAllfacultys'
+      )
+      .then((res) => {
+        setDataAcademics(res.data.message.Data);
+        console.log(res.data.message.Data);
+      });
   }, []);
 
   // set columns
@@ -62,8 +69,7 @@ function FacultyTab() {
             setState(cellValues.row);
             setState((pre) => ({ ...pre, primarykey: cellValues.row.fi_id }));
             setSelectDisabled(true);
-          }}
-        >
+          }}>
           ...
         </Button>
       ),
@@ -77,7 +83,10 @@ function FacultyTab() {
         <DeleteButton
           handleClick={() => {
             setOpenDel(true);
-            setDeleteState((pre) => ({ ...pre, primary: cellValues.row.fi_id }));
+            setDeleteState((pre) => ({
+              ...pre,
+              primary: cellValues.row.fi_id,
+            }));
           }}
         />
       ),
@@ -87,22 +96,34 @@ function FacultyTab() {
 
   // set rows
   useEffect(() => {
-    axios.get('http://192.168.1.168:8000/api/method/frappe.help-api.getAllfacultys').then((response) => {
-      setRows(response.data.message.Data);
-      console.log(response.data.message.Data);
-    });
+    axios
+      .get(
+        'http://192.168.1.168:8000/api/method/frappe.help-api.getAllfacultys'
+      )
+      .then((response) => {
+        setRows(response.data.message.Data);
+        console.log(response.data.message.Data);
+      });
   }, []);
 
   // content modal
   const ContentModal = (
     <Box>
-      <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-end' }}>
+      <Box
+        sx={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-end' }}>
         <Box sx={{ flexDirection: 'column', width: '50%', ml: 2 }}>
           <Typography sx={{ fontSize: 12, mb: 0.5 }}>First Name(TH)</Typography>
           <Input
             label='Academic Name'
             placeholder='Thai Name'
             size='sm'
+            slotProps={{
+              input: {
+                // สำหรับกำหนดค่า min max ที่ inputจะสามารถรับได้
+                minLength: 0,
+                maxLength: 10,
+              },
+            }}
             value={state.fi_name_th || ''}
             onChange={(event) => {
               setState((pre) => ({
@@ -117,8 +138,7 @@ function FacultyTab() {
           sx={{
             flexDirection: 'column',
             width: '50%',
-          }}
-        >
+          }}>
           <Input
             placeholder='Engligsh Name'
             size='sm'
@@ -141,8 +161,7 @@ function FacultyTab() {
           width: '45%',
           mt: 3,
           ml: 2,
-        }}
-      >
+        }}>
         <Typography sx={{ fontSize: 12, mb: 0.5 }}>Academic</Typography>
         <Select
           placeholder='เทคโนโลยีราชมงคลล้านนา'
@@ -162,13 +181,9 @@ function FacultyTab() {
                 transform: 'rotate(-180deg)',
               },
             },
-          }}
-        >
+          }}>
           {dataAcademics?.map((data, value) => (
-            <Option
-              key={value}
-              value={data.academics_ac_id}
-            >
+            <Option key={value} value={data.academics_ac_id}>
               {data.ac_name_th}
             </Option>
           ))}
@@ -185,7 +200,10 @@ function FacultyTab() {
   const handleInsertSubmit = (e) => {
     e.preventDefault();
     axios
-      .post('http://192.168.1.168:8000/api/method/frappe.help-api.insertfaculty', state)
+      .post(
+        'http://192.168.1.168:8000/api/method/frappe.help-api.insertfaculty',
+        state
+      )
       .then((response) => {
         console.log(response);
         setOpenIns(false);
@@ -202,7 +220,10 @@ function FacultyTab() {
   // สำหรับกด Submit หน้าแก้ไขข้อมูล
   const handleEditSubmit = () => {
     axios
-      .post('http://192.168.1.168:8000/api/method/frappe.help-api.editfaculty', state)
+      .post(
+        'http://192.168.1.168:8000/api/method/frappe.help-api.editfaculty',
+        state
+      )
       .then((response) => {
         console.log(response);
         setOpenUpd(false);
@@ -224,7 +245,10 @@ function FacultyTab() {
   // สำหรับกด Submit หน้าลบข้อมูล Collegian
   const handleDeleteSubmit = () => {
     axios
-      .post('http://192.168.1.168:8000/api/method/frappe.help-api.delete', deleteState)
+      .post(
+        'http://192.168.1.168:8000/api/method/frappe.help-api.delete',
+        deleteState
+      )
       .then((response) => {
         console.log(response);
         console.log('deleteState: ', deleteState);
@@ -258,8 +282,7 @@ function FacultyTab() {
             : 'center',
           width: '100%',
           p: 2,
-        }}
-      >
+        }}>
         <Box sx={{ display: 'flex', flexDirection: 'row' }}>
           <Button
             onClick={() => {
@@ -275,15 +298,13 @@ function FacultyTab() {
                 background: '#fff',
                 color: 'black',
               },
-            }}
-          >
+            }}>
             <Typography
               sx={{
                 fontSize: 12,
                 textTransform: 'capitalize',
                 fontWeight: 'bold',
-              }}
-            >
+              }}>
               + Add Faculty
             </Typography>
           </Button>
@@ -293,8 +314,7 @@ function FacultyTab() {
                 fontSize: 12,
                 textTransform: 'capitalize',
                 fontWeight: 'bold',
-              }}
-            >
+              }}>
               Export
             </Typography>
           </Button>
