@@ -29,6 +29,15 @@ function CollegianTab() {
     table: 'tabcollegians',
     primary: '',
   };
+  const initialValidation = {
+    co_code: false,
+    co_fname_th: false,
+    co_lname_th: false,
+    co_fname_en: false,
+    co_lname_en: false,
+    co_email: false,
+    co_tel: false,
+  };
 
   // ค่า modal state change
   const [openInsCo, setOpenInsCo] = React.useState(false); // สำหรับใช้ควบคุม Modal insert
@@ -40,6 +49,7 @@ function CollegianTab() {
   const [selectDisabledCo, setSelectDisabledCo] = useState(false);
   const [state, setState] = useState(initialState);
   const [deleteState, setDeleteState] = useState(initialDeleteState);
+  const [validation, setValidation] = useState(initialValidation);
 
   // set columns
   const collegianColumns = [
@@ -101,10 +111,9 @@ function CollegianTab() {
     } else if (type === 'en') {
       updatedValue = updatedValue.replace(/[^a-zA-Z\s]/g, '');
     } else if (type === 'email') {
-      // ถ้ารูปแบบไม่ถูกต้อง แทนที่อักขระที่ไม่ถูกต้องด้วยช่องว่าง
       updatedValue = updatedValue.replace(/[^A-Za-z0-9.@+-]/g, ' ');
     } else if (type === 'tel') {
-      updatedValue = updatedValue.replace(/\D/g, ' ');
+      updatedValue = updatedValue.replace(/[^0-9]/g, '');
     } else if (type === 'code') {
       updatedValue = updatedValue.replace(/[^a-zA-Z0-9\s]/g, ' ');
     }
@@ -120,7 +129,8 @@ function CollegianTab() {
             <Typography sx={{ fontSize: 12, mb: 0.5 }}>First Name(TH)</Typography>
           </Box>
           <Input
-            placeholder='Type in here…'
+            error={validation.co_fname_th || false}
+            placeholder={validation.co_fname_th ? 'กรุณากรอกชื่อ ภาษาไทย' : ''}
             size='md'
             type='text'
             slotProps={{
@@ -138,7 +148,8 @@ function CollegianTab() {
             <Typography sx={{ fontSize: 12, mb: 0.5 }}>Last Name(TH)</Typography>
           </Box>
           <Input
-            placeholder='Type in here…'
+            error={validation.co_lname_th || false}
+            placeholder={validation.co_lname_th ? 'กรุณากรอกนามสกุล ภาษาไทย' : ''}
             size='md'
             type='text'
             slotProps={{
@@ -158,7 +169,8 @@ function CollegianTab() {
             <Typography sx={{ fontSize: 12, mb: 0.5 }}>First Name(EN)</Typography>
           </Box>
           <Input
-            placeholder='Type in here…'
+            error={validation.co_fname_en || false}
+            placeholder={validation.co_fname_en ? 'กรุณากรอกชื่อ อังกฤษ' : ''}
             size='md'
             type='text'
             slotProps={{
@@ -176,7 +188,8 @@ function CollegianTab() {
             <Typography sx={{ fontSize: 12, mb: 0.5 }}>Last Name(EN)</Typography>
           </Box>
           <Input
-            placeholder='Type in here…'
+            error={validation.co_lname_en || false}
+            placeholder={validation.co_lname_en ? 'กรุณากรอกนามสกุล อังกฤษ' : ''}
             size='md'
             type='text'
             slotProps={{
@@ -196,7 +209,8 @@ function CollegianTab() {
             <Typography sx={{ fontSize: 12, mb: 0.5 }}>Collegian Code</Typography>
           </Box>
           <Input
-            placeholder='Type in here…'
+            error={validation.co_code || false}
+            placeholder={validation.co_code ? 'กรุณากรอกรหัสนักศึกษา' : ''}
             size='md'
             type='text'
             slotProps={{
@@ -214,7 +228,8 @@ function CollegianTab() {
             <Typography sx={{ fontSize: 12, mb: 0.5 }}>Email</Typography>
           </Box>
           <Input
-            placeholder='Type in here…'
+            error={validation.co_email || false}
+            placeholder={validation.co_email ? 'กรุณากรอก Email' : ''}
             size='md'
             type='email'
             slotProps={{
@@ -238,7 +253,8 @@ function CollegianTab() {
             <Typography sx={{ fontSize: 12, mb: 0.5 }}>Telphone</Typography>
           </Box>
           <Input
-            placeholder='Type in here…'
+            error={validation.co_tel || false}
+            placeholder={validation.co_tel ? 'กรุณากรอกเบอร์โทรศัพท์ ' : ''}
             size='md'
             type='tel'
             slotProps={{
@@ -257,7 +273,7 @@ function CollegianTab() {
         <Box sx={{ width: '50%' }}>
           <Typography sx={{ fontSize: 12, mb: 0.5, ml: 2 }}>Faculty Institutes</Typography>
           <Select
-            placeholder='Type in here…'
+            placeholder='กรุณาเลือกคณะ'
             indicator={<KeyboardArrowDown />}
             value={state.faculty_institutes_fi_id || ''}
             onChange={(event, value) => setState((pre) => ({ ...pre, faculty_institutes_fi_id: value }))}
@@ -281,7 +297,7 @@ function CollegianTab() {
         <Box sx={{ width: '50%' }}>
           <Typography sx={{ fontSize: 12, mb: 0.5, ml: 2 }}>Curriculum</Typography>
           <Select
-            placeholder='Type in here…'
+            placeholder='กรุณาเลือกหลักสูตร'
             indicator={<KeyboardArrowDown />}
             value={state.curriculums_cur_id || ''}
             onChange={(event, value) => setState((pre) => ({ ...pre, curriculums_cur_id: value }))}
@@ -311,21 +327,32 @@ function CollegianTab() {
   }, [state]);
 
   // สำหรับกด Submit หน้าเพิ่มข้อมูล Collegian
-  const handleInsertSubmit = (e) => {
-    e.preventDefault();
-    axios
-      .post('http://192.168.1.168:8000/api/method/frappe.help-api.insertcollegian', state)
-      .then((response) => {
-        console.log(response);
-        setOpenInsCo(false);
-        // console.log('t: ', response.data.message.Primarykey);
-        const newState = { co_id: response.data.message.Primarykey, ...state };
-        setCollegianRows((pre) => [newState, ...pre]);
-        setState(initialState);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  const handleInsertSubmit = () => {
+    Object.keys(state).forEach((key) => {
+      const value = state[key];
+      if (value === '') {
+        setValidation((prevValidation) => ({ ...prevValidation, [key]: true }));
+      }
+    });
+
+    console.log(validation);
+
+    if (Object.values(state).every((value) => value !== '')) {
+      console.log('ok');
+      axios
+        .post('http://192.168.1.168:8000/api/method/frappe.help-api.insertcollegian', state)
+        .then((response) => {
+          console.log(response);
+          setOpenInsCo(false);
+          // console.log('t: ', response.data.message.Primarykey);
+          const newState = { co_id: response.data.message.Primarykey, ...state };
+          setCollegianRows((pre) => [newState, ...pre]);
+          setState(initialState);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   };
 
   // สำหรับกด Submit หน้าแก้ไขข้อมูล Collegian
@@ -377,6 +404,19 @@ function CollegianTab() {
         setCollegianRows(objectToDelete);
       });
   };
+
+  useEffect(() => {
+    const updatedValidation = {};
+
+    Object.keys(state).forEach((key) => {
+      const value = state[key];
+      if (value !== '') {
+        updatedValidation[key] = false;
+      }
+    });
+
+    setValidation((prevValidation) => ({ ...prevValidation, ...updatedValidation }));
+  }, [state]);
 
   return (
     <div>
