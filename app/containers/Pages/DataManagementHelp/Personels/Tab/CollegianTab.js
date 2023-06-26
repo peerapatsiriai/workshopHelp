@@ -37,6 +37,7 @@ function CollegianTab() {
     co_lname_en: false,
     co_email: false,
     co_tel: false,
+    faculty_institutes_fi_id: false,
   };
 
   // ค่า modal state change
@@ -273,11 +274,13 @@ function CollegianTab() {
         <Box sx={{ width: '50%' }}>
           <Typography sx={{ fontSize: 12, mb: 0.5, ml: 2 }}>Faculty Institutes</Typography>
           <Select
+            error={validation.faculty_institutes_fi_id || false}
             placeholder='กรุณาเลือกคณะ'
             indicator={<KeyboardArrowDown />}
             value={state.faculty_institutes_fi_id || ''}
             onChange={(event, value) => setState((pre) => ({ ...pre, faculty_institutes_fi_id: value }))}
             disabled={selectDisabledCo}
+            color={validation.faculty_institutes_fi_id ? 'danger' : 'neutral'}
             sx={{
               mx: 1,
               size: 'sm',
@@ -302,6 +305,7 @@ function CollegianTab() {
             value={state.curriculums_cur_id || ''}
             onChange={(event, value) => setState((pre) => ({ ...pre, curriculums_cur_id: value }))}
             disabled={selectDisabledCo}
+            color={validation.curriculums_cur_id ? 'danger' : 'neutral'}
             sx={{
               mx: 1,
               size: 'sm',
@@ -330,7 +334,7 @@ function CollegianTab() {
   const handleInsertSubmit = () => {
     Object.keys(state).forEach((key) => {
       const value = state[key];
-      if (value === '') {
+      if (value === '' || value === null) {
         setValidation((prevValidation) => ({ ...prevValidation, [key]: true }));
       }
     });
