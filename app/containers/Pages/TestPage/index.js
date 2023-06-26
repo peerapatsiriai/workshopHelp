@@ -30,9 +30,13 @@ function TestPage() {
     }
   };
 
-  // const handleChange = (e) => {
-  //   setState((pre) => ({ ...pre, input1: e.target.value }));
-  // };
+  const handleChange = (e, key) => {
+    const getKey = key;
+    const value = e.target.value.replace(/[^A-Za-z]/gi, ''); // Only EN
+    // const value = e.target.value.replace(/^[a-zA-Z\s]+$/, ''); // Only TH
+    // const value = e.target.value.replace(/[^0-9.]/g, ''); // Only Number
+    setState((pre) => ({ ...pre, [getKey]: value }));
+  };
 
   useEffect(() => {
     console.log(state.input1);
@@ -79,7 +83,7 @@ function TestPage() {
           <Input
             // false คือปกติ true คือแสดงสีแดง
             error={validation.input1 || false}
-            onChange={(event) => setState((pre) => ({ ...pre, input1: event.target.value }))}
+            onChange={(event) => handleChange(event, 'input1')}
             value={state.input1}
             // ถ้าไม่ได้กรอกจะแสดงคำว่า กรุณากรอกชื่อ ถ้ากรอกจะไม่แสดงอะไร
             placeholder={validation.input1 ? 'กรุณากรอกชื่อ' : ''}
