@@ -14,7 +14,7 @@ function CollegianTab() {
   const onlyMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
   const onlyLargeScreen = useMediaQuery(theme.breakpoints.up('lg'));
 
-  // initialState
+  // initialState ค่า state เริ่ม
   const initialState = {
     co_code: '',
     co_fname_th: '',
@@ -35,7 +35,7 @@ function CollegianTab() {
   const [openUpdCo, setOpenUpdCo] = React.useState(false); // สำหรับใช้ควบคุม Modal update
   const [openDelCo, setOpenDelCo] = React.useState(false); // สำหรับใช้ควบคุม Modal Delete
 
-  // สำหรับรับค่า
+  // สำหรับ set state เริ่มต้น
   const [collegianRows, setCollegianRows] = useState([]);
   const [selectDisabledCo, setSelectDisabledCo] = useState(false);
   const [state, setState] = useState(initialState);
@@ -103,6 +103,12 @@ function CollegianTab() {
           <Input
             placeholder='Type in here…'
             size='md'
+            type='text'
+            slotProps={{
+              input: {
+                maxLength: 33,
+              },
+            }}
             value={state.co_fname_th || ''}
             onChange={(event) => setState((pre) => ({ ...pre, co_fname_th: event.target.value }))}
             sx={{ mx: 1 }}
@@ -115,6 +121,12 @@ function CollegianTab() {
           <Input
             placeholder='Type in here…'
             size='md'
+            type='text'
+            slotProps={{
+              input: {
+                maxLength: 33,
+              },
+            }}
             value={state.co_lname_th || ''}
             onChange={(event) => setState((pre) => ({ ...pre, co_lname_th: event.target.value }))}
             sx={{ mx: 1 }}
@@ -129,6 +141,12 @@ function CollegianTab() {
           <Input
             placeholder='Type in here…'
             size='md'
+            type='text'
+            slotProps={{
+              input: {
+                maxLength: 33,
+              },
+            }}
             value={state.co_fname_en}
             onChange={(event) => setState((pre) => ({ ...pre, co_fname_en: event.target.value }))}
             sx={{ mx: 1 }}
@@ -142,6 +160,12 @@ function CollegianTab() {
             placeholder='Type in here…'
             size='md'
             value={state.co_lname_en}
+            type='text'
+            slotProps={{
+              input: {
+                maxLength: 33,
+              },
+            }}
             onChange={(event) => setState((pre) => ({ ...pre, co_lname_en: event.target.value }))}
             sx={{ mx: 1 }}
           />
@@ -155,6 +179,12 @@ function CollegianTab() {
           <Input
             placeholder='Type in here…'
             size='md'
+            type='text'
+            slotProps={{
+              input: {
+                maxLength: 30,
+              },
+            }}
             value={state.co_code}
             onChange={(event) => setState((pre) => ({ ...pre, co_code: event.target.value }))}
             sx={{ mx: 1 }}
@@ -167,9 +197,18 @@ function CollegianTab() {
           <Input
             placeholder='Type in here…'
             size='md'
+            type='email'
+            slotProps={{
+              input: {
+                maxLength: 100,
+                pattern: '.+@globex.com',
+                size: '30',
+              },
+            }}
             value={state.co_email}
             onChange={(event) => setState((pre) => ({ ...pre, co_email: event.target.value }))}
             sx={{ mx: 1 }}
+            required
           />
         </Box>
       </Box>
@@ -181,6 +220,12 @@ function CollegianTab() {
           <Input
             placeholder='Type in here…'
             size='md'
+            type='tel'
+            slotProps={{
+              input: {
+                maxLength: 10,
+              },
+            }}
             value={state.co_tel}
             onChange={(event) => setState((pre) => ({ ...pre, co_tel: event.target.value }))}
             sx={{ mx: 1 }}
