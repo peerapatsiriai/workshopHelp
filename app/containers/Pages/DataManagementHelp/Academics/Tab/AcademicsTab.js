@@ -35,7 +35,7 @@ function AcademicsTab() {
 
   // สำหรับรับค่า
   const [Rows, setRows] = useState([]);
-  const [selectDisabledCo, setSelectDisabledCo] = useState(false);
+  const [selectDisabled, setSelectDisabled] = useState(false);
   const [state, setState] = useState(initialState);
   const [deleteState, setDeleteState] = useState(initialDeleteState);
 
@@ -57,7 +57,7 @@ function AcademicsTab() {
             setOpenUpd(true);
             setState(cellValues.row);
             setState((pre) => ({ ...pre, primarykey: cellValues.row.ac_id }));
-            setSelectDisabledCo(true);
+            setSelectDisabled(true);
           }}
         >
           ...
@@ -95,25 +95,31 @@ function AcademicsTab() {
       <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
         <Box sx={{ width: '50%' }}>
           <Box sx={{ ml: 2 }}>
-            <Typography sx={{ fontSize: 12, mb: 0.5 }}>First Name(TH)</Typography>
+            <Typography sx={{ fontSize: 12, mb: 0.5 }}>Academic Name(TH)</Typography>
           </Box>
           <Input
             placeholder='Type in here…'
             size='md'
-            value={state.ac_fname_th || ''}
-            onChange={(event) => setState((pre) => ({ ...pre, ac_fname_th: event.target.value }))}
-            sx={{ mx: 1 }}
+            value={state.ac_name_th || ''}
+            onChange={(event) => {
+              setState((pre) => ({ ...pre, ac_name_th: event.target.value }));
+            }}
           />
         </Box>
         <Box sx={{ width: '50%' }}>
           <Box sx={{ ml: 2 }}>
-            <Typography sx={{ fontSize: 12, mb: 0.5 }}>Last Name(TH)</Typography>
+            <Typography sx={{ fontSize: 12, mb: 0.5 }}>Academic Name(EN)</Typography>
           </Box>
           <Input
             placeholder='Type in here…'
             size='md'
-            value={state.ac_lname_th || ''}
-            onChange={(event) => setState((pre) => ({ ...pre, ac_lname_th: event.target.value }))}
+            value={state.ac_name_en || ''}
+            onChange={(event) => {
+              setState((pre) => ({
+                ...pre,
+                ac_name_en: event.target.value,
+              }));
+            }}
             sx={{ mx: 1 }}
           />
         </Box>
@@ -121,80 +127,50 @@ function AcademicsTab() {
       <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
         <Box sx={{ width: '50%' }}>
           <Box sx={{ ml: 2 }}>
-            <Typography sx={{ fontSize: 12, mb: 0.5 }}>First Name(EN)</Typography>
+            <Typography sx={{ fontSize: 12, mb: 0.5 }}>Campus*</Typography>
           </Box>
           <Input
             placeholder='Type in here…'
             size='md'
-            value={state.ac_fname_en}
-            onChange={(event) => setState((pre) => ({ ...pre, ac_fname_en: event.target.value }))}
-            sx={{ mx: 1 }}
+            value={state.ac_campus || ''}
+            onChange={(event) => {
+              setState((pre) => ({ ...pre, ac_campus: event.target.value }));
+            }}
           />
         </Box>
         <Box sx={{ width: '50%' }}>
           <Box sx={{ ml: 2 }}>
-            <Typography sx={{ fontSize: 12, mb: 0.5 }}>Last Name(EN)</Typography>
+            <Typography sx={{ fontSize: 12, mb: 0.5 }}>Tel*</Typography>
           </Box>
           <Input
             placeholder='Type in here…'
             size='md'
-            value={state.ac_lname_en}
-            onChange={(event) => setState((pre) => ({ ...pre, ac_lname_en: event.target.value }))}
+            value={state.ac_tel || ''}
+            onChange={(event) => {
+              setState((pre) => ({
+                ...pre,
+                ac_tel: event.target.value,
+              }));
+            }}
             sx={{ mx: 1 }}
           />
         </Box>
       </Box>
       <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
         <Box sx={{ width: '50%' }}>
-          <Box sx={{ ml: 2 }}>
-            <Typography sx={{ fontSize: 12, mb: 0.5 }}>Collegian Code</Typography>
-          </Box>
-          <Input
-            placeholder='Type in here…'
-            size='md'
-            value={state.ac_code}
-            onChange={(event) => setState((pre) => ({ ...pre, ac_code: event.target.value }))}
-            sx={{ mx: 1 }}
-          />
-        </Box>
-        <Box sx={{ width: '50%' }}>
-          <Box sx={{ ml: 2 }}>
-            <Typography sx={{ fontSize: 12, mb: 0.5 }}>Email</Typography>
-          </Box>
-          <Input
-            placeholder='Type in here…'
-            size='md'
-            value={state.ac_email}
-            onChange={(event) => setState((pre) => ({ ...pre, ac_email: event.target.value }))}
-            sx={{ mx: 1 }}
-          />
-        </Box>
-      </Box>
-      <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
-        <Box sx={{ width: '50%' }}>
-          <Box sx={{ ml: 2 }}>
-            <Typography sx={{ fontSize: 12, mb: 0.5 }}>Telphone</Typography>
-          </Box>
-          <Input
-            placeholder='Type in here…'
-            size='md'
-            value={state.ac_tel}
-            onChange={(event) => setState((pre) => ({ ...pre, ac_tel: event.target.value }))}
-            sx={{ mx: 1 }}
-          />
-        </Box>
-      </Box>
-      <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
-        <Box sx={{ width: '50%' }}>
-          <Typography sx={{ fontSize: 12, mb: 0.5, ml: 2 }}>Faculty Institutes</Typography>
+          <Typography sx={{ fontSize: 12, mb: 0.5, ml: 2 }}>Academic Type*</Typography>
           <Select
             placeholder='Type in here…'
             indicator={<KeyboardArrowDown />}
-            value={state.faculty_institutes_fi_id || ''}
-            onChange={(event, value) => setState((pre) => ({ ...pre, faculty_institutes_fi_id: value }))}
-            disabled={selectDisabledCo}
+            disabled={selectDisabled}
+            value={state.academic_type_ac_type_id || ''}
+            onChange={(event, value) => {
+              setState((pre) => ({
+                ...pre,
+                academic_type_ac_type_id: value,
+              }));
+            }}
             sx={{
-              mx: 1,
               size: 'sm',
               [`& .${selectClasses.indicator}`]: {
                 transition: '0.2s',
@@ -204,34 +180,29 @@ function AcademicsTab() {
               },
             }}
           >
-            <Option value='10'>คณะวิศวกรรมศาสตร์</Option>
-            <Option value='11'>คณะบริหารธุรกิจและศิลปศาสตร์</Option>
-            <Option value='12'>คณะวิทยาศาสตร์และเทคโนโลยีการเกษตร</Option>
+            <Option value='1'>มหาวิทยาลัยของรัฐ</Option>
+            <Option value='2'>โรงเรียนเอกชน</Option>
+            <Option value='3'>วิทยาลัยชุมชน</Option>
           </Select>
         </Box>
-        <Box sx={{ width: '50%' }}>
-          <Typography sx={{ fontSize: 12, mb: 0.5, ml: 2 }}>Curriculum</Typography>
-          <Select
+      </Box>
+      <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
+        <Box sx={{ width: '90%' }}>
+          <Box sx={{ ml: 2 }}>
+            <Typography sx={{ fontSize: 12, mb: 0.5 }}>Address*</Typography>
+          </Box>
+          <Input
             placeholder='Type in here…'
-            indicator={<KeyboardArrowDown />}
-            value={state.curriculums_cur_id || ''}
-            onChange={(event, value) => setState((pre) => ({ ...pre, curriculums_cur_id: value }))}
-            disabled={selectDisabledCo}
-            sx={{
-              mx: 1,
-              size: 'sm',
-              [`& .${selectClasses.indicator}`]: {
-                transition: '0.2s',
-                [`&.${selectClasses.expanded}`]: {
-                  transform: 'rotate(-180deg)',
-                },
-              },
+            size='md'
+            value={state.ac_address || ''}
+            onChange={(event) => {
+              setState((pre) => ({
+                ...pre,
+                ac_address: event.target.value,
+              }));
             }}
-          >
-            <Option value='1'>วิทยาลัยเทคโนโลยีและสหวิทยาการ</Option>
-            <Option value='2'>คณะศิลปกรรมกรรมและสถาปัตยกรรมศาสตร์</Option>
-            <Option value='3'>คณะวิศวกรรมศาสตร์</Option>
-          </Select>
+            sx={{ width: '100%', height: '10vh' }}
+          />
         </Box>
       </Box>
     </Box>
@@ -327,7 +298,7 @@ function AcademicsTab() {
           <Button
             onClick={() => {
               setOpenIns(true);
-              setSelectDisabledCo(false);
+              setSelectDisabled(false);
             }}
             sx={{
               px: 2,
