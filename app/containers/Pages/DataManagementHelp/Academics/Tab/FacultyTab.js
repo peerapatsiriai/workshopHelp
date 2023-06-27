@@ -35,6 +35,7 @@ function FacultyTab() {
   const [dataAcademics, setDataAcademics] = useState([]);
   const [selectDisabled, setSelectDisabled] = useState(false);
   const [state, setState] = useState(initialState);
+  const [selectState, setSelectState] = useState(initialState);
   const [deleteState, setDeleteState] = useState(initialDeleteState);
 
   // by bill start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -161,7 +162,9 @@ function FacultyTab() {
       <Box
         sx={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-end' }}>
         <Box sx={{ flexDirection: 'column', width: '50%', ml: 2 }}>
-          <Typography sx={{ fontSize: 12, mb: 0.5 }}>First Name(TH)</Typography>
+          <Typography sx={{ fontSize: 12, mb: 0.5 }}>
+            Academic Name(TH)
+          </Typography>
           <Input
             label='Academic Name'
             placeholder={
@@ -257,7 +260,16 @@ function FacultyTab() {
             },
           }}>
           {dataAcademics?.map((data) => (
-            <Option key={data.name} value={data.ac_id}>
+            <Option
+              key={data.name}
+              value={data.ac_id}
+              onClick={() =>
+                // eslint-disable-next-line implicit-arrow-linebreak
+                setSelectState((pre) => ({
+                  ...pre,
+                  fi_name_th: data.fi_name_th,
+                }))
+              }>
               {data.ac_name_th}
             </Option>
           ))}
@@ -281,9 +293,12 @@ function FacultyTab() {
       .then((response) => {
         console.log(response);
         setOpenIns(false);
-        // console.log('t: ', response.data.message.Primarykey);
-        const newState = { fi_id: response.data.message.Primarykey, ...state };
-        setRows((pre) => [newState, ...pre]);
+        const newState1 = { ...selectState, ...state };
+        const newState2 = {
+          fi_id: response.data.message.Primarykey,
+          ...newState1,
+        };
+        setRows((pre) => [newState2, ...pre]);
         setState(initialState);
       })
       .catch((error) => {
@@ -407,7 +422,7 @@ function FacultyTab() {
                 textTransform: 'capitalize',
                 fontWeight: 'bold',
               }}>
-              + Add Faculty
+              + Add Institute
             </Typography>
           </Button>
           <Button sx={{ ml: 2 }}>
@@ -440,7 +455,7 @@ function FacultyTab() {
             setState(initialState);
           }}
           content={ContentModal}
-          header={'Update Collegian'}
+          header={'Update Institute'}
           labelBtn={'Update'}
           subDetail={true}
           handleSubmit={handleEditSubmit}
@@ -461,7 +476,7 @@ function FacultyTab() {
           setValidationFac(initialState);
         }}
         content={ContentModal}
-        header={'Add New Collegian'}
+        header={'Add New Institute'}
         labelBtn={'Submit'}
         handleSubmit={(e) => onSubmit(e)}
         subDetail={false}
