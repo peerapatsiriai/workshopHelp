@@ -17,7 +17,7 @@ function AcademicsTab() {
   // initialState
   const initialState = {
     ac_name_th: '',
-    ac_lname_th: '',
+    ac_name_en: '',
     ac_campus: '',
     ac_address: '',
     ac_tel: '',
@@ -27,7 +27,6 @@ function AcademicsTab() {
     table: 'tabacademics',
     primary: '',
   };
-
   // ค่า modal state change
   const [openIns, setOpenIns] = React.useState(false); // สำหรับใช้ควบคุม Modal insert
   const [openUpd, setOpenUpd] = React.useState(false); // สำหรับใช้ควบคุม Modal update
@@ -35,14 +34,58 @@ function AcademicsTab() {
 
   // สำหรับรับค่า
   const [Rows, setRows] = useState([]);
+  const [academictypeRows, setacademictypeRows] = useState([]);
   const [selectDisabled, setSelectDisabled] = useState(false);
   const [state, setState] = useState(initialState);
   const [deleteState, setDeleteState] = useState(initialDeleteState);
 
+  // สำหรับใช้เก็บค่า Validation Insert
+  const [validation, setValidation] = useState({
+    ac_name_th: false, // false คือปกติ true คือแสดงเป็นสีแดง
+    ac_name_en: false,
+    ac_campus: false,
+    ac_address: false,
+    ac_tel: false,
+    academic_type_ac_type_id: false,
+  });
+  useEffect(() => {
+    // console.log(state.input1);
+    if (state.ac_name_th !== '') {
+      setValidation((pre) => ({ ...pre, ac_name_th: false }));
+    } else {
+      console.log('Still Null');
+    }
+    if (state.ac_name_en !== '') {
+      setValidation((pre) => ({ ...pre, ac_name_en: false }));
+    } else {
+      console.log('Still Null');
+    }
+    if (state.ac_address !== '') {
+      setValidation((pre) => ({ ...pre, ac_address: false }));
+    } else {
+      console.log('Still Null');
+    }
+    if (state.ac_tel !== '') {
+      setValidation((pre) => ({ ...pre, ac_tel: false }));
+    } else {
+      console.log('Still Null');
+    }
+    if (state.ac_campus !== '') {
+      setValidation((pre) => ({ ...pre, ac_campus: false }));
+    } else {
+      console.log('Still Null');
+    }
+    if (state.academic_type_ac_type_id !== '') {
+      setValidation((pre) => ({ ...pre, academic_type_ac_type_id: false }));
+    } else {
+      console.log('Still Null');
+    }
+  }, [state]);
   // set columns
   const columns = [
     { field: 'ac_name_th', headerName: 'Name(TH)', width: 300 },
     { field: 'ac_name_en', headerName: 'Name(EN)', width: 350 },
+    { field: 'ac_campus', headerName: 'campus', width: 350 },
     { field: 'ac_address', headerName: 'Address', width: 350 },
     { field: 'ac_tel', headerName: 'Tel', width: 120 },
     { field: 'academic_type_ac_type_id', headerName: 'Type', width: 50 },
@@ -81,14 +124,39 @@ function AcademicsTab() {
     },
   ];
 
-  // set rows
+  // set Api
   useEffect(() => {
+    // ดึงข้อมูล Academic เพื่อ set rows
     axios.get('http://192.168.1.168:8000/api/method/frappe.help-api.getAllAcademics').then((response) => {
       setRows(response.data.message.Data);
       console.log(response.data.message.Data);
     });
+    // ดึงข้อมูล Academic Type
+    axios.get('http://192.168.1.168:8000/api/method/frappe.help-api.getallacademictype').then((response) => {
+      setacademictypeRows(response.data.message.Data);
+      console.log(response.data.message.Data);
+      console.log(academictypeRows);
+    });
   }, []);
-
+  // เช็คการรับค่าใน input
+  const handleChange = (e, key, type) => {
+    const { value } = e.target;
+    const getKey = key;
+    let updatedValue = value;
+    if (type === 'th') {
+      updatedValue = updatedValue.replace(/[^ก-๙เ\s]/g, '');
+    } else if (type === 'en') {
+      updatedValue = updatedValue.replace(/[^a-zA-Z\s]/g, '');
+    } else if (type === 'email') {
+      // ถ้ารูปแบบไม่ถูกต้อง แทนที่อักขระที่ไม่ถูกต้องด้วยช่องว่าง
+      updatedValue = updatedValue.replace(/[^0-9]/g, '');
+    } else if (type === 'tel') {
+      updatedValue = updatedValue.replace(/\D/g, '');
+    } else if (type === 'code') {
+      updatedValue = updatedValue.replace(/[^a-zA-Z0-9\s]/g, ' ');
+    }
+    setState((pre) => ({ ...pre, [getKey]: updatedValue }));
+  };
   // content modal
   const ContentModal = (
     <Box>
@@ -98,11 +166,14 @@ function AcademicsTab() {
             <Typography sx={{ fontSize: 12, mb: 0.5 }}>Academic Name(TH)</Typography>
           </Box>
           <Input
-            placeholder='Type in here…'
+            // false คือปกติ true คือแสดงสีแดง
+            error={validation.ac_name_th || false}
+            placeholder='กรุณากรอกข้อมูลภาษาไทย'
             size='md'
             value={state.ac_name_th || ''}
             onChange={(event) => {
               setState((pre) => ({ ...pre, ac_name_th: event.target.value }));
+              handleChange(event, 'ac_name_th', 'th');
             }}
           />
         </Box>
@@ -111,14 +182,14 @@ function AcademicsTab() {
             <Typography sx={{ fontSize: 12, mb: 0.5 }}>Academic Name(EN)</Typography>
           </Box>
           <Input
-            placeholder='Type in here…'
+            // false คือปกติ true คือแสดงสีแดง
+            error={validation.ac_name_en || false}
+            placeholder='กรุณากรอกข้อมูลภาษาอังกฤษ'
             size='md'
             value={state.ac_name_en || ''}
             onChange={(event) => {
-              setState((pre) => ({
-                ...pre,
-                ac_name_en: event.target.value,
-              }));
+              setState((pre) => ({ ...pre, ac_name_en: event.target.value }));
+              handleChange(event, 'ac_name_en', 'en');
             }}
             sx={{ mx: 1 }}
           />
@@ -127,14 +198,17 @@ function AcademicsTab() {
       <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
         <Box sx={{ width: '50%' }}>
           <Box sx={{ ml: 2 }}>
-            <Typography sx={{ fontSize: 12, mb: 0.5 }}>Campus*</Typography>
+            <Typography sx={{ fontSize: 12, mb: 0.5 }}>Campus(TH)*</Typography>
           </Box>
           <Input
-            placeholder='Type in here…'
+            // false คือปกติ true คือแสดงสีแดง
+            error={validation.ac_campus || false}
+            placeholder='กรุณากรอกข้อมูลภาษาไทย'
             size='md'
             value={state.ac_campus || ''}
             onChange={(event) => {
               setState((pre) => ({ ...pre, ac_campus: event.target.value }));
+              handleChange(event, 'ac_campus', 'th');
             }}
           />
         </Box>
@@ -143,14 +217,15 @@ function AcademicsTab() {
             <Typography sx={{ fontSize: 12, mb: 0.5 }}>Tel*</Typography>
           </Box>
           <Input
-            placeholder='Type in here…'
+            // false คือปกติ true คือแสดงสีแดง
+            type='tel'
+            error={validation.ac_tel || false}
+            placeholder='กรุณากรอกแค่ตัวเลขเท่านั้น'
             size='md'
             value={state.ac_tel || ''}
             onChange={(event) => {
-              setState((pre) => ({
-                ...pre,
-                ac_tel: event.target.value,
-              }));
+              setState((pre) => ({ ...pre, ac_tel: event.target.value }));
+              handleChange(event, 'ac_tel', 'tel');
             }}
             sx={{ mx: 1 }}
           />
@@ -160,6 +235,8 @@ function AcademicsTab() {
         <Box sx={{ width: '50%' }}>
           <Typography sx={{ fontSize: 12, mb: 0.5, ml: 2 }}>Academic Type*</Typography>
           <Select
+            // false คือปกติ true คือแสดงสีแดง
+            error={validation.academic_type_ac_type_id || false}
             placeholder='Type in here…'
             indicator={<KeyboardArrowDown />}
             disabled={selectDisabled}
@@ -180,9 +257,14 @@ function AcademicsTab() {
               },
             }}
           >
-            <Option value='1'>มหาวิทยาลัยของรัฐ</Option>
-            <Option value='2'>โรงเรียนเอกชน</Option>
-            <Option value='3'>วิทยาลัยชุมชน</Option>
+            {academictypeRows?.map((contentAc, value) => (
+              <Option
+                key={value}
+                value={contentAc.ac_type_id}
+              >
+                {contentAc.ac_type_name_th}
+              </Option>
+            ))}
           </Select>
         </Box>
       </Box>
@@ -192,6 +274,8 @@ function AcademicsTab() {
             <Typography sx={{ fontSize: 12, mb: 0.5 }}>Address*</Typography>
           </Box>
           <Input
+            // false คือปกติ true คือแสดงสีแดง
+            error={validation.ac_address || false}
             placeholder='Type in here…'
             size='md'
             value={state.ac_address || ''}
@@ -215,21 +299,55 @@ function AcademicsTab() {
   // สำหรับกด Submit หน้าเพิ่มข้อมูล
   const handleInsertSubmit = (e) => {
     e.preventDefault();
-    axios
-      .post('http://192.168.1.168:8000/api/method/frappe.help-api.insertacademic', state)
-      .then((response) => {
-        console.log(response);
-        setOpenIns(false);
-        // console.log('t: ', response.data.message.Primarykey);
-        const newState = { ac_id: response.data.message.Primarykey, ...state };
-        setRows((pre) => [newState, ...pre]);
-        setState(initialState);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+    console.log(state);
+    const stateWithoutId = { ...state }; // เก็บทุกค่าที่จะส่งไปที่ stateWithoutId
+    // delete stateWithoutId.academic_type_ac_type_id; //คำสั่งยกเว้นค่าว่างใน State(ลบค่าใน values Select ใน Select)
 
+    const isStateValid = Object.values(stateWithoutId).every((value) => value && value.trim() !== '');
+
+    if (isStateValid) {
+      axios
+        .post('http://192.168.1.168:8000/api/method/frappe.help-api.insertacademic', state)
+        .then((response) => {
+          console.log(response);
+          setOpenIns(false);
+          // console.log('t: ', response.data.message.Primarykey);
+          const newState = { ac_id: response.data.message.Primarykey, ...state };
+          setRows((pre) => [newState, ...pre]);
+          setState(initialState);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      console.log('State is valid');
+    } else {
+      alert('แตกใน');
+      if (state.ac_name_th === '') {
+        // ทำให้แสดงสีแดงตรงที่ไม่ได้กรอกข้อความ
+        setValidation((pre) => ({ ...pre, ac_name_th: true }));
+      }
+      if (state.ac_name_en === '') {
+        // ทำให้แสดงสีแดงตรงที่ไม่ได้กรอกข้อความ
+        setValidation((pre) => ({ ...pre, ac_name_en: true }));
+      }
+      if (state.ac_address === '') {
+        // ทำให้แสดงสีแดงตรงที่ไม่ได้กรอกข้อความ
+        setValidation((pre) => ({ ...pre, ac_address: true }));
+      }
+      if (state.ac_tel === '') {
+        // ทำให้แสดงสีแดงตรงที่ไม่ได้กรอกข้อความ
+        setValidation((pre) => ({ ...pre, ac_tel: true }));
+      }
+      if (state.ac_campus === '') {
+        // ทำให้แสดงสีแดงตรงที่ไม่ได้กรอกข้อความ
+        setValidation((pre) => ({ ...pre, ac_campus: true }));
+      }
+      if (state.academic_type_ac_type_id === '') {
+        // ทำให้แสดงสีแดงตรงที่ไม่ได้กรอกข้อความ
+        setValidation((pre) => ({ ...pre, academic_type_ac_type_id: true }));
+      }
+    }
+  };
   // สำหรับกด Submit หน้าแก้ไขข้อมูล
   const handleEditSubmit = () => {
     axios
@@ -255,7 +373,7 @@ function AcademicsTab() {
       });
   };
 
-  // สำหรับกด Submit หน้าลบข้อมูล Collegian
+  // สำหรับกด Submit หน้าลบข้อมูล
   const handleDeleteSubmit = () => {
     axios
       .post('http://192.168.1.168:8000/api/method/frappe.help-api.delete', deleteState)
@@ -352,7 +470,7 @@ function AcademicsTab() {
             setState(initialState);
           }}
           content={ContentModal}
-          header={'Update Collegian'}
+          header={'Update Academic'}
           labelBtn={'Update'}
           subDetail={true}
           handleSubmit={handleEditSubmit}
@@ -372,7 +490,7 @@ function AcademicsTab() {
           setState(initialState);
         }}
         content={ContentModal}
-        header={'Add New Collegian'}
+        header={'Add New Academic'}
         labelBtn={'Submit'}
         handleSubmit={handleInsertSubmit}
         subDetail={false}
