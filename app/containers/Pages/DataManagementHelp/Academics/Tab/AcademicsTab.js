@@ -35,7 +35,6 @@ function AcademicsTab() {
   // สำหรับรับค่า
   const [Rows, setRows] = useState([]);
   const [academictypeRows, setacademictypeRows] = useState([]);
-  const [selectDisabled, setSelectDisabled] = useState(false);
   const [state, setState] = useState(initialState);
   const [deleteState, setDeleteState] = useState(initialDeleteState);
 
@@ -86,8 +85,8 @@ function AcademicsTab() {
   const columns = [
     { field: 'ac_name_th', headerName: 'Name(TH)', width: 300 },
     { field: 'ac_name_en', headerName: 'Name(EN)', width: 350 },
-    { field: 'ac_campus', headerName: 'campus', width: 350 },
-    { field: 'ac_address', headerName: 'Address', width: 350 },
+    { field: 'ac_campus', headerName: 'campus', width: 150 },
+    { field: 'ac_address', headerName: 'Address', width: 400 },
     { field: 'ac_tel', headerName: 'Tel', width: 120 },
     { field: 'academic_type_ac_type_id', headerName: 'Type', width: 50 },
     {
@@ -101,7 +100,6 @@ function AcademicsTab() {
             setOpenUpd(true);
             setState(cellValues.row);
             setState((pre) => ({ ...pre, primarykey: cellValues.row.ac_id }));
-            setSelectDisabled(true);
           }}
         >
           ...
@@ -244,7 +242,6 @@ function AcademicsTab() {
             color={validation.academic_type_ac_type_id ? 'danger' : 'neutral'}
             placeholder='Type in here…'
             indicator={<KeyboardArrowDown />}
-            disabled={selectDisabled}
             value={state.academic_type_ac_type_id || ''}
             onChange={(event, value) => {
               setState((pre) => ({
@@ -348,34 +345,72 @@ function AcademicsTab() {
         setValidation((pre) => ({ ...pre, ac_campus: true }));
       }
       if (state.academic_type_ac_type_id === null) {
-        console.log('test');
         setValidation((pre) => ({ ...pre, academic_type_ac_type_id: true }));
       }
     }
   };
   // สำหรับกด Submit หน้าแก้ไขข้อมูล
-  const handleEditSubmit = () => {
-    axios
-      .post('http://192.168.1.168:8000/api/method/frappe.help-api.editacademic', state)
-      .then((response) => {
-        console.log(response);
-        setOpenUpd(false);
-        const objectToUpdate = Rows.find((obj) => obj.ac_id === state.ac_id);
+  const handleEditSubmit = (e) => {
+    e.preventDefault();
+    const stateWithoutId = { ...state };
+    // delete stateWithoutId.academic_type_ac_type_id;
+    console.log(state);
+    const isStateValid = Object.values(stateWithoutId).every((value) => {
+      if (typeof value === 'string') {
+        return value.trim() !== '';
+      }
+      return true; // Return true for non-string values
+    });
+    if (isStateValid) {
+      console.log('State is valid');
+      axios
+        .post('http://192.168.1.168:8000/api/method/frappe.help-api.editacademic', state)
+        .then((response) => {
+          console.log(response);
+          setOpenUpd(false);
+          const objectToUpdate = Rows.find((obj) => obj.ac_id === state.ac_id);
 
-        // แก้ไขค่า ในออบเจ็กต์
-        if (objectToUpdate) {
-          objectToUpdate.ac_name_th = state.ac_name_th;
-          objectToUpdate.ac_name_en = state.ac_name_en;
-          objectToUpdate.ac_campus = state.ac_campus;
-          objectToUpdate.ac_address = state.ac_address;
-          objectToUpdate.ac_tel = state.ac_tel;
-          objectToUpdate.academic_type_ac_type_id = state.academic_type_ac_type_id;
-        }
-        setState(initialState);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+          // แก้ไขค่า ในออบเจ็กต์
+          if (objectToUpdate) {
+            objectToUpdate.ac_name_th = state.ac_name_th;
+            objectToUpdate.ac_name_en = state.ac_name_en;
+            objectToUpdate.ac_campus = state.ac_campus;
+            objectToUpdate.ac_address = state.ac_address;
+            objectToUpdate.ac_tel = state.ac_tel;
+            objectToUpdate.academic_type_ac_type_id = state.academic_type_ac_type_id;
+          }
+          setState(initialState);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      console.log(state.academic_type_ac_type_id);
+      alert('แตกใน');
+      if (state.ac_name_th === '') {
+        // ทำให้แสดงสีแดงตรงที่ไม่ได้กรอกข้อความ
+        setValidation((pre) => ({ ...pre, ac_name_th: true }));
+      }
+      if (state.ac_name_en === '') {
+        // ทำให้แสดงสีแดงตรงที่ไม่ได้กรอกข้อความ
+        setValidation((pre) => ({ ...pre, ac_name_en: true }));
+      }
+      if (state.ac_address === '') {
+        // ทำให้แสดงสีแดงตรงที่ไม่ได้กรอกข้อความ
+        setValidation((pre) => ({ ...pre, ac_address: true }));
+      }
+      if (state.ac_tel === '') {
+        // ทำให้แสดงสีแดงตรงที่ไม่ได้กรอกข้อความ
+        setValidation((pre) => ({ ...pre, ac_tel: true }));
+      }
+      if (state.ac_campus === '') {
+        // ทำให้แสดงสีแดงตรงที่ไม่ได้กรอกข้อความ
+        setValidation((pre) => ({ ...pre, ac_campus: true }));
+      }
+      if (state.academic_type_ac_type_id === null) {
+        setValidation((pre) => ({ ...pre, academic_type_ac_type_id: true }));
+      }
+    }
   };
 
   // สำหรับกด Submit หน้าลบข้อมูล
@@ -421,7 +456,6 @@ function AcademicsTab() {
           <Button
             onClick={() => {
               setOpenIns(true);
-              setSelectDisabled(false);
             }}
             sx={{
               px: 2,
@@ -473,6 +507,7 @@ function AcademicsTab() {
           handleClose={() => {
             setOpenUpd(false);
             setState(initialState);
+            setValidation(initialState);
           }}
           content={ContentModal}
           header={'Update Academic'}
@@ -493,12 +528,14 @@ function AcademicsTab() {
         handleClose={() => {
           setOpenIns(false);
           setState(initialState);
+          setValidation(initialState);
         }}
         content={ContentModal}
         header={'Add New Academic'}
         labelBtn={'Submit'}
         handleSubmit={handleInsertSubmit}
         subDetail={false}
+        setValidation={initialState}
       />
     </div>
   );
