@@ -326,7 +326,7 @@ function AcademicsTab() {
         });
       console.log('State is valid');
     } else {
-      alert('แตกใน');
+      // alert('แตกใน');
       if (state.ac_name_th === '') {
         // ทำให้แสดงสีแดงตรงที่ไม่ได้กรอกข้อความ
         setValidation((pre) => ({ ...pre, ac_name_th: true }));
