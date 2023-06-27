@@ -1,11 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { JoyModal, DeleteButton, ConfirmDelModal } from 'dan-components';
-import { Box, Typography, useMediaQuery, Button } from '@mui/material';
+import {
+  Box,
+  Typography,
+  useMediaQuery,
+  Button,
+  TableContainer,
+  Table,
+  TableHead,
+  TableRow,
+  TableBody,
+  Paper,
+  TableCell,
+} from '@mui/material';
 import axios from 'axios';
 import { useTheme } from '@emotion/react';
-import { Select, selectClasses, Option, Input } from '@mui/joy';
+import { Select, selectClasses, Option, Input, Modal, Sheet } from '@mui/joy';
 import { DataGrid } from '@mui/x-data-grid';
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
+import ExportExcel from '../../../../../components/ExportExcel';
 
 function CollegianTab() {
   // สำหรับ Responsive
@@ -42,11 +55,12 @@ function CollegianTab() {
   const initialSelectState = {
     cur_name_th: '',
   };
-
+  const tableName = 'Collegian';
   // ค่า modal state change
   const [openInsCo, setOpenInsCo] = React.useState(false); // สำหรับใช้ควบคุม Modal insert
   const [openUpdCo, setOpenUpdCo] = React.useState(false); // สำหรับใช้ควบคุม Modal update
   const [openDelCo, setOpenDelCo] = React.useState(false); // สำหรับใช้ควบคุม Modal Delete
+  const [openPreview, setOpenPreview] = React.useState(false);
 
   // สำหรับ set state เริ่มต้น
   const [collegianRows, setCollegianRows] = useState([]);
@@ -546,7 +560,10 @@ function CollegianTab() {
               + Add Colegian
             </Typography>
           </Button>
-          <Button sx={{ ml: 2 }}>
+          <Button
+            sx={{ ml: 2 }}
+            onClick={() => setOpenPreview(true)}
+          >
             <Typography
               sx={{
                 fontSize: 12,
@@ -604,6 +621,105 @@ function CollegianTab() {
         handleSubmit={handleInsertSubmit}
         subDetail={false}
       />
+      <Modal
+        open={openPreview}
+        onClose={() => setOpenPreview(false)}
+        sx={{ minWidth: 800, display: 'flex', justifyContent: 'center', alignItems: 'center', overflow: 'auto' }}
+      >
+        <Sheet
+          variant='outlined'
+          sx={{
+            flex: 'none',
+            width: '100%',
+            minWidth: 600,
+            maxWidth: 1200,
+            borderRadius: 'md',
+            p: 3,
+            boxShadow: 'lg',
+            m: 'auto',
+          }}
+        >
+          <Box sx={{ display: 'flex', flexDirection: 'column', m: 4 }}>
+            <Typography
+              variant='h4'
+              mb={2}
+            >
+              Export Excel File
+            </Typography>
+            <Box sx={{ display: 'flex', width: '100%', flexDirection: 'column' }}>
+              <Box sx={{ display: 'flex', width: '100%', justifyContent: 'space-between' }}>
+                <Box sx={{ display: 'flex', width: 200, justifyContent: 'space-between' }}>
+                  <Typography
+                    sx={{ mt: 1 }}
+                    variant='body2'
+                  >
+                    Table :
+                  </Typography>
+                  <ExportExcel
+                    fileName={tableName + '_' + Date().toLocaleString()}
+                    tableName={tableName}
+                    excelData={collegianRows.map((val) => ({
+                      Code: val.co_code,
+                      FirstNameTH: val.co_fname_th,
+                      LastNameTH: val.co_lname_th,
+                      FirstNameEN: val.co_fname_en,
+                      LastNameEN: val.co_lname_en,
+                      Email: val.co_email,
+                      Tel: val.co_tel,
+                      Faculty: val.fi_name_th,
+                    }))}
+                  />
+                </Box>
+              </Box>
+              <Box sx={{ display: 'flex', width: 200, justifyContent: 'space-between' }}>
+                <Typography variant='body2'>Total rows :</Typography>
+                <Typography variant='body2'>{collegianRows.length}</Typography>
+              </Box>
+            </Box>
+          </Box>
+          <TableContainer
+            component={Paper}
+            style={{ maxWidth: '100%', width: '100%' }}
+          >
+            <Table
+              sx={{ overflowX: 'auto' }}
+              aria-label='spanning table'
+            >
+              <TableHead>
+                <TableRow>
+                  <TableCell>#</TableCell>
+                  <TableCell>Code</TableCell>
+                  <TableCell>First Name(TH)</TableCell>
+                  <TableCell>Last Name(TH)</TableCell>
+                  <TableCell>First Name(EN)</TableCell>
+                  <TableCell>Last Name(EN)</TableCell>
+                  <TableCell>Email</TableCell>
+                  <TableCell>Tel</TableCell>
+                  <TableCell>Faculty</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {collegianRows.map((row, index) => (
+                  <TableRow
+                    key={row.name}
+                    sx={{ background: index % 2 === 0 ? '#f2f6fa' : '' }}
+                  >
+                    <TableCell sx={{ fontWeight: 200, width: 60 }}>{index + 1}</TableCell>
+                    <TableCell sx={{ fontWeight: 200, maxWidth: 160 }}>{row.co_code}</TableCell>
+                    <TableCell sx={{ fontWeight: 200, maxWidth: 160 }}>{row.co_fname_th}</TableCell>
+                    <TableCell sx={{ fontWeight: 200, maxWidth: 140 }}>{row.co_lname_th}</TableCell>
+                    <TableCell sx={{ fontWeight: 200, maxWidth: 160 }}>{row.co_fname_en}</TableCell>
+                    <TableCell sx={{ fontWeight: 200, maxWidth: 160 }}>{row.co_lname_en}</TableCell>
+                    <TableCell sx={{ fontWeight: 200, maxWidth: 140 }}>{row.co_email}</TableCell>
+                    <TableCell sx={{ fontWeight: 200, maxWidth: 160 }}>{row.co_tel}</TableCell>
+                    <TableCell sx={{ fontWeight: 200, maxWidth: 140 }}>{row.fi_name_th}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Sheet>
+      </Modal>
     </div>
   );
 }

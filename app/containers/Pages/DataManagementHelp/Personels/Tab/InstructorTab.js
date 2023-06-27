@@ -1,11 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { JoyModal, ConfirmDelModal, DeleteButton } from 'dan-components';
-import { Box, Typography, useMediaQuery, Button } from '@mui/material';
+import {
+  Box,
+  Typography,
+  useMediaQuery,
+  Button,
+  Paper,
+  TableContainer,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+} from '@mui/material';
 import axios from 'axios';
 import { useTheme } from '@emotion/react';
-import { Select, selectClasses, Option, Input } from '@mui/joy';
+import { Select, selectClasses, Option, Input, Modal, Sheet } from '@mui/joy';
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
 import { DataGrid } from '@mui/x-data-grid';
+import ExportExcel from '../../../../../components/ExportExcel';
 
 function InstructorTab() {
   // สำหรับ Responsive
@@ -31,6 +44,7 @@ function InstructorTab() {
     table: 'tabinstrutors',
     primary: '',
   };
+  const tableName = 'Instructor';
   const [selectState, setSelectState] = useState(initialSelectState);
   const [state, setState] = useState(initialState);
   const [deleteState, setDeleteState] = useState(initialDeleteState);
@@ -40,6 +54,7 @@ function InstructorTab() {
   const [openUpdIns, setOpenUpdIns] = React.useState(false); // สำหรับใช้ควบคุม Modal update
   const [openDelIns, setOpenDelIns] = React.useState(false); // สำหรับใช้ควบคุม Modal Delete
   const [instructortypeRows, setInstructortypeRows] = useState([]);
+  const [openPreview, setOpenPreview] = React.useState(false);
 
   const [validation, setValidation] = useState({
     // false คือปกติ true คือแสดงเป็นสีแดง
@@ -466,7 +481,10 @@ function InstructorTab() {
               + Add Instrutor
             </Typography>
           </Button>
-          <Button sx={{ ml: 2 }}>
+          <Button
+            sx={{ ml: 2 }}
+            onClick={() => setOpenPreview(true)}
+          >
             <Typography
               sx={{
                 fontSize: 12,
@@ -523,6 +541,102 @@ function InstructorTab() {
         handleSubmit={handleInsertSubmit}
         subDetail={true}
       />
+      <Modal
+        open={openPreview}
+        onClose={() => setOpenPreview(false)}
+        sx={{ minWidth: 800, display: 'flex', justifyContent: 'center', alignItems: 'center', overflow: 'auto' }}
+      >
+        <Sheet
+          variant='outlined'
+          sx={{
+            flex: 'none',
+            width: '100%',
+            minWidth: 600,
+            maxWidth: 1200,
+            borderRadius: 'md',
+            p: 3,
+            boxShadow: 'lg',
+            m: 'auto',
+          }}
+        >
+          <Box sx={{ display: 'flex', flexDirection: 'column', m: 4 }}>
+            <Typography
+              variant='h4'
+              mb={2}
+            >
+              Export Excel File
+            </Typography>
+            <Box sx={{ display: 'flex', width: '100%', flexDirection: 'column' }}>
+              <Box sx={{ display: 'flex', width: '100%', justifyContent: 'space-between' }}>
+                <Box sx={{ display: 'flex', width: 200, justifyContent: 'space-between' }}>
+                  <Typography
+                    sx={{ mt: 1 }}
+                    variant='body2'
+                  >
+                    Table :
+                  </Typography>
+                  <ExportExcel
+                    fileName={tableName + '_' + Date().toLocaleString()}
+                    tableName={tableName}
+                    excelData={instructortypeRows.map((val) => ({
+                      FirstNameTH: val.ist_fname_th,
+                      LastNameTH: val.ist_lname_th,
+                      FirstNameEN: val.ist_fname_en,
+                      LastNameEN: val.ist_lname_en,
+                      Email: val.ist_email,
+                      Tel: val.ist_tel,
+                      Faculty: val.fi_name_th,
+                    }))}
+                  />
+                </Box>
+              </Box>
+              <Box sx={{ display: 'flex', width: 200, justifyContent: 'space-between' }}>
+                <Typography variant='body2'>Total rows :</Typography>
+                <Typography variant='body2'>{instructortypeRows.length}</Typography>
+              </Box>
+            </Box>
+          </Box>
+          <TableContainer
+            component={Paper}
+            style={{ maxWidth: '100%', width: '100%' }}
+          >
+            <Table
+              sx={{ overflowX: 'auto' }}
+              aria-label='spanning table'
+            >
+              <TableHead>
+                <TableRow>
+                  <TableCell>#</TableCell>
+                  <TableCell>First Name(TH)</TableCell>
+                  <TableCell>Last Name(TH)</TableCell>
+                  <TableCell>First Name(EN)</TableCell>
+                  <TableCell>Last Name(EN)</TableCell>
+                  <TableCell>Email</TableCell>
+                  <TableCell>Tel</TableCell>
+                  <TableCell>Faculty</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {instructortypeRows.map((row, index) => (
+                  <TableRow
+                    key={row.name}
+                    sx={{ background: index % 2 === 0 ? '#f2f6fa' : '' }}
+                  >
+                    <TableCell sx={{ fontWeight: 200, width: 60 }}>{index + 1}</TableCell>
+                    <TableCell sx={{ fontWeight: 200, maxWidth: 160 }}>{row.ist_fname_th}</TableCell>
+                    <TableCell sx={{ fontWeight: 200, maxWidth: 140 }}>{row.ist_lname_th}</TableCell>
+                    <TableCell sx={{ fontWeight: 200, maxWidth: 160 }}>{row.ist_fname_en}</TableCell>
+                    <TableCell sx={{ fontWeight: 200, maxWidth: 160 }}>{row.ist_lname_en}</TableCell>
+                    <TableCell sx={{ fontWeight: 200, maxWidth: 140 }}>{row.ist_email}</TableCell>
+                    <TableCell sx={{ fontWeight: 200, maxWidth: 160 }}>{row.ist_tel}</TableCell>
+                    <TableCell sx={{ fontWeight: 200, maxWidth: 140 }}>{row.fi_name_th}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Sheet>
+      </Modal>
     </div>
   );
 }

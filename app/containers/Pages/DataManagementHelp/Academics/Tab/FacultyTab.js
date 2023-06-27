@@ -1,11 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { JoyModal, DeleteButton, ConfirmDelModal } from 'dan-components';
-import { Box, Typography, useMediaQuery, Button } from '@mui/material';
+import {
+  Box,
+  Typography,
+  useMediaQuery,
+  Button,
+  TableContainer,
+  Paper,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+} from '@mui/material';
 import axios from 'axios';
 import { useTheme } from '@emotion/react';
-import { Select, selectClasses, Option, Input } from '@mui/joy';
+import { Select, selectClasses, Option, Input, Modal, Sheet } from '@mui/joy';
 import { DataGrid } from '@mui/x-data-grid';
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
+import ExportExcel from '../../../../../components/ExportExcel';
 
 function FacultyTab() {
   // สำหรับ Responsive
@@ -27,11 +40,12 @@ function FacultyTab() {
     table: 'tabfaculty_institutes',
     primary: '',
   };
-
+  const tableName = 'Faculty';
   // ค่า modal state change
   const [openIns, setOpenIns] = React.useState(false); // สำหรับใช้ควบคุม Modal insert
   const [openUpd, setOpenUpd] = React.useState(false); // สำหรับใช้ควบคุม Modal update
   const [openDel, setOpenDel] = React.useState(false); // สำหรับใช้ควบคุม Modal Delete
+  const [openPreview, setOpenPreview] = React.useState(false);
 
   // สำหรับ set ค่า State
   const [Rows, setRows] = useState([]);
@@ -411,7 +425,10 @@ function FacultyTab() {
               + Add Institute
             </Typography>
           </Button>
-          <Button sx={{ ml: 2 }}>
+          <Button
+            sx={{ ml: 2 }}
+            onClick={() => setOpenPreview(true)}
+          >
             <Typography
               sx={{
                 fontSize: 12,
@@ -468,6 +485,93 @@ function FacultyTab() {
         handleSubmit={(e) => onSubmit(e)}
         subDetail={false}
       />
+      <Modal
+        open={openPreview}
+        onClose={() => setOpenPreview(false)}
+        sx={{ minWidth: 800, display: 'flex', justifyContent: 'center', alignItems: 'center', overflow: 'auto' }}
+      >
+        <Sheet
+          variant='outlined'
+          sx={{
+            flex: 'none',
+            width: '100%',
+            minWidth: 600,
+            maxWidth: 1200,
+            borderRadius: 'md',
+            p: 3,
+            boxShadow: 'lg',
+            m: 'auto',
+          }}
+        >
+          <Box sx={{ display: 'flex', flexDirection: 'column', m: 4 }}>
+            <Typography
+              variant='h4'
+              mb={2}
+            >
+              Export Excel File
+            </Typography>
+            <Box sx={{ display: 'flex', width: '100%', flexDirection: 'column' }}>
+              <Box sx={{ display: 'flex', width: '100%', justifyContent: 'space-between' }}>
+                <Box sx={{ display: 'flex', width: 200, justifyContent: 'space-between' }}>
+                  <Typography
+                    sx={{ mt: 1 }}
+                    variant='body2'
+                  >
+                    Table :
+                  </Typography>
+                  <ExportExcel
+                    fileName={tableName + '_' + Date().toLocaleString()}
+                    tableName={tableName}
+                    excelData={Rows.map((val) => ({
+                      AcademicNameTH: val.ac_name_th,
+                      AcademicNameEN: val.ac_name_en,
+                      Campus: val.ac_campus,
+                      Address: val.ac_address,
+                      Tel: val.ac_tel,
+                      AcademicType: val.ac_type_name_th,
+                    }))}
+                  />
+                </Box>
+              </Box>
+              <Box sx={{ display: 'flex', width: 200, justifyContent: 'space-between' }}>
+                <Typography variant='body2'>Total rows :</Typography>
+                <Typography variant='body2'>{Rows.length}</Typography>
+              </Box>
+            </Box>
+          </Box>
+          <TableContainer
+            component={Paper}
+            style={{ maxWidth: '100%', width: '100%' }}
+          >
+            <Table
+              sx={{ overflowX: 'auto' }}
+              aria-label='spanning table'
+            >
+              <TableHead>
+                <TableRow>
+                  <TableCell>#</TableCell>
+                  <TableCell>Name(TH)</TableCell>
+                  <TableCell>Name(EN)</TableCell>
+                  <TableCell>Academic Type</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {Rows.map((row, index) => (
+                  <TableRow
+                    key={row.name}
+                    sx={{ background: index % 2 === 0 ? '#f2f6fa' : '' }}
+                  >
+                    <TableCell sx={{ fontWeight: 200, width: 60 }}>{index + 1}</TableCell>
+                    <TableCell sx={{ fontWeight: 200 }}>{row.fi_name_th}</TableCell>
+                    <TableCell sx={{ fontWeight: 200 }}>{row.fi_name_en}</TableCell>
+                    <TableCell sx={{ fontWeight: 200 }}>{row.ac_name_th}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Sheet>
+      </Modal>
     </div>
   );
 }

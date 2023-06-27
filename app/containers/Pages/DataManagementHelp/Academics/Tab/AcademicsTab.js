@@ -100,9 +100,9 @@ function AcademicsTab() {
   }, [state]);
   // set columns
   const columns = [
-    { field: 'ac_name_th', headerName: 'Name(TH)', width: 300 },
-    { field: 'ac_name_en', headerName: 'Name(EN)', width: 320 },
-    { field: 'ac_campus', headerName: 'campus', width: 160 },
+    { field: 'ac_name_th', headerName: 'Name(TH)', width: 260 },
+    { field: 'ac_name_en', headerName: 'Name(EN)', width: 260 },
+    { field: 'ac_campus', headerName: 'campus', width: 130 },
     { field: 'ac_address', headerName: 'Address', width: 350 },
     { field: 'ac_tel', headerName: 'Tel', width: 120 },
     { field: 'academic_type_ac_type_id', headerName: 'Type', width: 50 },
