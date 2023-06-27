@@ -56,8 +56,31 @@ function CollegianTab() {
   const [selectState, setSelectState] = useState([initialSelectState]);
 
   // สำหรับ dropdown
-  const [curriculumsList, setCurriculumsList] = useState([]);
-  const [facultyList, setFacultyList] = useState([]);
+  const [curriculumsListIns, setCurriculumsListIns] = useState([]);
+  const [facultyListIns, setFacultyListIns] = useState([]);
+  const [curriculumsList, setCurriculumsList] = useState(curriculumsListIns);
+  const [facultyList, setFacultyList] = useState(facultyListIns);
+
+  useEffect(() => {
+    axios
+      .get('http://192.168.1.168:8000/api/method/frappe.help-api.getAllCurriculumandFaculty')
+      .then((response) => {
+        console.log(response);
+        setCurriculumsListIns(response.data.message.CurriculumList);
+        setFacultyListIns(response.data.message.FacultyList);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {
+        // always executed
+      });
+  }, []);
+
+  const handelSetDropdownDefaults = () => {
+    setCurriculumsList(curriculumsListIns);
+    setFacultyList(facultyListIns);
+  };
 
   const dropdown = (id) => {
     const strId = id.toString();
@@ -489,6 +512,7 @@ function CollegianTab() {
           <Button
             onClick={() => {
               setOpenInsCo(true);
+              handelSetDropdownDefaults();
             }}
             sx={{
               px: 2,
