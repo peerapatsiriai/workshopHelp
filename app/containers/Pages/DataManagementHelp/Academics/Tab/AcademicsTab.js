@@ -46,6 +46,7 @@ function AcademicsTab() {
     ac_campus: false,
     ac_address: false,
     ac_tel: false,
+    academic_type_ac_type_id: false,
   });
   useEffect(() => {
     // console.log(state.input1);
@@ -71,6 +72,11 @@ function AcademicsTab() {
     }
     if (state.ac_campus !== '') {
       setValidation((pre) => ({ ...pre, ac_campus: false }));
+    } else {
+      console.log('Still Null');
+    }
+    if (state.academic_type_ac_type_id !== '') {
+      setValidation((pre) => ({ ...pre, academic_type_ac_type_id: false }));
     } else {
       console.log('Still Null');
     }
@@ -229,6 +235,8 @@ function AcademicsTab() {
         <Box sx={{ width: '50%' }}>
           <Typography sx={{ fontSize: 12, mb: 0.5, ml: 2 }}>Academic Type*</Typography>
           <Select
+            // false คือปกติ true คือแสดงสีแดง
+            error={validation.academic_type_ac_type_id || false}
             placeholder='Type in here…'
             indicator={<KeyboardArrowDown />}
             disabled={selectDisabled}
@@ -292,8 +300,8 @@ function AcademicsTab() {
   const handleInsertSubmit = (e) => {
     e.preventDefault();
     console.log(state);
-    const stateWithoutId = { ...state };
-    delete stateWithoutId.academic_type_ac_type_id;
+    const stateWithoutId = { ...state }; // เก็บทุกค่าที่จะส่งไปที่ stateWithoutId
+    // delete stateWithoutId.academic_type_ac_type_id; //คำสั่งยกเว้นค่าว่างใน State(ลบค่าใน values Select ใน Select)
 
     const isStateValid = Object.values(stateWithoutId).every((value) => value && value.trim() !== '');
 
@@ -333,6 +341,10 @@ function AcademicsTab() {
       if (state.ac_campus === '') {
         // ทำให้แสดงสีแดงตรงที่ไม่ได้กรอกข้อความ
         setValidation((pre) => ({ ...pre, ac_campus: true }));
+      }
+      if (state.academic_type_ac_type_id === '') {
+        // ทำให้แสดงสีแดงตรงที่ไม่ได้กรอกข้อความ
+        setValidation((pre) => ({ ...pre, academic_type_ac_type_id: true }));
       }
     }
   };

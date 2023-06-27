@@ -112,11 +112,11 @@ function CollegianTab() {
     } else if (type === 'en') {
       updatedValue = updatedValue.replace(/[^a-zA-Z\s]/g, '');
     } else if (type === 'email') {
-      updatedValue = updatedValue.replace(/[^A-Za-z0-9.@+-]/g, ' ');
+      updatedValue = updatedValue.replace(/[^A-Za-z0-9.@+-]/g, '');
     } else if (type === 'tel') {
       updatedValue = updatedValue.replace(/[^0-9]/g, '');
     } else if (type === 'code') {
-      updatedValue = updatedValue.replace(/[^a-zA-Z0-9\s]/g, ' ');
+      updatedValue = updatedValue.replace(/[^a-zA-Z0-9\s]/g, '');
     }
     setState((pre) => ({ ...pre, [getKey]: updatedValue }));
   };
@@ -274,7 +274,7 @@ function CollegianTab() {
         <Box sx={{ width: '50%' }}>
           <Typography sx={{ fontSize: 12, mb: 0.5, ml: 2 }}>Faculty Institutes</Typography>
           <Select
-            error={validation.faculty_institutes_fi_id || false}
+            id='faculty_institutes_fi_id'
             placeholder='กรุณาเลือกคณะ'
             indicator={<KeyboardArrowDown />}
             value={state.faculty_institutes_fi_id || ''}
@@ -300,6 +300,7 @@ function CollegianTab() {
         <Box sx={{ width: '50%' }}>
           <Typography sx={{ fontSize: 12, mb: 0.5, ml: 2 }}>Curriculum</Typography>
           <Select
+            id='curriculums_cur_id'
             placeholder='กรุณาเลือกหลักสูตร'
             indicator={<KeyboardArrowDown />}
             value={state.curriculums_cur_id || ''}
@@ -411,14 +412,12 @@ function CollegianTab() {
 
   useEffect(() => {
     const updatedValidation = {};
-
     Object.keys(state).forEach((key) => {
       const value = state[key];
-      if (value !== '') {
+      if (value !== '' && value !== null) {
         updatedValidation[key] = false;
       }
     });
-
     setValidation((prevValidation) => ({ ...prevValidation, ...updatedValidation }));
   }, [state]);
 
@@ -494,6 +493,7 @@ function CollegianTab() {
           handleClose={() => {
             setOpenUpdCo(false);
             setState(initialState);
+            setValidation(initialValidation);
           }}
           content={ContentModal}
           header={'Update Collegian'}
@@ -514,6 +514,7 @@ function CollegianTab() {
         handleClose={() => {
           setOpenInsCo(false);
           setState(initialState);
+          setValidation(initialValidation);
         }}
         content={ContentModal}
         header={'Add New Collegian'}
