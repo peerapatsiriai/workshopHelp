@@ -112,11 +112,11 @@ function CollegianTab() {
     } else if (type === 'en') {
       updatedValue = updatedValue.replace(/[^a-zA-Z\s]/g, '');
     } else if (type === 'email') {
-      updatedValue = updatedValue.replace(/[^A-Za-z0-9.@+-]/g, ' ');
+      updatedValue = updatedValue.replace(/[^A-Za-z0-9.@+-]/g, '');
     } else if (type === 'tel') {
       updatedValue = updatedValue.replace(/[^0-9]/g, '');
     } else if (type === 'code') {
-      updatedValue = updatedValue.replace(/[^a-zA-Z0-9\s]/g, ' ');
+      updatedValue = updatedValue.replace(/[^a-zA-Z0-9\s]/g, '');
     }
     setState((pre) => ({ ...pre, [getKey]: updatedValue }));
   };
