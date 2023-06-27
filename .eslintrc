@@ -56,8 +56,8 @@
     }
   },
   "globals": {
-    "__CLIENT__": true,
-    "__SERVER__": true,
+    "CLIENT": true,
+    "SERVER": true,
     "beforeAll": true,
     "afterAll": true,
   }
