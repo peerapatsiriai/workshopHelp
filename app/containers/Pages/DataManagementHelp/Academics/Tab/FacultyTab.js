@@ -20,6 +20,9 @@ function FacultyTab() {
     fi_name_en: '',
     academics_ac_id: '',
   };
+  const initialSelectState = {
+    ac_name_th: '',
+  };
   const initialDeleteState = {
     table: 'tabfaculty_institutes',
     primary: '',
@@ -267,7 +270,7 @@ function FacultyTab() {
                 // eslint-disable-next-line implicit-arrow-linebreak
                 setSelectState((pre) => ({
                   ...pre,
-                  fi_name_th: data.fi_name_th,
+                  ac_name_th: data.ac_name_th,
                 }))
               }>
               {data.ac_name_th}
@@ -300,6 +303,7 @@ function FacultyTab() {
         };
         setRows((pre) => [newState2, ...pre]);
         setState(initialState);
+        setSelectState(initialSelectState);
       })
       .catch((error) => {
         console.log(error);
