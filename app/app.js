@@ -15,6 +15,7 @@ import FontFaceObserver from 'fontfaceobserver';
 import history from 'utils/history';
 import 'react-18-image-lightbox/style.css';
 import 'sanitize.css/sanitize.css';
+import './styles/index.css';
 
 // Import root app
 import App from 'containers/App';
@@ -47,10 +48,13 @@ const { store, persistor } = configureStore(initialState, history);
 const MOUNT_NODE = document.getElementById('app');
 
 const root = createRoot(MOUNT_NODE);
-const render = messages => {
+const render = (messages) => {
   root.render(
     <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
+      <PersistGate
+        loading={null}
+        persistor={persistor}
+      >
         <LanguageProvider messages={messages}>
           <ConnectedRouter history={history}>
             <App history={history} />
@@ -73,15 +77,12 @@ if (module.hot) {
 
 // Chunked polyfill for browsers without Intl support
 if (!window.Intl) {
-  new Promise(resolve => {
+  new Promise((resolve) => {
     resolve(import('intl'));
   })
-    .then(() => Promise.all([
-      import('intl/locale-data/jsonp/en.js'),
-      import('intl/locale-data/jsonp/de.js'),
-    ])) // eslint-disable-line
+    .then(() => Promise.all([import('intl/locale-data/jsonp/en.js'), import('intl/locale-data/jsonp/de.js')])) // eslint-disable-line
     .then(() => render(translationMessages))
-    .catch(err => {
+    .catch((err) => {
       throw err;
     });
 } else {

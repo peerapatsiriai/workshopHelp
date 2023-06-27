@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500&display=swap');
 html {
   background-color: $viewport-background-color;
   box-sizing: border-box;
@@ -10,7 +11,7 @@ html {
 }
 
 *:focus {
-  outline: none
+  outline: none;
 }
 
 html,
@@ -20,4 +21,5 @@ body {
 
 body {
   margin: 0;
+  font-family: 'Noto Sans Thai', sans-serif;
 }

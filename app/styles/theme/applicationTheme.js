@@ -7,7 +7,7 @@ const applicationTheme = (color, mode, direction) => ({
     secondary: themePalette(color, mode).palette.secondary,
     action: {
       hover: mode === 'dark' ? 'rgba(80,80,80, 0.9)' : 'rgba(80,80,80, 0.05)',
-      hoverOpacity: 0.05
+      hoverOpacity: 0.05,
     },
     background: {
       paper: mode === 'dark' ? '#424242' : '#FFFFFF',
@@ -17,16 +17,17 @@ const applicationTheme = (color, mode, direction) => ({
   typography: {
     useNextVariants: true,
     fontFamily: [
-      'Open Sans',
+      // 'Open Sans',
+      'Noto Sans Thai',
       'sans-serif',
     ].join(','),
     title: {
-      fontWeight: 600
+      fontWeight: 600,
     },
     body2: {
-      fontWeight: 500
+      fontWeight: 500,
     },
-    fontWeightMedium: 600
+    fontWeightMedium: 600,
   },
   shade: {
     light: '0 10px 15px -5px rgba(62, 57, 107, .07)',
@@ -39,71 +40,69 @@ const applicationTheme = (color, mode, direction) => ({
   rounded: {
     small: '8px',
     medium: '12px',
-    big: '20px'
+    big: '20px',
   },
-  shadows: mode === 'dark'
-    ? [
-      'none',
-      '0px 1px 3px 0px rgba(50,50,50, 0.2),0px 1px 1px 0px rgba(50,50,50, 0.14),0px 2px 1px -1px rgba(50,50,50, 0.12)',
-      '0px 1px 5px 0px rgba(50,50,50, 0.2),0px 2px 2px 0px rgba(50,50,50, 0.14),0px 3px 1px -2px rgba(50,50,50, 0.12)',
-      '0px 1px 8px 0px rgba(50,50,50, 0.2),0px 3px 4px 0px rgba(50,50,50, 0.14),0px 3px 3px -2px rgba(50,50,50, 0.12)',
-      '0px 2px 4px -1px rgba(50,50,50, 0.2),0px 4px 5px 0px rgba(50,50,50, 0.14),0px 1px 10px 0px rgba(50,50,50, 0.12)',
-      '0px 3px 5px -1px rgba(50,50,50, 0.2),0px 5px 8px 0px rgba(50,50,50, 0.14),0px 1px 14px 0px rgba(50,50,50, 0.12)',
-      '0px 3px 5px -1px rgba(50,50,50, 0.2),0px 6px 10px 0px rgba(50,50,50, 0.14),0px 1px 18px 0px rgba(50,50,50, 0.12)',
-      '0px 4px 5px -2px rgba(50,50,50, 0.2),0px 7px 10px 1px rgba(50,50,50, 0.14),0px 2px 16px 1px rgba(50,50,50, 0.12)',
-      '0px 5px 5px -3px rgba(50,50,50, 0.2),0px 8px 10px 1px rgba(50,50,50, 0.14),0px 3px 14px 2px rgba(50,50,50, 0.12)',
-      '0px 5px 6px -3px rgba(50,50,50, 0.2),0px 9px 12px 1px rgba(50,50,50, 0.14),0px 3px 16px 2px rgba(50,50,50, 0.12)',
-      '0px 6px 6px -3px rgba(50,50,50, 0.2),0px 10px 14px 1px rgba(50,50,50, 0.14),0px 4px 18px 3px rgba(50,50,50, 0.12)',
-      '0px 6px 7px -4px rgba(50,50,50, 0.2),0px 11px 15px 1px rgba(50,50,50, 0.14),0px 4px 20px 3px rgba(50,50,50, 0.12)',
-      '0px 7px 8px -4px rgba(50,50,50, 0.2),0px 12px 17px 2px rgba(50,50,50, 0.14),0px 5px 22px 4px rgba(50,50,50, 0.12)',
-      '0px 7px 8px -4px rgba(50,50,50, 0.2),0px 13px 19px 2px rgba(50,50,50, 0.14),0px 5px 24px 4px rgba(50,50,50, 0.12)',
-      '0px 7px 9px -4px rgba(50,50,50, 0.2),0px 14px 21px 2px rgba(50,50,50, 0.14),0px 5px 26px 4px rgba(50,50,50, 0.12)',
-      '0px 8px 9px -5px rgba(50,50,50, 0.2),0px 15px 22px 2px rgba(50,50,50, 0.14),0px 6px 28px 5px rgba(50,50,50, 0.12)',
-      '0px 8px 10px -5px rgba(50,50,50, 0.2),0px 16px 24px 2px rgba(50,50,50, 0.14),0px 6px 30px 5px rgba(50,50,50, 0.12)',
-      '0px 8px 11px -5px rgba(50,50,50, 0.2),0px 17px 26px 2px rgba(50,50,50, 0.14),0px 6px 32px 5px rgba(50,50,50, 0.12)',
-      '0px 9px 11px -5px rgba(50,50,50, 0.2),0px 18px 28px 2px rgba(50,50,50, 0.14),0px 7px 34px 6px rgba(50,50,50, 0.12)',
-      '0px 9px 12px -6px rgba(50,50,50, 0.2),0px 19px 29px 2px rgba(50,50,50, 0.14),0px 7px 36px 6px rgba(50,50,50, 0.12)',
-      '0px 10px 13px -6px rgba(50,50,50, 0.2),0px 20px 31px 3px rgba(50,50,50, 0.14),0px 8px 38px 7px rgba(50,50,50, 0.12)',
-      '0px 10px 13px -6px rgba(50,50,50, 0.2),0px 21px 33px 3px rgba(50,50,50, 0.14),0px 8px 40px 7px rgba(50,50,50, 0.12)',
-      '0px 10px 14px -6px rgba(50,50,50, 0.2),0px 22px 35px 3px rgba(50,50,50, 0.14),0px 8px 42px 7px rgba(50,50,50, 0.12)',
-      '0px 11px 14px -7px rgba(50,50,50, 0.2),0px 23px 36px 3px rgba(50,50,50, 0.14),0px 9px 44px 8px rgba(50,50,50, 0.12)',
-      '0px 11px 15px -7px rgba(50,50,50, 0.2),0px 24px 38px 3px rgba(850,50,50 0.14),0px 9px 46px 8px rgba(50,50,50, 0.12)',
-    ]
-    : [
-      'none',
-      '0px 1px 3px 0px rgba(80,80,80, 0.2),0px 1px 1px 0px rgba(80,80,80, 0.14),0px 2px 1px -1px rgba(80,80,80, 0.12)',
-      '0px 1px 5px 0px rgba(80,80,80, 0.2),0px 2px 2px 0px rgba(80,80,80, 0.14),0px 3px 1px -2px rgba(80,80,80, 0.12)',
-      '0px 1px 8px 0px rgba(80,80,80, 0.2),0px 3px 4px 0px rgba(80,80,80, 0.14),0px 3px 3px -2px rgba(80,80,80, 0.12)',
-      '0px 2px 4px -1px rgba(80,80,80, 0.2),0px 4px 5px 0px rgba(80,80,80, 0.14),0px 1px 10px 0px rgba(80,80,80, 0.12)',
-      '0px 3px 5px -1px rgba(80,80,80, 0.2),0px 5px 8px 0px rgba(80,80,80, 0.14),0px 1px 14px 0px rgba(80,80,80, 0.12)',
-      '0px 3px 5px -1px rgba(80,80,80, 0.2),0px 6px 10px 0px rgba(80,80,80, 0.14),0px 1px 18px 0px rgba(80,80,80, 0.12)',
-      '0px 4px 5px -2px rgba(80,80,80, 0.2),0px 7px 10px 1px rgba(80,80,80, 0.14),0px 2px 16px 1px rgba(80,80,80, 0.12)',
-      '0px 5px 5px -3px rgba(80,80,80, 0.2),0px 8px 10px 1px rgba(80,80,80, 0.14),0px 3px 14px 2px rgba(80,80,80, 0.12)',
-      '0px 5px 6px -3px rgba(80,80,80, 0.2),0px 9px 12px 1px rgba(80,80,80, 0.14),0px 3px 16px 2px rgba(80,80,80, 0.12)',
-      '0px 6px 6px -3px rgba(80,80,80, 0.2),0px 10px 14px 1px rgba(80,80,80, 0.14),0px 4px 18px 3px rgba(80,80,80, 0.12)',
-      '0px 6px 7px -4px rgba(80,80,80, 0.2),0px 11px 15px 1px rgba(80,80,80, 0.14),0px 4px 20px 3px rgba(80,80,80, 0.12)',
-      '0px 7px 8px -4px rgba(80,80,80, 0.2),0px 12px 17px 2px rgba(80,80,80, 0.14),0px 5px 22px 4px rgba(80,80,80, 0.12)',
-      '0px 7px 8px -4px rgba(80,80,80, 0.2),0px 13px 19px 2px rgba(80,80,80, 0.14),0px 5px 24px 4px rgba(80,80,80, 0.12)',
-      '0px 7px 9px -4px rgba(80,80,80, 0.2),0px 14px 21px 2px rgba(80,80,80, 0.14),0px 5px 26px 4px rgba(80,80,80, 0.12)',
-      '0px 8px 9px -5px rgba(80,80,80, 0.2),0px 15px 22px 2px rgba(80,80,80, 0.14),0px 6px 28px 5px rgba(80,80,80, 0.12)',
-      '0px 8px 10px -5px rgba(80,80,80, 0.2),0px 16px 24px 2px rgba(80,80,80, 0.14),0px 6px 30px 5px rgba(80,80,80, 0.12)',
-      '0px 8px 11px -5px rgba(80,80,80, 0.2),0px 17px 26px 2px rgba(80,80,80, 0.14),0px 6px 32px 5px rgba(80,80,80, 0.12)',
-      '0px 9px 11px -5px rgba(80,80,80, 0.2),0px 18px 28px 2px rgba(80,80,80, 0.14),0px 7px 34px 6px rgba(80,80,80, 0.12)',
-      '0px 9px 12px -6px rgba(80,80,80, 0.2),0px 19px 29px 2px rgba(80,80,80, 0.14),0px 7px 36px 6px rgba(80,80,80, 0.12)',
-      '0px 10px 13px -6px rgba(80,80,80, 0.2),0px 20px 31px 3px rgba(80,80,80, 0.14),0px 8px 38px 7px rgba(80,80,80, 0.12)',
-      '0px 10px 13px -6px rgba(80,80,80, 0.2),0px 21px 33px 3px rgba(80,80,80, 0.14),0px 8px 40px 7px rgba(80,80,80, 0.12)',
-      '0px 10px 14px -6px rgba(80,80,80, 0.2),0px 22px 35px 3px rgba(80,80,80, 0.14),0px 8px 42px 7px rgba(80,80,80, 0.12)',
-      '0px 11px 14px -7px rgba(80,80,80, 0.2),0px 23px 36px 3px rgba(80,80,80, 0.14),0px 9px 44px 8px rgba(80,80,80, 0.12)',
-      '0px 11px 15px -7px rgba(80,80,80, 0.2),0px 24px 38px 3px rgba(80,80,80, 0.14),0px 9px 46px 8px rgba(80,80,80, 0.12)',
-    ],
+  shadows:
+    mode === 'dark'
+      ? [
+          'none',
+          '0px 1px 3px 0px rgba(50,50,50, 0.2),0px 1px 1px 0px rgba(50,50,50, 0.14),0px 2px 1px -1px rgba(50,50,50, 0.12)',
+          '0px 1px 5px 0px rgba(50,50,50, 0.2),0px 2px 2px 0px rgba(50,50,50, 0.14),0px 3px 1px -2px rgba(50,50,50, 0.12)',
+          '0px 1px 8px 0px rgba(50,50,50, 0.2),0px 3px 4px 0px rgba(50,50,50, 0.14),0px 3px 3px -2px rgba(50,50,50, 0.12)',
+          '0px 2px 4px -1px rgba(50,50,50, 0.2),0px 4px 5px 0px rgba(50,50,50, 0.14),0px 1px 10px 0px rgba(50,50,50, 0.12)',
+          '0px 3px 5px -1px rgba(50,50,50, 0.2),0px 5px 8px 0px rgba(50,50,50, 0.14),0px 1px 14px 0px rgba(50,50,50, 0.12)',
+          '0px 3px 5px -1px rgba(50,50,50, 0.2),0px 6px 10px 0px rgba(50,50,50, 0.14),0px 1px 18px 0px rgba(50,50,50, 0.12)',
+          '0px 4px 5px -2px rgba(50,50,50, 0.2),0px 7px 10px 1px rgba(50,50,50, 0.14),0px 2px 16px 1px rgba(50,50,50, 0.12)',
+          '0px 5px 5px -3px rgba(50,50,50, 0.2),0px 8px 10px 1px rgba(50,50,50, 0.14),0px 3px 14px 2px rgba(50,50,50, 0.12)',
+          '0px 5px 6px -3px rgba(50,50,50, 0.2),0px 9px 12px 1px rgba(50,50,50, 0.14),0px 3px 16px 2px rgba(50,50,50, 0.12)',
+          '0px 6px 6px -3px rgba(50,50,50, 0.2),0px 10px 14px 1px rgba(50,50,50, 0.14),0px 4px 18px 3px rgba(50,50,50, 0.12)',
+          '0px 6px 7px -4px rgba(50,50,50, 0.2),0px 11px 15px 1px rgba(50,50,50, 0.14),0px 4px 20px 3px rgba(50,50,50, 0.12)',
+          '0px 7px 8px -4px rgba(50,50,50, 0.2),0px 12px 17px 2px rgba(50,50,50, 0.14),0px 5px 22px 4px rgba(50,50,50, 0.12)',
+          '0px 7px 8px -4px rgba(50,50,50, 0.2),0px 13px 19px 2px rgba(50,50,50, 0.14),0px 5px 24px 4px rgba(50,50,50, 0.12)',
+          '0px 7px 9px -4px rgba(50,50,50, 0.2),0px 14px 21px 2px rgba(50,50,50, 0.14),0px 5px 26px 4px rgba(50,50,50, 0.12)',
+          '0px 8px 9px -5px rgba(50,50,50, 0.2),0px 15px 22px 2px rgba(50,50,50, 0.14),0px 6px 28px 5px rgba(50,50,50, 0.12)',
+          '0px 8px 10px -5px rgba(50,50,50, 0.2),0px 16px 24px 2px rgba(50,50,50, 0.14),0px 6px 30px 5px rgba(50,50,50, 0.12)',
+          '0px 8px 11px -5px rgba(50,50,50, 0.2),0px 17px 26px 2px rgba(50,50,50, 0.14),0px 6px 32px 5px rgba(50,50,50, 0.12)',
+          '0px 9px 11px -5px rgba(50,50,50, 0.2),0px 18px 28px 2px rgba(50,50,50, 0.14),0px 7px 34px 6px rgba(50,50,50, 0.12)',
+          '0px 9px 12px -6px rgba(50,50,50, 0.2),0px 19px 29px 2px rgba(50,50,50, 0.14),0px 7px 36px 6px rgba(50,50,50, 0.12)',
+          '0px 10px 13px -6px rgba(50,50,50, 0.2),0px 20px 31px 3px rgba(50,50,50, 0.14),0px 8px 38px 7px rgba(50,50,50, 0.12)',
+          '0px 10px 13px -6px rgba(50,50,50, 0.2),0px 21px 33px 3px rgba(50,50,50, 0.14),0px 8px 40px 7px rgba(50,50,50, 0.12)',
+          '0px 10px 14px -6px rgba(50,50,50, 0.2),0px 22px 35px 3px rgba(50,50,50, 0.14),0px 8px 42px 7px rgba(50,50,50, 0.12)',
+          '0px 11px 14px -7px rgba(50,50,50, 0.2),0px 23px 36px 3px rgba(50,50,50, 0.14),0px 9px 44px 8px rgba(50,50,50, 0.12)',
+          '0px 11px 15px -7px rgba(50,50,50, 0.2),0px 24px 38px 3px rgba(850,50,50 0.14),0px 9px 46px 8px rgba(50,50,50, 0.12)',
+        ]
+      : [
+          'none',
+          '0px 1px 3px 0px rgba(80,80,80, 0.2),0px 1px 1px 0px rgba(80,80,80, 0.14),0px 2px 1px -1px rgba(80,80,80, 0.12)',
+          '0px 1px 5px 0px rgba(80,80,80, 0.2),0px 2px 2px 0px rgba(80,80,80, 0.14),0px 3px 1px -2px rgba(80,80,80, 0.12)',
+          '0px 1px 8px 0px rgba(80,80,80, 0.2),0px 3px 4px 0px rgba(80,80,80, 0.14),0px 3px 3px -2px rgba(80,80,80, 0.12)',
+          '0px 2px 4px -1px rgba(80,80,80, 0.2),0px 4px 5px 0px rgba(80,80,80, 0.14),0px 1px 10px 0px rgba(80,80,80, 0.12)',
+          '0px 3px 5px -1px rgba(80,80,80, 0.2),0px 5px 8px 0px rgba(80,80,80, 0.14),0px 1px 14px 0px rgba(80,80,80, 0.12)',
+          '0px 3px 5px -1px rgba(80,80,80, 0.2),0px 6px 10px 0px rgba(80,80,80, 0.14),0px 1px 18px 0px rgba(80,80,80, 0.12)',
+          '0px 4px 5px -2px rgba(80,80,80, 0.2),0px 7px 10px 1px rgba(80,80,80, 0.14),0px 2px 16px 1px rgba(80,80,80, 0.12)',
+          '0px 5px 5px -3px rgba(80,80,80, 0.2),0px 8px 10px 1px rgba(80,80,80, 0.14),0px 3px 14px 2px rgba(80,80,80, 0.12)',
+          '0px 5px 6px -3px rgba(80,80,80, 0.2),0px 9px 12px 1px rgba(80,80,80, 0.14),0px 3px 16px 2px rgba(80,80,80, 0.12)',
+          '0px 6px 6px -3px rgba(80,80,80, 0.2),0px 10px 14px 1px rgba(80,80,80, 0.14),0px 4px 18px 3px rgba(80,80,80, 0.12)',
+          '0px 6px 7px -4px rgba(80,80,80, 0.2),0px 11px 15px 1px rgba(80,80,80, 0.14),0px 4px 20px 3px rgba(80,80,80, 0.12)',
+          '0px 7px 8px -4px rgba(80,80,80, 0.2),0px 12px 17px 2px rgba(80,80,80, 0.14),0px 5px 22px 4px rgba(80,80,80, 0.12)',
+          '0px 7px 8px -4px rgba(80,80,80, 0.2),0px 13px 19px 2px rgba(80,80,80, 0.14),0px 5px 24px 4px rgba(80,80,80, 0.12)',
+          '0px 7px 9px -4px rgba(80,80,80, 0.2),0px 14px 21px 2px rgba(80,80,80, 0.14),0px 5px 26px 4px rgba(80,80,80, 0.12)',
+          '0px 8px 9px -5px rgba(80,80,80, 0.2),0px 15px 22px 2px rgba(80,80,80, 0.14),0px 6px 28px 5px rgba(80,80,80, 0.12)',
+          '0px 8px 10px -5px rgba(80,80,80, 0.2),0px 16px 24px 2px rgba(80,80,80, 0.14),0px 6px 30px 5px rgba(80,80,80, 0.12)',
+          '0px 8px 11px -5px rgba(80,80,80, 0.2),0px 17px 26px 2px rgba(80,80,80, 0.14),0px 6px 32px 5px rgba(80,80,80, 0.12)',
+          '0px 9px 11px -5px rgba(80,80,80, 0.2),0px 18px 28px 2px rgba(80,80,80, 0.14),0px 7px 34px 6px rgba(80,80,80, 0.12)',
+          '0px 9px 12px -6px rgba(80,80,80, 0.2),0px 19px 29px 2px rgba(80,80,80, 0.14),0px 7px 36px 6px rgba(80,80,80, 0.12)',
+          '0px 10px 13px -6px rgba(80,80,80, 0.2),0px 20px 31px 3px rgba(80,80,80, 0.14),0px 8px 38px 7px rgba(80,80,80, 0.12)',
+          '0px 10px 13px -6px rgba(80,80,80, 0.2),0px 21px 33px 3px rgba(80,80,80, 0.14),0px 8px 40px 7px rgba(80,80,80, 0.12)',
+          '0px 10px 14px -6px rgba(80,80,80, 0.2),0px 22px 35px 3px rgba(80,80,80, 0.14),0px 8px 42px 7px rgba(80,80,80, 0.12)',
+          '0px 11px 14px -7px rgba(80,80,80, 0.2),0px 23px 36px 3px rgba(80,80,80, 0.14),0px 9px 44px 8px rgba(80,80,80, 0.12)',
+          '0px 11px 15px -7px rgba(80,80,80, 0.2),0px 24px 38px 3px rgba(80,80,80, 0.14),0px 9px 46px 8px rgba(80,80,80, 0.12)',
+        ],
   components: {
     MuiPaper: {
       styleOverrides: {
         root: {
-          backgroundColor:
-            mode === 'dark'
-              ? '#292929'
-              : '#FFFFFF'
+          backgroundColor: mode === 'dark' ? '#292929' : '#FFFFFF',
         },
         rounded: {
           borderRadius: 8,
@@ -120,7 +119,7 @@ const applicationTheme = (color, mode, direction) => ({
               ? '0px 2px 4px -1px rgba(64, 64, 64, 0.46), 0px 4px 5px 0px rgba(42, 42, 42, 0.32), 0px 1px 10px 0px rgba(20, 20, 20, 0.12)'
               : '0px 2px 4px -1px rgba(142, 142, 142, 0.2), 0px 4px 5px 0px rgba(243, 243, 243, 0.14), 0px 1px 10px 0px rgba(204, 204, 204, 0.12)',
         },
-      }
+      },
     },
     MuiButton: {
       styleOverrides: {
@@ -134,23 +133,20 @@ const applicationTheme = (color, mode, direction) => ({
         sizeSmall: {
           padding: '7px 12px',
         },
-      }
+      },
     },
     MuiTypography: {
       styleOverrides: {
         button: {
           fontWeight: 600,
         },
-      }
+      },
     },
     MuiInput: {
       styleOverrides: {
         root: {
           overflow: 'hidden',
-          border:
-            mode === 'dark'
-              ? '1px solid rgba(255,255,255,0.32)'
-              : '1px solid rgba(0,0,0,0.32)',
+          border: mode === 'dark' ? '1px solid rgba(255,255,255,0.32)' : '1px solid rgba(0,0,0,0.32)',
           borderRadius: 8,
           alignItems: 'center',
           transition: 'border 0.3s ease',
@@ -166,17 +162,17 @@ const applicationTheme = (color, mode, direction) => ({
             boxShadow: `0 0 1px ${themePalette(color, mode).palette.primary.main}`,
           },
           '&:before': {
-            display: 'none'
-          }
+            display: 'none',
+          },
         },
         input: {
           padding: 10,
           fontSize: 14,
         },
         multiline: {
-          paddingTop: 24
+          paddingTop: 24,
         },
-      }
+      },
     },
     MuiAutocomplete: {
       styleOverrides: {
@@ -184,13 +180,13 @@ const applicationTheme = (color, mode, direction) => ({
           padding: '24px 8px 0',
           top: -3,
           '& $endAdornment': {
-            paddingTop: 0
-          }
+            paddingTop: 0,
+          },
         },
         tag: {
-          padding: '0 !important'
-        }
-      }
+          padding: '0 !important',
+        },
+      },
     },
     MuiInputLabel: {
       styleOverrides: {
@@ -209,7 +205,7 @@ const applicationTheme = (color, mode, direction) => ({
             },
             '& .MuiSelect-select': {
               paddingBottom: 0,
-              paddingTop: '24px'
+              paddingTop: '24px',
             },
           },
         },
@@ -220,21 +216,21 @@ const applicationTheme = (color, mode, direction) => ({
             zIndex: 1,
           },
         },
-      }
+      },
     },
     MuiFormLabel: {
       styleOverrides: {
         root: {
-          fontSize: 14
+          fontSize: 14,
         },
-      }
+      },
     },
     MuiFormHelperText: {
       styleOverrides: {
         contained: {
-          marginLeft: 4
-        }
-      }
+          marginLeft: 4,
+        },
+      },
     },
     MuiSelect: {
       styleOverrides: {
@@ -247,22 +243,22 @@ const applicationTheme = (color, mode, direction) => ({
         },
         selectMenu: {
           paddingRight: '24px',
-        }
-      }
+        },
+      },
     },
     MuiSvgIcon: {
       styleOverrides: {
         root: {
-          fontSize: '1.2rem'
-        }
-      }
+          fontSize: '1.2rem',
+        },
+      },
     },
     MuiIcon: {
       styleOverrides: {
         root: {
-          fontSize: '1.2rem'
-        }
-      }
+          fontSize: '1.2rem',
+        },
+      },
     },
     MuiInputAdornment: {
       styleOverrides: {
@@ -277,55 +273,53 @@ const applicationTheme = (color, mode, direction) => ({
           },
           '& p': {
             minWidth: 24,
-            lineHeight: '16px'
+            lineHeight: '16px',
           },
           '& svg': {
             position: 'relative',
-            top: 4
+            top: 4,
           },
           '& .MuiAvatar-root': {
-            marginRight: 12
-          }
+            marginRight: 12,
+          },
         },
         positionStart: {
           marginLeft: 0,
           marginRight: 0,
           '& + *': {
-            paddingLeft: '0 !important'
-          }
+            paddingLeft: '0 !important',
+          },
         },
         positionEnd: {
           marginRight: 0,
-          marginLeft: 0
+          marginLeft: 0,
         },
-      }
+      },
     },
     MuiToolbar: {
       styleOverrides: {
         root: {
           borderRadius: 8,
         },
-      }
+      },
     },
     MuiTableCell: {
       styleOverrides: {
         root: {
           borderBottom:
-            mode === 'dark'
-              ? '1px solid #636363'
-              : `1px solid ${themePalette(color, mode).palette.primary.light}`,
+            mode === 'dark' ? '1px solid #636363' : `1px solid ${themePalette(color, mode).palette.primary.light}`,
         },
         head: {
           fontWeight: 600,
         },
-      }
+      },
     },
     MuiListItemText: {
       styleOverrides: {
         root: {
-          whiteSpace: 'nowrap'
-        }
-      }
+          whiteSpace: 'nowrap',
+        },
+      },
     },
     MuiLinearProgress: {
       styleOverrides: {
@@ -338,7 +332,7 @@ const applicationTheme = (color, mode, direction) => ({
         colorPrimary: {
           backgroundColor: mode === 'dark' ? '#616161' : '#ededed',
         },
-      }
+      },
     },
     MuiPickersToolbar: {
       styleOverrides: {
@@ -346,7 +340,7 @@ const applicationTheme = (color, mode, direction) => ({
           borderRadius: 0,
           boxShadow: 'inset 0 -30px 120px -30px rgba(0, 0, 0, 0.3)',
         },
-      }
+      },
     },
     MuiPickersClock: {
       styleOverrides: {
@@ -354,16 +348,14 @@ const applicationTheme = (color, mode, direction) => ({
           backgroundColor: 'none',
           border: `1px solid ${themePalette(color, mode).palette.primary.main}`,
         },
-      }
+      },
     },
     MuiPickersClockPointer: {
       styleOverrides: {
         thumb: {
-          boxShadow: `0 1px 10px 0px ${
-            themePalette(color, mode).palette.primary.main
-          }`,
+          boxShadow: `0 1px 10px 0px ${themePalette(color, mode).palette.primary.main}`,
         },
-      }
+      },
     },
     MuiPickerDTTabs: {
       styleOverrides: {
@@ -371,7 +363,7 @@ const applicationTheme = (color, mode, direction) => ({
           backgroundColor: 'transparent',
           color: themePalette(color, mode).palette.primary.main,
         },
-      }
+      },
     },
     MuiAccordion: {
       styleOverrides: {
@@ -393,7 +385,7 @@ const applicationTheme = (color, mode, direction) => ({
             },
           },
         },
-      }
+      },
     },
     MuiDialogTitle: {
       styleOverrides: {
@@ -416,7 +408,7 @@ const applicationTheme = (color, mode, direction) => ({
                 : themePalette(color, mode).palette.primary.dark,
           },
         },
-      }
+      },
     },
     MuiSnackbarContent: {
       styleOverrides: {
@@ -425,7 +417,7 @@ const applicationTheme = (color, mode, direction) => ({
             borderRadius: 8,
           },
         },
-      }
+      },
     },
     MuiAppBar: {
       styleOverrides: {
@@ -438,7 +430,7 @@ const applicationTheme = (color, mode, direction) => ({
               ? themePalette(color, mode).palette.primary.dark
               : themePalette(color, mode).palette.primary.main,
         },
-      }
+      },
     },
     MuiTabs: {
       styleOverrides: {
@@ -449,7 +441,7 @@ const applicationTheme = (color, mode, direction) => ({
           borderRadius: '10px 10px 0 0',
           height: 4,
         },
-      }
+      },
     },
     MuiToggleButtonGroup: {
       styleOverrides: {
@@ -459,7 +451,7 @@ const applicationTheme = (color, mode, direction) => ({
           boxShadow: 'none',
           border: `1px solid ${themePalette(color, mode).palette.secondary.main}`,
         },
-      }
+      },
     },
     MuiToggleButton: {
       styleOverrides: {
@@ -468,17 +460,17 @@ const applicationTheme = (color, mode, direction) => ({
           boxShadow: 'none !important',
           '&$selected': {
             color: themePalette(color, mode).palette.secondary.main,
-            backgroundColor: themePalette(color, mode).palette.secondary.light
-          }
+            backgroundColor: themePalette(color, mode).palette.secondary.light,
+          },
         },
-      }
+      },
     },
     MUIDataTableToolbar: {
       styleOverrides: {
         filterPaper: {
-          maxWidth: 'none'
-        }
-      }
+          maxWidth: 'none',
+        },
+      },
     },
     MUIDataTableToolbarSelect: {
       styleOverrides: {
@@ -495,36 +487,36 @@ const applicationTheme = (color, mode, direction) => ({
         deleteIcon: {
           color: mode === 'dark' ? '#FFF' : '#000',
         },
-      }
+      },
     },
     MuiChip: {
       styleOverrides: {
         deleteIcon: {
-          margin: direction === 'rtl' ? '0 -8px 0 4px' : '0 4px 0 -8px'
-        }
-      }
+          margin: direction === 'rtl' ? '0 -8px 0 4px' : '0 4px 0 -8px',
+        },
+      },
     },
     MuiSwitch: {
       styleOverrides: {
         root: {
-          direction: 'ltr'
-        }
-      }
+          direction: 'ltr',
+        },
+      },
     },
     MuiOutlinedInput: {
       styleOverrides: {
         input: {
-          padding: '8px 0 8px 8px'
+          padding: '8px 0 8px 8px',
         },
         root: {
-          paddingRight: 0
-        }
-      }
+          paddingRight: 0,
+        },
+      },
     },
     MuiInputBase: {
       styleOverrides: {
         input: {
-          flex: 1
+          flex: 1,
         },
         root: {
           MuiTablePagination: {
@@ -543,21 +535,21 @@ const applicationTheme = (color, mode, direction) => ({
               top: 4,
             },
             '& p': {
-              marginBottom: 0
-            }
+              marginBottom: 0,
+            },
           },
-        }
-      }
+        },
+      },
     },
     MuiTablePagination: {
       styleOverrides: {
         displayedRows: {
-          marginBottom: 0
+          marginBottom: 0,
         },
         selectLabel: {
-          marginBottom: 0
-        }
-      }
+          marginBottom: 0,
+        },
+      },
     },
     MUIDataTable: {
       styleOverrides: {
@@ -566,9 +558,9 @@ const applicationTheme = (color, mode, direction) => ({
           overflowX: 'auto !important',
         },
         tableRoot: {
-          minWidth: 360
-        }
-      }
+          minWidth: 360,
+        },
+      },
     },
     MUIDataTablePagination: {
       styleOverrides: {
@@ -577,16 +569,16 @@ const applicationTheme = (color, mode, direction) => ({
           '& > p': {
             marginBottom: 0,
             '@media (max-width: 400px)': {
-              display: 'none'
-            }
+              display: 'none',
+            },
           },
         },
         root: {
-          padding: 0
-        }
-      }
-    }
-  }
+          padding: 0,
+        },
+      },
+    },
+  },
 });
 
 export default applicationTheme;
