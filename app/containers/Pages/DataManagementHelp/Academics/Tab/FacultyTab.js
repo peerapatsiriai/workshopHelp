@@ -35,13 +35,14 @@ function FacultyTab() {
   const [dataAcademics, setDataAcademics] = useState([]);
   const [selectDisabled, setSelectDisabled] = useState(false);
   const [state, setState] = useState(initialState);
+  const [selectState, setSelectState] = useState(initialState);
   const [deleteState, setDeleteState] = useState(initialDeleteState);
 
   // by bill start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   const [validationFac, setValidationFac] = useState({
     fi_name_th: false,
     fi_name_en: false,
-    ac_name_th: false,
+    academics_ac_id: false,
   });
 
   const handleChange = (e, key, type) => {
@@ -62,8 +63,6 @@ function FacultyTab() {
   }, [deleteState]);
 
   useEffect(() => {
-    // console.log(state.fi_name_th);
-    // console.log(state.fi_name_en);
     if (state.fi_name_th !== '') {
       setValidationFac((pre) => ({ ...pre, fi_name_th: false }));
     } else {
@@ -74,12 +73,12 @@ function FacultyTab() {
     } else {
       console.log('NAME ENG Still Null');
     }
+    if (state.academics_ac_id !== null) {
+      setValidationFac((pre) => ({ ...pre, academics_ac_id: false }));
+    } else {
+      console.log('NAME ENG Still Null');
+    }
   }, [state]);
-
-  // functionn พิมได้แค่ ไทย และ อังกฤษ <<<<<<<<<<<<<<<<<<
-
-  // functionn พิมได้แค่ ไทย และ อังกฤษ <<<<<<<<<<<<<<<<<<
-
   // by bill spot >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
   // get Data Academics for select
@@ -95,10 +94,11 @@ function FacultyTab() {
       });
   }, []);
 
-  useEffect(() => {
-    const min = Math.min(...dataAcademics.map((item) => item.ac_id));
-    setState((pre) => ({ ...pre, academics_ac_id: String(min) }));
-  }, [dataAcademics]);
+  // useEffect(() => {
+  //   const min = Math.min(...dataAcademics.map((item) => item.ac_id));
+  //   setState((pre) => ({ ...pre, academics_ac_id: String(min) }));
+  // }, [dataAcademics]);
+
   // set columns
   const columns = [
     { field: 'fi_name_th', headerName: 'Name(TH)', width: 300 },
@@ -162,7 +162,9 @@ function FacultyTab() {
       <Box
         sx={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-end' }}>
         <Box sx={{ flexDirection: 'column', width: '50%', ml: 2 }}>
-          <Typography sx={{ fontSize: 12, mb: 0.5 }}>First Name(TH)</Typography>
+          <Typography sx={{ fontSize: 12, mb: 0.5 }}>
+            Academic Name(TH)
+          </Typography>
           <Input
             label='Academic Name'
             placeholder={
@@ -235,11 +237,17 @@ function FacultyTab() {
         <Select
           indicator={<KeyboardArrowDown />}
           value={state.academics_ac_id}
+          placeholder={
+            validationFac.academics_ac_id
+              ? 'Please Select Academic'
+              : 'Select Academic'
+          }
           onChange={(event, value) => {
             setState((pre) => ({ ...pre, academics_ac_id: value }));
             console.log('value: ', value);
           }}
           disabled={selectDisabled}
+          color={validationFac.academics_ac_id ? 'danger' : 'neutral'}
           size='sm'
           sx={{
             mt: 0.5,
@@ -252,7 +260,16 @@ function FacultyTab() {
             },
           }}>
           {dataAcademics?.map((data) => (
-            <Option key={data.name} value={data.ac_id}>
+            <Option
+              key={data.name}
+              value={data.ac_id}
+              onClick={() =>
+                // eslint-disable-next-line implicit-arrow-linebreak
+                setSelectState((pre) => ({
+                  ...pre,
+                  fi_name_th: data.fi_name_th,
+                }))
+              }>
               {data.ac_name_th}
             </Option>
           ))}
@@ -276,9 +293,12 @@ function FacultyTab() {
       .then((response) => {
         console.log(response);
         setOpenIns(false);
-        // console.log('t: ', response.data.message.Primarykey);
-        const newState = { fi_id: response.data.message.Primarykey, ...state };
-        setRows((pre) => [newState, ...pre]);
+        const newState1 = { ...selectState, ...state };
+        const newState2 = {
+          fi_id: response.data.message.Primarykey,
+          ...newState1,
+        };
+        setRows((pre) => [newState2, ...pre]);
         setState(initialState);
       })
       .catch((error) => {
@@ -287,7 +307,13 @@ function FacultyTab() {
   };
 
   const onSubmit = (e) => {
-    if (state.fi_name_th !== '' && state.fi_name_en !== '') {
+    if (
+      // eslint-disable-next-line operator-linebreak
+      state.fi_name_th !== '' &&
+      // eslint-disable-next-line operator-linebreak
+      state.fi_name_en !== '' &&
+      state.academics_ac_id !== null
+    ) {
       handleInsertSubmit(e);
       console.log('Submit');
     }
@@ -300,6 +326,11 @@ function FacultyTab() {
       console.log('NAME ENG NOT NULL');
     } else {
       setValidationFac((pre) => ({ ...pre, fi_name_en: true }));
+    }
+    if (state.academics_ac_id !== null) {
+      console.log('NAME ENG NOT NULL');
+    } else {
+      setValidationFac((pre) => ({ ...pre, academics_ac_id: true }));
     }
   };
 
@@ -391,7 +422,7 @@ function FacultyTab() {
                 textTransform: 'capitalize',
                 fontWeight: 'bold',
               }}>
-              + Add Faculty
+              + Add Institute
             </Typography>
           </Button>
           <Button sx={{ ml: 2 }}>
@@ -424,7 +455,7 @@ function FacultyTab() {
             setState(initialState);
           }}
           content={ContentModal}
-          header={'Update Collegian'}
+          header={'Update Institute'}
           labelBtn={'Update'}
           subDetail={true}
           handleSubmit={handleEditSubmit}
@@ -445,7 +476,7 @@ function FacultyTab() {
           setValidationFac(initialState);
         }}
         content={ContentModal}
-        header={'Add New Collegian'}
+        header={'Add New Institute'}
         labelBtn={'Submit'}
         handleSubmit={(e) => onSubmit(e)}
         subDetail={false}

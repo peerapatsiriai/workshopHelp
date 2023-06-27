@@ -39,6 +39,9 @@ function CollegianTab() {
     co_tel: false,
     faculty_institutes_fi_id: false,
   };
+  const initialSelectState = {
+    cur_name_th: '',
+  };
 
   // ค่า modal state change
   const [openInsCo, setOpenInsCo] = React.useState(false); // สำหรับใช้ควบคุม Modal insert
@@ -47,10 +50,33 @@ function CollegianTab() {
 
   // สำหรับ set state เริ่มต้น
   const [collegianRows, setCollegianRows] = useState([]);
-  const [selectDisabledCo, setSelectDisabledCo] = useState(false);
   const [state, setState] = useState(initialState);
   const [deleteState, setDeleteState] = useState(initialDeleteState);
   const [validation, setValidation] = useState(initialValidation);
+  const [selectState, setSelectState] = useState([initialSelectState]);
+
+  // สำหรับ dropdown
+  const [curriculumsList, setCurriculumsList] = useState([]);
+  const [facultyList, setFacultyList] = useState([]);
+
+  const dropdown = (id) => {
+    const strId = id.toString();
+    axios
+      .post('http://192.168.1.168:8000/api/method/frappe.help-api.getfacultyandcurriculumfordropdown', {
+        primarykey: strId,
+      })
+      .then((response) => {
+        console.log(response);
+        setCurriculumsList(response.data.message.CurriculumsList);
+        setFacultyList(response.data.message.FacultyList);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {
+        // always executed
+      });
+  };
 
   // set columns
   const collegianColumns = [
@@ -69,9 +95,9 @@ function CollegianTab() {
           variant='text'
           onClick={() => {
             setOpenUpdCo(true);
+            dropdown(cellValues.row.co_id);
             setState(cellValues.row);
             setState((pre) => ({ ...pre, primarykey: cellValues.row.co_id }));
-            setSelectDisabledCo(true);
           }}
         >
           ...
@@ -102,6 +128,11 @@ function CollegianTab() {
       console.log(response.data.message.Data);
     });
   }, []);
+
+  useEffect(() => {
+    console.log('DropdownA: ', curriculumsList);
+    console.log('DropdownB: ', facultyList);
+  }, [curriculumsList]);
 
   const handleChange = (e, key, type) => {
     const { value } = e.target;
@@ -278,8 +309,10 @@ function CollegianTab() {
             placeholder='กรุณาเลือกคณะ'
             indicator={<KeyboardArrowDown />}
             value={state.faculty_institutes_fi_id || ''}
-            onChange={(event, value) => setState((pre) => ({ ...pre, faculty_institutes_fi_id: value }))}
-            disabled={selectDisabledCo}
+            onChange={(event, value, text) => {
+              setState((pre) => ({ ...pre, faculty_institutes_fi_id: value }));
+              setSelectState(text);
+            }}
             color={validation.faculty_institutes_fi_id ? 'danger' : 'neutral'}
             sx={{
               mx: 1,
@@ -292,9 +325,14 @@ function CollegianTab() {
               },
             }}
           >
-            <Option value='10'>คณะวิศวกรรมศาสตร์</Option>
-            <Option value='11'>คณะบริหารธุรกิจและศิลปศาสตร์</Option>
-            <Option value='12'>คณะวิทยาศาสตร์และเทคโนโลยีการเกษตร</Option>
+            {facultyList.map((faculty) => (
+              <Option
+                key={faculty.fi_id}
+                value={faculty.fi_id}
+              >
+                {faculty.fi_name_th}
+              </Option>
+            ))}
           </Select>
         </Box>
         <Box sx={{ width: '50%' }}>
@@ -305,7 +343,6 @@ function CollegianTab() {
             indicator={<KeyboardArrowDown />}
             value={state.curriculums_cur_id || ''}
             onChange={(event, value) => setState((pre) => ({ ...pre, curriculums_cur_id: value }))}
-            disabled={selectDisabledCo}
             color={validation.curriculums_cur_id ? 'danger' : 'neutral'}
             sx={{
               mx: 1,
@@ -318,15 +355,22 @@ function CollegianTab() {
               },
             }}
           >
-            <Option value='1'>วิทยาลัยเทคโนโลยีและสหวิทยาการ</Option>
-            <Option value='2'>คณะศิลปกรรมกรรมและสถาปัตยกรรมศาสตร์</Option>
-            <Option value='3'>คณะวิศวกรรมศาสตร์</Option>
+            {curriculumsList.map((curriculum) => (
+              <Option
+                key={curriculum.cur_id}
+                value={curriculum.cur_id}
+                onClick={() => setSelectState((pre) => ({ ...pre, cur_name_th: curriculum.cur_name_th }))}
+              >
+                {curriculum.cur_name_th}
+              </Option>
+            ))}
           </Select>
         </Box>
       </Box>
     </Box>
   );
 
+  // เช็คค่าใน state
   useEffect(() => {
     console.log(state);
   }, [state]);
@@ -350,9 +394,12 @@ function CollegianTab() {
           console.log(response);
           setOpenInsCo(false);
           // console.log('t: ', response.data.message.Primarykey);
-          const newState = { co_id: response.data.message.Primarykey, ...state };
-          setCollegianRows((pre) => [newState, ...pre]);
+          const newState1 = { ...selectState, ...state };
+          const newState2 = { co_id: response.data.message.Primarykey, ...newState1 };
+          console.log(newState2);
+          setCollegianRows((pre) => [newState2, ...pre]);
           setState(initialState);
+          setSelectState(initialSelectState);
         })
         .catch((error) => {
           console.log(error);
@@ -389,12 +436,12 @@ function CollegianTab() {
 
   // สำหรับกด Submit หน้าลบข้อมูล Collegian
   const handleDeleteSubmit = () => {
+    setOpenDelCo(false);
     axios
       .post('http://192.168.1.168:8000/api/method/frappe.help-api.delete', deleteState)
       .then((response) => {
         console.log(response);
         console.log('deleteState: ', deleteState);
-        setOpenDelCo(false);
 
         // ลบค่า ในออบเจ็กต์
       })
@@ -410,6 +457,7 @@ function CollegianTab() {
       });
   };
 
+  // Update ค่า Validation ที่แสดงเตือนสีแดง แล้วมีเพิ่มข้อมูลให้ปิดสีแดง
   useEffect(() => {
     const updatedValidation = {};
     Object.keys(state).forEach((key) => {
@@ -441,7 +489,6 @@ function CollegianTab() {
           <Button
             onClick={() => {
               setOpenInsCo(true);
-              setSelectDisabledCo(false);
             }}
             sx={{
               px: 2,

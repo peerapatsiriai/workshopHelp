@@ -24,11 +24,14 @@ function InstructorTab() {
     ist_tel: '',
     faculty_institutes_fi_id: '',
   };
+  const initialSelectState = {
+    fi_name_th: '',
+  };
   const initialDeleteState = {
     table: 'tabinstrutors',
     primary: '',
   };
-
+  const [selectState, setSelectState] = useState(initialSelectState);
   const [state, setState] = useState(initialState);
   const [deleteState, setDeleteState] = useState(initialDeleteState);
   const [selectDisabled, setSelectDisabled] = useState(false);
@@ -37,7 +40,7 @@ function InstructorTab() {
   const [openInsIns, setOpenInsIns] = React.useState(false); // สำหรับใช้ควบคุม Modal insert
   const [openUpdIns, setOpenUpdIns] = React.useState(false); // สำหรับใช้ควบคุม Modal update
   const [openDelIns, setOpenDelIns] = React.useState(false); // สำหรับใช้ควบคุม Modal Delete
-
+  const [instructortypeRows, setInstructortypeRows] = useState([]);
   useEffect(() => {
     axios.get('http://192.168.1.168:8000/api/method/frappe.help-api.getAllinstructors').then((response) => {
       setInstructorRows(response.data.message.Data);
@@ -45,12 +48,16 @@ function InstructorTab() {
     });
   }, []);
 
+  useEffect(() => {
+    console.log(state);
+  }, [state]);
+
   const columnsForInstructor = [
     { field: 'ist_fname_th', headerName: 'First Name', width: 150 },
     { field: 'ist_lname_th', headerName: 'Last Name', width: 150 },
     { field: 'ist_email', headerName: 'Email', width: 300 },
     { field: 'ist_tel', headerName: 'Tel', width: 120 },
-    { field: 'faculty_institutes_fi_id', headerName: 'Faculty Institute', width: 300 },
+    { field: 'fi_name_th', headerName: 'Faculty Institute', width: 300 },
     {
       field: 'Edit',
       headerName: 'Edit',
@@ -108,6 +115,12 @@ function InstructorTab() {
       });
   };
 
+  useEffect(() => {
+    axios.get('http://192.168.1.168:8000/api/method/frappe.help-api.getAllinstructors').then((response) => {
+      setInstructortypeRows(response.data.message.Data);
+      console.log(response.data.message.Data);
+    });
+  }, []);
   const handleEditSubmit = () => {
     axios
       .post('http://192.168.1.168:8000/api/method/frappe.help-api.editinstructor', state)
@@ -132,7 +145,34 @@ function InstructorTab() {
         console.log(error);
       });
   };
+  const [validation, setValidation] = useState({
+    // false คือปกติ true คือแสดงเป็นสีแดง
+    ist_fname_th: false,
+    ist_lname_th: false,
+    ist_fname_en: false,
+    ist_lname_en: false,
+    ist_email: false,
+    ist_tel: false,
+  });
 
+  const handleChange = (e, key, type) => {
+    const { value } = e.target;
+    const getKey = key;
+    let updatedValue = value;
+    if (type === 'th') {
+      updatedValue = updatedValue.replace(/[^ก-๙เ\s]/g, '');
+    } else if (type === 'en') {
+      updatedValue = updatedValue.replace(/[^a-zA-Z\s]/g, '');
+    } else if (type === 'email') {
+      // ถ้ารูปแบบไม่ถูกต้อง แทนที่อักขระที่ไม่ถูกต้องด้วยช่องว่าง
+      updatedValue = updatedValue.replace(/[^A-Za-z0-9.@+-]/g, '');
+    } else if (type === 'tel') {
+      updatedValue = updatedValue.replace(/[^0-9]/g, '');
+    } else if (type === 'code') {
+      updatedValue = updatedValue.replace(/[^a-zA-Z0-9\s]/g, ' ');
+    }
+    setState((pre) => ({ ...pre, [getKey]: updatedValue }));
+  };
   const ContentModal = (
     <Box>
       <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
@@ -144,8 +184,12 @@ function InstructorTab() {
             placeholder='Type in here…'
             size='md'
             value={state.ist_fname_th || ''}
-            onChange={(event) => setState((pre) => ({ ...pre, ist_fname_th: event.target.value }))}
+            error={validation.ist_fname_th || false}
             sx={{ mx: 1 }}
+            onChange={(event) => {
+              setState((pre) => ({ ...pre, ist_fname_th: event.target.value }));
+              handleChange(event, 'ist_fname_th', 'th');
+            }}
           />
         </Box>
         <Box sx={{ width: '50%' }}>
@@ -156,7 +200,11 @@ function InstructorTab() {
             placeholder='Type in here…'
             size='md'
             value={state.ist_lname_th || ''}
-            onChange={(event) => setState((pre) => ({ ...pre, ist_lname_th: event.target.value }))}
+            onChange={(event) => {
+              setState((pre) => ({ ...pre, ist_lname_th: event.target.value }));
+              handleChange(event, 'ist_lname_th', 'th');
+            }}
+            error={validation.ist_lname_th || false}
             sx={{ mx: 1 }}
           />
         </Box>
@@ -170,7 +218,11 @@ function InstructorTab() {
             placeholder='Type in here…'
             size='md'
             value={state.ist_fname_en}
-            onChange={(event) => setState((pre) => ({ ...pre, ist_fname_en: event.target.value }))}
+            onChange={(event) => {
+              setState((pre) => ({ ...pre, ist_fname_en: event.target.value }));
+              handleChange(event, 'ist_fname_en', 'en');
+            }}
+            error={validation.ist_fname_en || false}
             sx={{ mx: 1 }}
           />
         </Box>
@@ -182,7 +234,11 @@ function InstructorTab() {
             placeholder='Type in here…'
             size='md'
             value={state.ist_lname_en}
-            onChange={(event) => setState((pre) => ({ ...pre, ist_lname_en: event.target.value }))}
+            onChange={(event) => {
+              setState((pre) => ({ ...pre, ist_lname_en: event.target.value }));
+              handleChange(event, 'ist_lname_en', 'en');
+            }}
+            error={validation.ist_lname_en || false}
             sx={{ mx: 1 }}
           />
         </Box>
@@ -196,7 +252,10 @@ function InstructorTab() {
             placeholder='Type in here…'
             size='md'
             value={state.ist_email}
-            onChange={(event) => setState((pre) => ({ ...pre, ist_email: event.target.value }))}
+            onChange={(event) => {
+              handleChange(event, 'ist_email', 'email');
+            }}
+            error={validation.ist_email || false}
             sx={{ mx: 1 }}
           />
         </Box>
@@ -208,7 +267,17 @@ function InstructorTab() {
             placeholder='Type in here…'
             size='md'
             value={state.ist_tel}
-            onChange={(event) => setState((pre) => ({ ...pre, ist_tel: event.target.value }))}
+            onChange={(event) => {
+              setState((pre) => ({ ...pre, ist_tel: event.target.value }));
+              handleChange(event, 'ist_tel', 'tel');
+            }}
+            error={validation.ist_tel || false}
+            slotProps={{
+              input: {
+                minLength: 0,
+                maxLength: 10,
+              },
+            }}
             sx={{ mx: 1 }}
           />
         </Box>
@@ -219,9 +288,12 @@ function InstructorTab() {
           <Select
             placeholder='Type in here…'
             indicator={<KeyboardArrowDown />}
-            value={state.faculty_institutes_fi_id || ''}
-            onChange={(event, value) => setState((pre) => ({ ...pre, faculty_institutes_fi_id: value }))}
+            value={state.faculty_institutes_fi_id || '0'}
+            onChange={(event, value) => {
+              setState((pre) => ({ ...pre, faculty_institutes_fi_id: value }));
+            }}
             disabled={selectDisabled}
+            color={validation.faculty_institutes_fi_id ? 'danger' : 'neutral'}
             sx={{
               mx: 1,
               size: 'sm',
@@ -233,9 +305,15 @@ function InstructorTab() {
               },
             }}
           >
-            <Option value='10'>คณะวิศวกรรมศาสตร์</Option>
-            <Option value='11'>คณะบริหารธุรกิจและศิลปศาสตร์</Option>
-            <Option value='12'>คณะวิทยาศาสตร์และเทคโนโลยีการเกษตร</Option>
+            {instructortypeRows?.map((contentIn, value) => (
+              <Option
+                key={value}
+                value={contentIn.faculty_institutes_fi_id}
+                onClick={() => setSelectState((pre) => ({ ...pre, fi_name_th: contentIn.fi_name_th }))}
+              >
+                {contentIn.fi_name_th}
+              </Option>
+            ))}
           </Select>
         </Box>
         <Box sx={{ width: '50%' }}></Box>
@@ -243,22 +321,88 @@ function InstructorTab() {
     </Box>
   );
 
-  const handleInsertSubmit = (e) => {
-    e.preventDefault();
-    axios
-      .post('http://192.168.1.168:8000/api/method/frappe.help-api.insertinstructors', state)
-      .then((response) => {
-        console.log(response);
-        setOpenInsIns(false);
-        // console.log('t: ', response.data.message.Primarykey);
-        const newState = { ist_id: response.data.message.Primarykey, ...state };
-        setInstructorRows((pre) => [newState, ...pre]);
-        setState(initialState);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  const handleInsertSubmit = () => {
+    Object.keys(state).forEach((key) => {
+      const value = state[key];
+      if (value === '' || value === null) {
+        setValidation((prevValidation) => ({ ...prevValidation, [key]: true }));
+      }
+    });
+
+    if (Object.values(state).every((value) => value !== '')) {
+      console.log('ok');
+      axios
+        .post('http://192.168.1.168:8000/api/method/frappe.help-api.insertinstructors', state)
+        .then((response) => {
+          console.log(response);
+          setOpenInsIns(false);
+          // console.log('t: ', response.data.message.Primarykey);
+          const newState1 = { ...selectState, ...state };
+          const newState2 = { ist_id: response.data.message.Primarykey, ...newState1 };
+          console.log(newState2);
+          setInstructorRows((pre) => [newState2, ...pre]);
+          setState(initialState);
+          setSelectState(initialSelectState);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   };
+
+  useEffect(() => {
+    console.log(state.ist_fname_th);
+    if (state.ist_fname_th !== '') {
+      setValidation((pre) => ({ ...pre, ist_fname_th: false }));
+    } else {
+      console.log('Still Null fname_th');
+    }
+  }, [state.ist_fname_th]);
+
+  useEffect(() => {
+    console.log(state.ist_lname_th);
+    if (state.ist_lname_th !== '') {
+      setValidation((pre) => ({ ...pre, ist_lname_th: false }));
+    } else {
+      console.log('Still Null lname_th');
+    }
+  }, [state.ist_lname_th]);
+
+  useEffect(() => {
+    console.log(state.ist_fname_en);
+    if (state.ist_fname_en !== '') {
+      setValidation((pre) => ({ ...pre, ist_fname_en: false }));
+    } else {
+      console.log('Still Null ist_fname_en');
+    }
+  }, [state.ist_fname_en]);
+
+  useEffect(() => {
+    console.log(state.ist_lname_en);
+    if (state.ist_lname_en !== '') {
+      setValidation((pre) => ({ ...pre, ist_lname_en: false }));
+    } else {
+      console.log('Still Null ist_lname_en');
+    }
+  }, [state.ist_lname_en]);
+
+  useEffect(() => {
+    console.log(state.ist_email);
+    if (state.ist_email !== '') {
+      setValidation((pre) => ({ ...pre, ist_email: false }));
+    } else {
+      console.log('Still Null ist_email');
+    }
+  }, [state.ist_email]);
+
+  useEffect(() => {
+    console.log(state.ist_tel);
+    if (state.ist_tel !== '') {
+      setValidation((pre) => ({ ...pre, ist_tel: false }));
+    } else {
+      console.log('Still Null ist_tel');
+    }
+  }, [state.ist_tel]);
 
   return (
     <div>
