@@ -68,7 +68,7 @@ function MasterDataPage() {
             countRecord={5821}
           />
           <Menulight
-            linkPath={'/back-office/masterdata/personnels'}
+            linkPath={'/back-office/masterdata/personels'}
             menuIcon={PersonnelIcon}
             name={'Personnels'}
             countTable={2}
