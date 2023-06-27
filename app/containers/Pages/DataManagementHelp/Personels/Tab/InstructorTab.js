@@ -34,13 +34,22 @@ function InstructorTab() {
   const [selectState, setSelectState] = useState(initialSelectState);
   const [state, setState] = useState(initialState);
   const [deleteState, setDeleteState] = useState(initialDeleteState);
-  const [selectDisabled, setSelectDisabled] = useState(false);
   const [InstructorRows, setInstructorRows] = useState([]);
 
   const [openInsIns, setOpenInsIns] = React.useState(false); // สำหรับใช้ควบคุม Modal insert
   const [openUpdIns, setOpenUpdIns] = React.useState(false); // สำหรับใช้ควบคุม Modal update
   const [openDelIns, setOpenDelIns] = React.useState(false); // สำหรับใช้ควบคุม Modal Delete
   const [instructortypeRows, setInstructortypeRows] = useState([]);
+
+  const [validation, setValidation] = useState({
+    // false คือปกติ true คือแสดงเป็นสีแดง
+    ist_fname_th: false,
+    ist_lname_th: false,
+    ist_fname_en: false,
+    ist_lname_en: false,
+    ist_email: false,
+    ist_tel: false,
+  });
   useEffect(() => {
     axios.get('http://192.168.1.168:8000/api/method/frappe.help-api.getAllinstructors').then((response) => {
       setInstructorRows(response.data.message.Data);
@@ -53,11 +62,11 @@ function InstructorTab() {
   }, [state]);
 
   const columnsForInstructor = [
-    { field: 'ist_fname_th', headerName: 'First Name', width: 150 },
-    { field: 'ist_lname_th', headerName: 'Last Name', width: 150 },
-    { field: 'ist_email', headerName: 'Email', width: 300 },
-    { field: 'ist_tel', headerName: 'Tel', width: 120 },
-    { field: 'fi_name_th', headerName: 'Faculty Institute', width: 300 },
+    { field: 'ist_fname_th', headerName: 'First Name', width: 180 },
+    { field: 'ist_lname_th', headerName: 'Last Name', width: 180 },
+    { field: 'ist_email', headerName: 'Email', width: 250 },
+    { field: 'ist_tel', headerName: 'Tel', width: 150 },
+    { field: 'fi_name_th', headerName: 'Faculty Institute', width: 200 },
     {
       field: 'Edit',
       headerName: 'Edit',
@@ -69,7 +78,6 @@ function InstructorTab() {
             setOpenUpdIns(true);
             setState(cellValues.row);
             setState((pre) => ({ ...pre, primarykey: cellValues.row.ist_id }));
-            setSelectDisabled(true);
           }}
         >
           ...
@@ -122,39 +130,39 @@ function InstructorTab() {
     });
   }, []);
   const handleEditSubmit = () => {
-    axios
-      .post('http://192.168.1.168:8000/api/method/frappe.help-api.editinstructor', state)
-      .then((response) => {
-        console.log(response);
-        setOpenUpdIns(false);
-        const objectToUpdate = InstructorRows.find((obj) => obj.ist_id === state.ist_id);
+    Object.keys(state).forEach((key) => {
+      const value = state[key];
+      if (value === '' || value === null) {
+        setValidation((prevValidation) => ({ ...prevValidation, [key]: true }));
+      }
+    });
+    console.log(validation);
 
-        // แก้ไขค่า ในออบเจ็กต์
-        if (objectToUpdate) {
-          objectToUpdate.ist_fname_th = state.ist_fname_th;
-          objectToUpdate.ist_lname_th = state.ist_lname_th;
-          objectToUpdate.ist_fname_en = state.ist_fname_en;
-          objectToUpdate.ist_lname_en = state.ist_lname_en;
-          objectToUpdate.ist_email = state.ist_email;
-          objectToUpdate.ist_tel = state.ist_email;
-          objectToUpdate.faculty_institutes_fi_id = state.faculty_institutes_fi_id;
-        }
-        setState(initialState);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    if (Object.values(state).every((value) => value !== '')) {
+      axios
+        .post('http://192.168.1.168:8000/api/method/frappe.help-api.editinstructor', state)
+        .then((response) => {
+          console.log(response);
+          setOpenUpdIns(false);
+          const objectToUpdate = InstructorRows.find((obj) => obj.ist_id === state.ist_id);
+
+          // แก้ไขค่า ในออบเจ็กต์
+          if (objectToUpdate) {
+            objectToUpdate.ist_fname_th = state.ist_fname_th;
+            objectToUpdate.ist_lname_th = state.ist_lname_th;
+            objectToUpdate.ist_fname_en = state.ist_fname_en;
+            objectToUpdate.ist_lname_en = state.ist_lname_en;
+            objectToUpdate.ist_email = state.ist_email;
+            objectToUpdate.ist_tel = state.ist_email;
+            objectToUpdate.faculty_institutes_fi_id = state.faculty_institutes_fi_id;
+          }
+          setState(initialState);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   };
-  const [validation, setValidation] = useState({
-    // false คือปกติ true คือแสดงเป็นสีแดง
-    ist_fname_th: false,
-    ist_lname_th: false,
-    ist_fname_en: false,
-    ist_lname_en: false,
-    ist_email: false,
-    ist_tel: false,
-  });
-
   const handleChange = (e, key, type) => {
     const { value } = e.target;
     const getKey = key;
@@ -173,6 +181,7 @@ function InstructorTab() {
     }
     setState((pre) => ({ ...pre, [getKey]: updatedValue }));
   };
+
   const ContentModal = (
     <Box>
       <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
@@ -292,7 +301,6 @@ function InstructorTab() {
             onChange={(event, value) => {
               setState((pre) => ({ ...pre, faculty_institutes_fi_id: value }));
             }}
-            disabled={selectDisabled}
             color={validation.faculty_institutes_fi_id ? 'danger' : 'neutral'}
             sx={{
               mx: 1,
@@ -404,6 +412,18 @@ function InstructorTab() {
     }
   }, [state.ist_tel]);
 
+  // Update ค่า Validation ที่แสดงเตือนสีแดง แล้วมีเพิ่มข้อมูลให้ปิดสีแดง
+  useEffect(() => {
+    const updatedValidation = {};
+    Object.keys(state).forEach((key) => {
+      const value = state[key];
+      if (value !== '' && value !== null) {
+        updatedValidation[key] = false;
+      }
+    });
+    setValidation((prevValidation) => ({ ...prevValidation, ...updatedValidation }));
+  }, [state]);
+
   return (
     <div>
       <Box
@@ -424,7 +444,6 @@ function InstructorTab() {
           <Button
             onClick={() => {
               setOpenInsIns(true);
-              setSelectDisabled(false);
             }}
             sx={{
               px: 2,
