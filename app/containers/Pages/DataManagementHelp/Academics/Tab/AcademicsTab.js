@@ -50,7 +50,6 @@ function AcademicsTab() {
 
   // สำหรับรับค่า
   const [Rows, setRows] = useState([]);
-  const [academictypeRows, setacademictypeRows] = useState([]);
   const [state, setState] = useState(initialState);
   const [deleteState, setDeleteState] = useState(initialDeleteState);
 
@@ -99,12 +98,12 @@ function AcademicsTab() {
   }, [state]);
   // set columns
   const columns = [
-    { field: 'ac_name_th', headerName: 'Name(TH)', width: 300 },
-    { field: 'ac_name_en', headerName: 'Name(EN)', width: 320 },
-    { field: 'ac_campus', headerName: 'campus', width: 160 },
-    { field: 'ac_address', headerName: 'Address', width: 350 },
+    { field: 'ac_name_th', headerName: 'Name(TH)', width: 250 },
+    { field: 'ac_name_en', headerName: 'Name(EN)', width: 250 },
+    { field: 'ac_campus', headerName: 'campus', width: 130 },
+    { field: 'ac_address', headerName: 'Address', width: 280 },
     { field: 'ac_tel', headerName: 'Tel', width: 120 },
-    { field: 'academic_type_ac_type_id', headerName: 'Type', width: 50 },
+    { field: 'ac_type_name_th', headerName: 'Type', width: 130 },
     {
       field: 'Edit',
       headerName: 'Edit',
@@ -145,12 +144,6 @@ function AcademicsTab() {
     axios.get('http://192.168.1.168:8000/api/method/frappe.help-api.getAllAcademics').then((response) => {
       setRows(response.data.message.Data);
       console.log(response.data.message.Data);
-    });
-    // ดึงข้อมูล Academic Type
-    axios.get('http://192.168.1.168:8000/api/method/frappe.help-api.getallacademictype').then((response) => {
-      setacademictypeRows(response.data.message.Data);
-      console.log(response.data.message.Data);
-      console.log(academictypeRows);
     });
   }, []);
   // เช็คการรับค่าใน input
@@ -275,10 +268,10 @@ function AcademicsTab() {
               },
             }}
           >
-            {academictypeRows?.map((contentAc, value) => (
+            {Rows?.map((contentAc, value) => (
               <Option
                 key={value}
-                value={contentAc.ac_type_id}
+                value={contentAc.academic_type_ac_type_id}
               >
                 {contentAc.ac_type_name_th}
               </Option>
