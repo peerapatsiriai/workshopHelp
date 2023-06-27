@@ -310,6 +310,34 @@ function FacultyTab() {
       });
   };
 
+  // สำหรับกด Submit หน้าแก้ไขข้อมูล
+  const handleEditSubmit = (e) => {
+    e.preventDefault();
+    axios
+      .post(
+        'http://192.168.1.168:8000/api/method/frappe.help-api.editfaculty',
+        state
+      )
+      .then((response) => {
+        console.log(response);
+        setOpenUpd(false);
+        setState(initialState);
+        setSelectState(initialSelectState);
+        const objectToUpdate = Rows.find((obj) => obj.fi_id === state.fi_id);
+
+        // แก้ไขค่า ในออบเจ็กต์
+        if (objectToUpdate) {
+          objectToUpdate.fi_name_th = state.fi_name_th;
+          objectToUpdate.fi_name_en = state.fi_name_en;
+          objectToUpdate.academics_ac_id = state.academics_ac_id;
+        }
+        setState(initialState);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   const onSubmit = (e) => {
     if (
       // eslint-disable-next-line operator-linebreak
@@ -319,6 +347,7 @@ function FacultyTab() {
       state.academics_ac_id !== null
     ) {
       handleInsertSubmit(e);
+      handleEditSubmit(e);
       console.log('Submit');
     }
     if (state.fi_name_th !== '') {
@@ -336,31 +365,6 @@ function FacultyTab() {
     } else {
       setValidationFac((pre) => ({ ...pre, academics_ac_id: true }));
     }
-  };
-
-  // สำหรับกด Submit หน้าแก้ไขข้อมูล
-  const handleEditSubmit = () => {
-    axios
-      .post(
-        'http://192.168.1.168:8000/api/method/frappe.help-api.editfaculty',
-        state
-      )
-      .then((response) => {
-        console.log(response);
-        setOpenUpd(false);
-        const objectToUpdate = Rows.find((obj) => obj.fi_id === state.fi_id);
-
-        // แก้ไขค่า ในออบเจ็กต์
-        if (objectToUpdate) {
-          objectToUpdate.fi_name_th = state.fi_name_th;
-          objectToUpdate.fi_name_en = state.fi_name_en;
-          objectToUpdate.academics_ac_id = state.academics_ac_id;
-        }
-        setState(initialState);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
   };
 
   // สำหรับกด Submit หน้าลบข้อมูล Collegian
@@ -462,7 +466,7 @@ function FacultyTab() {
           header={'Update Institute'}
           labelBtn={'Update'}
           subDetail={true}
-          handleSubmit={handleEditSubmit}
+          handleSubmit={(e) => onSubmit(e)}
         />
         <ConfirmDelModal
           open={openDel}
