@@ -46,6 +46,7 @@ function AcademicsTab() {
     ac_campus: false,
     ac_address: false,
     ac_tel: false,
+    ac: false,
     academic_type_ac_type_id: false,
   });
   useEffect(() => {
@@ -148,12 +149,11 @@ function AcademicsTab() {
     } else if (type === 'en') {
       updatedValue = updatedValue.replace(/[^a-zA-Z\s]/g, '');
     } else if (type === 'email') {
-      // ถ้ารูปแบบไม่ถูกต้อง แทนที่อักขระที่ไม่ถูกต้องด้วยช่องว่าง
-      updatedValue = updatedValue.replace(/[^0-9]/g, '');
+      updatedValue = updatedValue.replace(/[^A-Za-z0-9.@+-]/g, '');
     } else if (type === 'tel') {
-      updatedValue = updatedValue.replace(/\D/g, '');
+      updatedValue = updatedValue.replace(/[^0-9]/g, '');
     } else if (type === 'code') {
-      updatedValue = updatedValue.replace(/[^a-zA-Z0-9\s]/g, ' ');
+      updatedValue = updatedValue.replace(/[^a-zA-Z0-9\s]/g, '');
     }
     setState((pre) => ({ ...pre, [getKey]: updatedValue }));
   };
@@ -220,8 +220,14 @@ function AcademicsTab() {
             // false คือปกติ true คือแสดงสีแดง
             type='tel'
             error={validation.ac_tel || false}
-            placeholder='กรุณากรอกแค่ตัวเลขเท่านั้น'
+            placeholder='กรุณากรอกเบอร์โทรศัพท์'
             size='md'
+            slotProps={{
+              input: {
+                minLength: 0,
+                maxLength: 10,
+              },
+            }}
             value={state.ac_tel || ''}
             onChange={(event) => {
               setState((pre) => ({ ...pre, ac_tel: event.target.value }));
@@ -235,8 +241,7 @@ function AcademicsTab() {
         <Box sx={{ width: '50%' }}>
           <Typography sx={{ fontSize: 12, mb: 0.5, ml: 2 }}>Academic Type*</Typography>
           <Select
-            // false คือปกติ true คือแสดงสีแดง
-            error={validation.academic_type_ac_type_id || false}
+            color={validation.academic_type_ac_type_id ? 'danger' : 'neutral'}
             placeholder='Type in here…'
             indicator={<KeyboardArrowDown />}
             disabled={selectDisabled}
@@ -342,8 +347,8 @@ function AcademicsTab() {
         // ทำให้แสดงสีแดงตรงที่ไม่ได้กรอกข้อความ
         setValidation((pre) => ({ ...pre, ac_campus: true }));
       }
-      if (state.academic_type_ac_type_id === '') {
-        // ทำให้แสดงสีแดงตรงที่ไม่ได้กรอกข้อความ
+      if (state.academic_type_ac_type_id === null) {
+        console.log('test');
         setValidation((pre) => ({ ...pre, academic_type_ac_type_id: true }));
       }
     }
