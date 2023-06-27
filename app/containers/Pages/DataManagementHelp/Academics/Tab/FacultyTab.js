@@ -20,6 +20,9 @@ function FacultyTab() {
     fi_name_en: '',
     academics_ac_id: '',
   };
+  const initialSelectState = {
+    ac_name_th: '',
+  };
   const initialDeleteState = {
     table: 'tabfaculty_institutes',
     primary: '',
@@ -83,15 +86,11 @@ function FacultyTab() {
 
   // get Data Academics for select
   useEffect(() => {
-    axios
-      .get(
-        'http://192.168.1.168:8000/api/method/frappe.help-api.getAllAcademics'
-      )
-      .then((res) => {
-        setDataAcademics(res.data.message.Data);
-        res.data.message.Data;
-        console.log(res.data.message.Data);
-      });
+    axios.get('http://192.168.1.168:8000/api/method/frappe.help-api.getAllAcademics').then((res) => {
+      setDataAcademics(res.data.message.Data);
+      res.data.message.Data;
+      console.log(res.data.message.Data);
+    });
   }, []);
 
   // useEffect(() => {
@@ -101,9 +100,9 @@ function FacultyTab() {
 
   // set columns
   const columns = [
-    { field: 'fi_name_th', headerName: 'Name(TH)', width: 300 },
+    { field: 'fi_name_th', headerName: 'Name(TH)', width: 200 },
     { field: 'fi_name_en', headerName: 'Name(EN)', width: 300 },
-    { field: 'ac_name_th', headerName: 'Academic', width: 400 },
+    { field: 'ac_name_th', headerName: 'Academic', width: 450 },
     {
       field: 'Edit',
       headerName: 'Edit',
@@ -119,7 +118,8 @@ function FacultyTab() {
               primarykey: String(cellValues.row.fi_id),
             }));
             setSelectDisabled(true);
-          }}>
+          }}
+        >
           ...
         </Button>
       ),
@@ -146,30 +146,21 @@ function FacultyTab() {
 
   // set rows
   useEffect(() => {
-    axios
-      .get(
-        'http://192.168.1.168:8000/api/method/frappe.help-api.getAllfacultys'
-      )
-      .then((response) => {
-        setRows(response.data.message.Data);
-        console.log(response.data.message.Data);
-      });
+    axios.get('http://192.168.1.168:8000/api/method/frappe.help-api.getAllfacultys').then((response) => {
+      setRows(response.data.message.Data);
+      console.log(response.data.message.Data);
+    });
   }, []);
 
   // content modal
   const ContentModal = (
     <Box>
-      <Box
-        sx={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-end' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-end' }}>
         <Box sx={{ flexDirection: 'column', width: '50%', ml: 2 }}>
-          <Typography sx={{ fontSize: 12, mb: 0.5 }}>
-            Academic Name(TH)
-          </Typography>
+          <Typography sx={{ fontSize: 12, mb: 0.5 }}>Academic Name(TH)</Typography>
           <Input
             label='Academic Name'
-            placeholder={
-              validationFac.fi_name_th ? 'Please Type Thai Name' : 'Thai Name'
-            }
+            placeholder={validationFac.fi_name_th ? 'Please Type Thai Name' : 'Thai Name'}
             type={'text'}
             size='sm'
             error={validationFac.fi_name_th || false}
@@ -195,13 +186,10 @@ function FacultyTab() {
           sx={{
             flexDirection: 'column',
             width: '50%',
-          }}>
+          }}
+        >
           <Input
-            placeholder={
-              validationFac.fi_name_en
-                ? 'Please Type Engligsh Name'
-                : 'Engligsh Name'
-            }
+            placeholder={validationFac.fi_name_en ? 'Please Type Engligsh Name' : 'Engligsh Name'}
             type={'text'}
             size='sm'
             error={validationFac.fi_name_en || false}
@@ -232,16 +220,13 @@ function FacultyTab() {
           width: '45%',
           mt: 3,
           ml: 2,
-        }}>
+        }}
+      >
         <Typography sx={{ fontSize: 12, mb: 0.5 }}>Academic</Typography>
         <Select
           indicator={<KeyboardArrowDown />}
           value={state.academics_ac_id}
-          placeholder={
-            validationFac.academics_ac_id
-              ? 'Please Select Academic'
-              : 'Select Academic'
-          }
+          placeholder={validationFac.academics_ac_id ? 'Please Select Academic' : 'Select Academic'}
           onChange={(event, value) => {
             setState((pre) => ({ ...pre, academics_ac_id: value }));
             console.log('value: ', value);
@@ -258,7 +243,8 @@ function FacultyTab() {
                 transform: 'rotate(-180deg)',
               },
             },
-          }}>
+          }}
+        >
           {dataAcademics?.map((data) => (
             <Option
               key={data.name}
@@ -267,9 +253,10 @@ function FacultyTab() {
                 // eslint-disable-next-line implicit-arrow-linebreak
                 setSelectState((pre) => ({
                   ...pre,
-                  fi_name_th: data.fi_name_th,
+                  ac_name_th: data.ac_name_th,
                 }))
-              }>
+              }
+            >
               {data.ac_name_th}
             </Option>
           ))}
@@ -286,10 +273,7 @@ function FacultyTab() {
   const handleInsertSubmit = (e) => {
     e.preventDefault();
     axios
-      .post(
-        'http://192.168.1.168:8000/api/method/frappe.help-api.insertfaculty',
-        state
-      )
+      .post('http://192.168.1.168:8000/api/method/frappe.help-api.insertfaculty', state)
       .then((response) => {
         console.log(response);
         setOpenIns(false);
@@ -299,6 +283,32 @@ function FacultyTab() {
           ...newState1,
         };
         setRows((pre) => [newState2, ...pre]);
+        setState(initialState);
+        setSelectState(initialSelectState);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  // สำหรับกด Submit หน้าแก้ไขข้อมูล
+  const handleEditSubmit = (e) => {
+    e.preventDefault();
+    axios
+      .post('http://192.168.1.168:8000/api/method/frappe.help-api.editfaculty', state)
+      .then((response) => {
+        console.log(response);
+        setOpenUpd(false);
+        setState(initialState);
+        setSelectState(initialSelectState);
+        const objectToUpdate = Rows.find((obj) => obj.fi_id === state.fi_id);
+
+        // แก้ไขค่า ในออบเจ็กต์
+        if (objectToUpdate) {
+          objectToUpdate.fi_name_th = state.fi_name_th;
+          objectToUpdate.fi_name_en = state.fi_name_en;
+          objectToUpdate.academics_ac_id = state.academics_ac_id;
+        }
         setState(initialState);
       })
       .catch((error) => {
@@ -315,6 +325,7 @@ function FacultyTab() {
       state.academics_ac_id !== null
     ) {
       handleInsertSubmit(e);
+      handleEditSubmit(e);
       console.log('Submit');
     }
     if (state.fi_name_th !== '') {
@@ -334,38 +345,10 @@ function FacultyTab() {
     }
   };
 
-  // สำหรับกด Submit หน้าแก้ไขข้อมูล
-  const handleEditSubmit = () => {
-    axios
-      .post(
-        'http://192.168.1.168:8000/api/method/frappe.help-api.editfaculty',
-        state
-      )
-      .then((response) => {
-        console.log(response);
-        setOpenUpd(false);
-        const objectToUpdate = Rows.find((obj) => obj.fi_id === state.fi_id);
-
-        // แก้ไขค่า ในออบเจ็กต์
-        if (objectToUpdate) {
-          objectToUpdate.fi_name_th = state.fi_name_th;
-          objectToUpdate.fi_name_en = state.fi_name_en;
-          objectToUpdate.academics_ac_id = state.academics_ac_id;
-        }
-        setState(initialState);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
   // สำหรับกด Submit หน้าลบข้อมูล Collegian
   const handleDeleteSubmit = () => {
     axios
-      .post(
-        'http://192.168.1.168:8000/api/method/frappe.help-api.delete',
-        deleteState
-      )
+      .post('http://192.168.1.168:8000/api/method/frappe.help-api.delete', deleteState)
       .then((response) => {
         console.log(response);
         console.log('deleteState: ', deleteState);
@@ -399,7 +382,8 @@ function FacultyTab() {
             : 'center',
           width: '100%',
           p: 2,
-        }}>
+        }}
+      >
         <Box sx={{ display: 'flex', flexDirection: 'row' }}>
           <Button
             onClick={() => {
@@ -415,13 +399,15 @@ function FacultyTab() {
                 background: '#fff',
                 color: 'black',
               },
-            }}>
+            }}
+          >
             <Typography
               sx={{
                 fontSize: 12,
                 textTransform: 'capitalize',
                 fontWeight: 'bold',
-              }}>
+              }}
+            >
               + Add Institute
             </Typography>
           </Button>
@@ -431,7 +417,8 @@ function FacultyTab() {
                 fontSize: 12,
                 textTransform: 'capitalize',
                 fontWeight: 'bold',
-              }}>
+              }}
+            >
               Export
             </Typography>
           </Button>
@@ -458,7 +445,7 @@ function FacultyTab() {
           header={'Update Institute'}
           labelBtn={'Update'}
           subDetail={true}
-          handleSubmit={handleEditSubmit}
+          handleSubmit={(e) => onSubmit(e)}
         />
         <ConfirmDelModal
           open={openDel}

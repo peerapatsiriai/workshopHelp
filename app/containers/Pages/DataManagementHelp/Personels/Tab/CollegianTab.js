@@ -56,8 +56,31 @@ function CollegianTab() {
   const [selectState, setSelectState] = useState([initialSelectState]);
 
   // สำหรับ dropdown
-  const [curriculumsList, setCurriculumsList] = useState([]);
-  const [facultyList, setFacultyList] = useState([]);
+  const [curriculumsListIns, setCurriculumsListIns] = useState([]);
+  const [facultyListIns, setFacultyListIns] = useState([]);
+  const [curriculumsList, setCurriculumsList] = useState(curriculumsListIns);
+  const [facultyList, setFacultyList] = useState(facultyListIns);
+
+  useEffect(() => {
+    axios
+      .get('http://192.168.1.168:8000/api/method/frappe.help-api.getAllCurriculumandFaculty')
+      .then((response) => {
+        console.log(response);
+        setCurriculumsListIns(response.data.message.CurriculumList);
+        setFacultyListIns(response.data.message.FacultyList);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {
+        // always executed
+      });
+  }, []);
+
+  const handelSetDropdownDefaults = () => {
+    setCurriculumsList(curriculumsListIns);
+    setFacultyList(facultyListIns);
+  };
 
   const dropdown = (id) => {
     const strId = id.toString();
@@ -409,29 +432,40 @@ function CollegianTab() {
 
   // สำหรับกด Submit หน้าแก้ไขข้อมูล Collegian
   const handleEditSubmit = () => {
-    axios
-      .post('http://192.168.1.168:8000/api/method/frappe.help-api.editcollegian', state)
-      .then((response) => {
-        console.log(response);
-        setOpenUpdCo(false);
-        const objectToUpdate = collegianRows.find((obj) => obj.co_id === state.co_id);
+    Object.keys(state).forEach((key) => {
+      const value = state[key];
+      if (value === '' || value === null) {
+        setValidation((prevValidation) => ({ ...prevValidation, [key]: true }));
+      }
+    });
 
-        // แก้ไขค่า ในออบเจ็กต์
-        if (objectToUpdate) {
-          objectToUpdate.co_code = state.co_code;
-          objectToUpdate.co_fname_th = state.co_fname_th;
-          objectToUpdate.co_lname_th = state.co_lname_th;
-          objectToUpdate.co_fname_en = state.co_fname_en;
-          objectToUpdate.co_lname_en = state.co_lname_en;
-          objectToUpdate.co_email = state.co_email;
-          objectToUpdate.co_tel = state.co_tel;
-          objectToUpdate.faculty_institutes_fi_id = state.faculty_institutes_fi_id;
-        }
-        setState(initialState);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    console.log(validation);
+
+    if (Object.values(state).every((value) => value !== '')) {
+      axios
+        .post('http://192.168.1.168:8000/api/method/frappe.help-api.editcollegian', state)
+        .then((response) => {
+          console.log(response);
+          setOpenUpdCo(false);
+          const objectToUpdate = collegianRows.find((obj) => obj.co_id === state.co_id);
+
+          // แก้ไขค่า ในออบเจ็กต์
+          if (objectToUpdate) {
+            objectToUpdate.co_code = state.co_code;
+            objectToUpdate.co_fname_th = state.co_fname_th;
+            objectToUpdate.co_lname_th = state.co_lname_th;
+            objectToUpdate.co_fname_en = state.co_fname_en;
+            objectToUpdate.co_lname_en = state.co_lname_en;
+            objectToUpdate.co_email = state.co_email;
+            objectToUpdate.co_tel = state.co_tel;
+            objectToUpdate.faculty_institutes_fi_id = state.faculty_institutes_fi_id;
+          }
+          setState(initialState);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   };
 
   // สำหรับกด Submit หน้าลบข้อมูล Collegian
@@ -489,6 +523,7 @@ function CollegianTab() {
           <Button
             onClick={() => {
               setOpenInsCo(true);
+              handelSetDropdownDefaults();
             }}
             sx={{
               px: 2,
