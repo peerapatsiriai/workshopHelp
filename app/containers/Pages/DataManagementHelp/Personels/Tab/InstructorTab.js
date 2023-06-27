@@ -34,7 +34,6 @@ function InstructorTab() {
   const [selectState, setSelectState] = useState(initialSelectState);
   const [state, setState] = useState(initialState);
   const [deleteState, setDeleteState] = useState(initialDeleteState);
-  const [selectDisabled, setSelectDisabled] = useState(false);
   const [InstructorRows, setInstructorRows] = useState([]);
 
   const [openInsIns, setOpenInsIns] = React.useState(false); // สำหรับใช้ควบคุม Modal insert
@@ -63,11 +62,11 @@ function InstructorTab() {
   }, [state]);
 
   const columnsForInstructor = [
-    { field: 'ist_fname_th', headerName: 'First Name', width: 150 },
-    { field: 'ist_lname_th', headerName: 'Last Name', width: 150 },
-    { field: 'ist_email', headerName: 'Email', width: 300 },
-    { field: 'ist_tel', headerName: 'Tel', width: 120 },
-    { field: 'fi_name_th', headerName: 'Faculty Institute', width: 300 },
+    { field: 'ist_fname_th', headerName: 'First Name', width: 180 },
+    { field: 'ist_lname_th', headerName: 'Last Name', width: 180 },
+    { field: 'ist_email', headerName: 'Email', width: 250 },
+    { field: 'ist_tel', headerName: 'Tel', width: 150 },
+    { field: 'fi_name_th', headerName: 'Faculty Institute', width: 200 },
     {
       field: 'Edit',
       headerName: 'Edit',
@@ -79,7 +78,6 @@ function InstructorTab() {
             setOpenUpdIns(true);
             setState(cellValues.row);
             setState((pre) => ({ ...pre, primarykey: cellValues.row.ist_id }));
-            setSelectDisabled(true);
           }}
         >
           ...
@@ -303,7 +301,6 @@ function InstructorTab() {
             onChange={(event, value) => {
               setState((pre) => ({ ...pre, faculty_institutes_fi_id: value }));
             }}
-            disabled={selectDisabled}
             color={validation.faculty_institutes_fi_id ? 'danger' : 'neutral'}
             sx={{
               mx: 1,
@@ -447,7 +444,6 @@ function InstructorTab() {
           <Button
             onClick={() => {
               setOpenInsIns(true);
-              setSelectDisabled(false);
             }}
             sx={{
               px: 2,
