@@ -38,20 +38,67 @@ function FacultyTab() {
   const [deleteState, setDeleteState] = useState(initialDeleteState);
 
   // by bill start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  const [validationFac, setValidationFac] = useState({
+    fi_name_th: false,
+    fi_name_en: false,
+    ac_name_th: false,
+  });
 
-  // by bill spot >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  const handleChange = (e, key, type) => {
+    const getKey = key;
+    const { value } = e.target;
+    // setState((pre) => ({ ...pre, [getKey]: value }));
+    let updatedValue = value;
+    if (type === 'th') {
+      updatedValue = updatedValue.replace(/[^ก-๙เ\s]/g, '');
+    } else if (type === 'en') {
+      updatedValue = updatedValue.replace(/[^a-zA-Z\s]/g, '');
+    }
+    setState((pre) => ({ ...pre, [getKey]: updatedValue }));
+  };
+
+  useEffect(() => {
+    console.log('del:', deleteState);
+  }, [deleteState]);
+
+  useEffect(() => {
+    // console.log(state.fi_name_th);
+    // console.log(state.fi_name_en);
+    if (state.fi_name_th !== '') {
+      setValidationFac((pre) => ({ ...pre, fi_name_th: false }));
+    } else {
+      console.log('NAME THAI Still Null');
+    }
+    if (state.fi_name_en !== '') {
+      setValidationFac((pre) => ({ ...pre, fi_name_en: false }));
+    } else {
+      console.log('NAME ENG Still Null');
+    }
+  }, [state]);
+
+  // functionn พิมได้แค่ ไทย และ อังกฤษ <<<<<<<<<<<<<<<<<<
+
+  // functionn พิมได้แค่ ไทย และ อังกฤษ <<<<<<<<<<<<<<<<<<
+
+  // by bill spot >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
   // get Data Academics for select
   useEffect(() => {
     axios
       .get(
-        'http://192.168.1.168:8000/api/method/frappe.help-api.getAllfacultys'
+        'http://192.168.1.168:8000/api/method/frappe.help-api.getAllAcademics'
       )
       .then((res) => {
         setDataAcademics(res.data.message.Data);
+        res.data.message.Data;
         console.log(res.data.message.Data);
       });
   }, []);
 
+  useEffect(() => {
+    const min = Math.min(...dataAcademics.map((item) => item.ac_id));
+    setState((pre) => ({ ...pre, academics_ac_id: String(min) }));
+  }, [dataAcademics]);
   // set columns
   const columns = [
     { field: 'fi_name_th', headerName: 'Name(TH)', width: 300 },
@@ -67,7 +114,10 @@ function FacultyTab() {
           onClick={() => {
             setOpenUpd(true);
             setState(cellValues.row);
-            setState((pre) => ({ ...pre, primarykey: cellValues.row.fi_id }));
+            setState((pre) => ({
+              ...pre,
+              primarykey: String(cellValues.row.fi_id),
+            }));
             setSelectDisabled(true);
           }}>
           ...
@@ -115,8 +165,12 @@ function FacultyTab() {
           <Typography sx={{ fontSize: 12, mb: 0.5 }}>First Name(TH)</Typography>
           <Input
             label='Academic Name'
-            placeholder='Thai Name'
+            placeholder={
+              validationFac.fi_name_th ? 'Please Type Thai Name' : 'Thai Name'
+            }
+            type={'text'}
             size='sm'
+            error={validationFac.fi_name_th || false}
             slotProps={{
               input: {
                 // สำหรับกำหนดค่า min max ที่ inputจะสามารถรับได้
@@ -130,6 +184,7 @@ function FacultyTab() {
                 ...pre,
                 fi_name_th: event.target.value,
               }));
+              handleChange(event, 'fi_name_th', 'th');
             }}
             sx={{ mr: 1 }}
           />
@@ -140,14 +195,28 @@ function FacultyTab() {
             width: '50%',
           }}>
           <Input
-            placeholder='Engligsh Name'
+            placeholder={
+              validationFac.fi_name_en
+                ? 'Please Type Engligsh Name'
+                : 'Engligsh Name'
+            }
+            type={'text'}
             size='sm'
+            error={validationFac.fi_name_en || false}
+            slotProps={{
+              input: {
+                // สำหรับกำหนดค่า min max ที่ inputจะสามารถรับได้
+                minLength: 0,
+                maxLength: 10,
+              },
+            }}
             value={state.fi_name_en || ''}
             onChange={(event) => {
               setState((pre) => ({
                 ...pre,
                 fi_name_en: event.target.value,
               }));
+              handleChange(event, 'fi_name_en', 'en');
             }}
             sx={{ ml: 1 }}
           />
@@ -164,11 +233,11 @@ function FacultyTab() {
         }}>
         <Typography sx={{ fontSize: 12, mb: 0.5 }}>Academic</Typography>
         <Select
-          placeholder='เทคโนโลยีราชมงคลล้านนา'
           indicator={<KeyboardArrowDown />}
-          value={state.academics_ac_id || ''}
+          value={state.academics_ac_id}
           onChange={(event, value) => {
             setState((pre) => ({ ...pre, academics_ac_id: value }));
+            console.log('value: ', value);
           }}
           disabled={selectDisabled}
           size='sm'
@@ -182,8 +251,8 @@ function FacultyTab() {
               },
             },
           }}>
-          {dataAcademics?.map((data, value) => (
-            <Option key={value} value={data.academics_ac_id}>
+          {dataAcademics?.map((data) => (
+            <Option key={data.name} value={data.ac_id}>
               {data.ac_name_th}
             </Option>
           ))}
@@ -215,6 +284,23 @@ function FacultyTab() {
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  const onSubmit = (e) => {
+    if (state.fi_name_th !== '' && state.fi_name_en !== '') {
+      handleInsertSubmit(e);
+      console.log('Submit');
+    }
+    if (state.fi_name_th !== '') {
+      console.log('NAME THAI NOT NULL');
+    } else {
+      setValidationFac((pre) => ({ ...pre, fi_name_th: true }));
+    }
+    if (state.fi_name_en !== '') {
+      console.log('NAME ENG NOT NULL');
+    } else {
+      setValidationFac((pre) => ({ ...pre, fi_name_en: true }));
+    }
   };
 
   // สำหรับกด Submit หน้าแก้ไขข้อมูล
@@ -356,11 +442,12 @@ function FacultyTab() {
         handleClose={() => {
           setOpenIns(false);
           setState(initialState);
+          setValidationFac(initialState);
         }}
         content={ContentModal}
         header={'Add New Collegian'}
         labelBtn={'Submit'}
-        handleSubmit={handleInsertSubmit}
+        handleSubmit={(e) => onSubmit(e)}
         subDetail={false}
       />
     </div>
