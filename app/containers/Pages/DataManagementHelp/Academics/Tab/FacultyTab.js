@@ -41,7 +41,7 @@ function FacultyTab() {
   const [validationFac, setValidationFac] = useState({
     fi_name_th: false,
     fi_name_en: false,
-    ac_name_th: false,
+    academics_ac_id: false,
   });
 
   const handleChange = (e, key, type) => {
@@ -62,8 +62,6 @@ function FacultyTab() {
   }, [deleteState]);
 
   useEffect(() => {
-    // console.log(state.fi_name_th);
-    // console.log(state.fi_name_en);
     if (state.fi_name_th !== '') {
       setValidationFac((pre) => ({ ...pre, fi_name_th: false }));
     } else {
@@ -74,12 +72,12 @@ function FacultyTab() {
     } else {
       console.log('NAME ENG Still Null');
     }
+    if (state.academics_ac_id !== null) {
+      setValidationFac((pre) => ({ ...pre, academics_ac_id: false }));
+    } else {
+      console.log('NAME ENG Still Null');
+    }
   }, [state]);
-
-  // functionn พิมได้แค่ ไทย และ อังกฤษ <<<<<<<<<<<<<<<<<<
-
-  // functionn พิมได้แค่ ไทย และ อังกฤษ <<<<<<<<<<<<<<<<<<
-
   // by bill spot >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
   // get Data Academics for select
@@ -95,10 +93,11 @@ function FacultyTab() {
       });
   }, []);
 
-  useEffect(() => {
-    const min = Math.min(...dataAcademics.map((item) => item.ac_id));
-    setState((pre) => ({ ...pre, academics_ac_id: String(min) }));
-  }, [dataAcademics]);
+  // useEffect(() => {
+  //   const min = Math.min(...dataAcademics.map((item) => item.ac_id));
+  //   setState((pre) => ({ ...pre, academics_ac_id: String(min) }));
+  // }, [dataAcademics]);
+
   // set columns
   const columns = [
     { field: 'fi_name_th', headerName: 'Name(TH)', width: 300 },
@@ -235,11 +234,17 @@ function FacultyTab() {
         <Select
           indicator={<KeyboardArrowDown />}
           value={state.academics_ac_id}
+          placeholder={
+            validationFac.academics_ac_id
+              ? 'Please Select Academic'
+              : 'Select Academic'
+          }
           onChange={(event, value) => {
             setState((pre) => ({ ...pre, academics_ac_id: value }));
             console.log('value: ', value);
           }}
           disabled={selectDisabled}
+          color={validationFac.academics_ac_id ? 'danger' : 'neutral'}
           size='sm'
           sx={{
             mt: 0.5,
@@ -287,7 +292,13 @@ function FacultyTab() {
   };
 
   const onSubmit = (e) => {
-    if (state.fi_name_th !== '' && state.fi_name_en !== '') {
+    if (
+      // eslint-disable-next-line operator-linebreak
+      state.fi_name_th !== '' &&
+      // eslint-disable-next-line operator-linebreak
+      state.fi_name_en !== '' &&
+      state.academics_ac_id !== null
+    ) {
       handleInsertSubmit(e);
       console.log('Submit');
     }
@@ -300,6 +311,11 @@ function FacultyTab() {
       console.log('NAME ENG NOT NULL');
     } else {
       setValidationFac((pre) => ({ ...pre, fi_name_en: true }));
+    }
+    if (state.academics_ac_id !== null) {
+      console.log('NAME ENG NOT NULL');
+    } else {
+      setValidationFac((pre) => ({ ...pre, academics_ac_id: true }));
     }
   };
 
