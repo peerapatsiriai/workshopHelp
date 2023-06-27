@@ -370,6 +370,7 @@ function CollegianTab() {
     </Box>
   );
 
+  // เช็คค่าใน state
   useEffect(() => {
     console.log(state);
   }, [state]);
@@ -456,6 +457,7 @@ function CollegianTab() {
       });
   };
 
+  // Update ค่า Validation ที่แสดงเตือนสีแดง แล้วมีเพิ่มข้อมูลให้ปิดสีแดง
   useEffect(() => {
     const updatedValidation = {};
     Object.keys(state).forEach((key) => {
