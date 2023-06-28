@@ -726,20 +726,20 @@ function CollegianTab() {
             style={{ maxWidth: '100%', width: '100%' }}
           >
             <Table
-              sx={{ overflowX: 'auto' }}
+              sx={{ overflowX: 'auto', background: 'white' }}
               aria-label='spanning table'
             >
               <TableHead>
                 <TableRow>
-                  <TableCell>#</TableCell>
-                  <TableCell>Code</TableCell>
-                  <TableCell>First Name(TH)</TableCell>
-                  <TableCell>Last Name(TH)</TableCell>
-                  <TableCell>First Name(EN)</TableCell>
-                  <TableCell>Last Name(EN)</TableCell>
-                  <TableCell>Email</TableCell>
-                  <TableCell>Tel</TableCell>
-                  <TableCell>Faculty</TableCell>
+                  <TableCell sx={{ color: 'black', typography: 'body2' }}>#</TableCell>
+                  <TableCell sx={{ color: 'black', typography: 'body2' }}>Code</TableCell>
+                  <TableCell sx={{ color: 'black', typography: 'body2' }}>First Name(TH)</TableCell>
+                  <TableCell sx={{ color: 'black', typography: 'body2' }}>Last Name(TH)</TableCell>
+                  <TableCell sx={{ color: 'black', typography: 'body2' }}>First Name(EN)</TableCell>
+                  <TableCell sx={{ color: 'black', typography: 'body2' }}>Last Name(EN)</TableCell>
+                  <TableCell sx={{ color: 'black', typography: 'body2' }}>Email</TableCell>
+                  <TableCell sx={{ color: 'black', typography: 'body2' }}>Tel</TableCell>
+                  <TableCell sx={{ color: 'black', typography: 'body2' }}>Faculty</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -748,15 +748,15 @@ function CollegianTab() {
                     key={row.name}
                     sx={{ background: index % 2 === 0 ? '#f2f6fa' : '' }}
                   >
-                    <TableCell sx={{ fontWeight: 200, width: 60 }}>{index + 1}</TableCell>
-                    <TableCell sx={{ fontWeight: 200, maxWidth: 160 }}>{row.co_code}</TableCell>
-                    <TableCell sx={{ fontWeight: 200, maxWidth: 160 }}>{row.co_fname_th}</TableCell>
-                    <TableCell sx={{ fontWeight: 200, maxWidth: 140 }}>{row.co_lname_th}</TableCell>
-                    <TableCell sx={{ fontWeight: 200, maxWidth: 160 }}>{row.co_fname_en}</TableCell>
-                    <TableCell sx={{ fontWeight: 200, maxWidth: 160 }}>{row.co_lname_en}</TableCell>
-                    <TableCell sx={{ fontWeight: 200, maxWidth: 140 }}>{row.co_email}</TableCell>
-                    <TableCell sx={{ fontWeight: 200, maxWidth: 160 }}>{row.co_tel}</TableCell>
-                    <TableCell sx={{ fontWeight: 200, maxWidth: 140 }}>{row.fi_name_th}</TableCell>
+                    <TableCell sx={{ fontWeight: 200, width: 60, color: 'black' }}>{index + 1}</TableCell>
+                    <TableCell sx={{ fontWeight: 200, maxWidth: 160, color: 'black' }}>{row.co_code}</TableCell>
+                    <TableCell sx={{ fontWeight: 200, maxWidth: 160, color: 'black' }}>{row.co_fname_th}</TableCell>
+                    <TableCell sx={{ fontWeight: 200, maxWidth: 140, color: 'black' }}>{row.co_lname_th}</TableCell>
+                    <TableCell sx={{ fontWeight: 200, maxWidth: 160, color: 'black' }}>{row.co_fname_en}</TableCell>
+                    <TableCell sx={{ fontWeight: 200, maxWidth: 160, color: 'black' }}>{row.co_lname_en}</TableCell>
+                    <TableCell sx={{ fontWeight: 200, maxWidth: 140, color: 'black' }}>{row.co_email}</TableCell>
+                    <TableCell sx={{ fontWeight: 200, maxWidth: 160, color: 'black' }}>{row.co_tel}</TableCell>
+                    <TableCell sx={{ fontWeight: 200, maxWidth: 140, color: 'black' }}>{row.fi_name_th}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
