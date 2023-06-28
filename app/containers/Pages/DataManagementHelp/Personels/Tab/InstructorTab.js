@@ -48,7 +48,7 @@ function InstructorTab() {
   const [selectState, setSelectState] = useState(initialSelectState);
   const [state, setState] = useState(initialState);
   const [deleteState, setDeleteState] = useState(initialDeleteState);
-  const [InstructorRows, setInstructorRows] = useState([]);
+  const [rows, setRows] = useState([]);
 
   const [openInsIns, setOpenInsIns] = React.useState(false); // สำหรับใช้ควบคุม Modal insert
   const [openUpdIns, setOpenUpdIns] = React.useState(false); // สำหรับใช้ควบคุม Modal update
@@ -67,7 +67,7 @@ function InstructorTab() {
   });
   useEffect(() => {
     axios.get('http://192.168.1.168:8000/api/method/frappe.help-api.getAllinstructors').then((response) => {
-      setInstructorRows(response.data.message.Data);
+      setRows(response.data.message.Data);
       console.log(response.data.message.Data);
     });
   }, []);
@@ -132,9 +132,9 @@ function InstructorTab() {
       .finally(() => {
         const idToDelete = deleteState.primary;
         console.log('idToDelete: ', idToDelete);
-        const objectToDelete = InstructorRows.filter((obj) => obj.ist_id !== idToDelete);
+        const objectToDelete = rows.filter((obj) => obj.ist_id !== idToDelete);
         console.log('objectToDelete: ', objectToDelete);
-        setInstructorRows(objectToDelete);
+        setRows(objectToDelete);
       });
   };
 
@@ -159,7 +159,7 @@ function InstructorTab() {
         .then((response) => {
           console.log(response);
           setOpenUpdIns(false);
-          const objectToUpdate = InstructorRows.find((obj) => obj.ist_id === state.ist_id);
+          const objectToUpdate = rows.find((obj) => obj.ist_id === state.ist_id);
 
           // แก้ไขค่า ในออบเจ็กต์
           if (objectToUpdate) {
@@ -363,7 +363,7 @@ function InstructorTab() {
           const newState1 = { ...selectState, ...state };
           const newState2 = { ist_id: response.data.message.Primarykey, ...newState1 };
           console.log(newState2);
-          setInstructorRows((pre) => [newState2, ...pre]);
+          setRows((pre) => [newState2, ...pre]);
           setState(initialState);
           setSelectState(initialSelectState);
         })
@@ -500,7 +500,7 @@ function InstructorTab() {
       <Box sx={{ display: 'flex', width: '100%' }}>
         {/* ทำแค่ตัวนี้ก่อน */}
         <DataGrid
-          rows={InstructorRows}
+          rows={rows}
           columns={columnsForInstructor}
           getRowId={(row) => row.ist_id}
           initialState={{
