@@ -101,7 +101,7 @@ function CollegianTab() {
   const dropdown = (id) => {
     const strId = id.toString();
     axios
-      .post('http://192.168.1.168:8000/api/method/frappe.help-api.getfacultyandcurriculumfordropdown', {
+      .post('http://192.168.1.168:8000/api/method/frappe.help-api.getAllCurriculumandFacultyinoneacademic', {
         primarykey: strId,
       })
       .then((response) => {
@@ -599,7 +599,7 @@ function CollegianTab() {
                 fontWeight: 'bold',
               }}
             >
-              + Add Colegian
+              + Add Collegian
             </Typography>
           </Button>
           <Button
@@ -702,16 +702,19 @@ function CollegianTab() {
                     isEmpty={rows?.length > 0 ? 0 : 1}
                     fileName={tableName + '_' + Date().toLocaleString()}
                     tableName={tableName}
-                    excelData={rows?.map((val) => ({
-                      Code: val.co_code,
-                      FirstNameTH: val.co_fname_th,
-                      LastNameTH: val.co_lname_th,
-                      FirstNameEN: val.co_fname_en,
-                      LastNameEN: val.co_lname_en,
-                      Email: val.co_email,
-                      Tel: val.co_tel,
-                      Faculty: val.fi_name_th,
-                    }))}
+                    excelData={
+                      // eslint-disable-next-line operator-linebreak
+                      rows?.map((val) => ({
+                        Code: val.co_code,
+                        FirstNameTH: val.co_fname_th,
+                        LastNameTH: val.co_lname_th,
+                        FirstNameEN: val.co_fname_en,
+                        LastNameEN: val.co_lname_en,
+                        Email: val.co_email,
+                        Tel: val.co_tel,
+                        Faculty: val.fi_name_th,
+                      }))
+                    }
                   />
                 </Box>
               </Box>

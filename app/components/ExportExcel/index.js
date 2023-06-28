@@ -44,7 +44,7 @@ ExportExcel.propTypes = {
   excelData: PropTypes.any,
   fileName: PropTypes.string,
   tableName: PropTypes.string,
-  isEmpty: PropTypes.bool,
+  isEmpty: PropTypes.number,
 };
 
 export default ExportExcel;
