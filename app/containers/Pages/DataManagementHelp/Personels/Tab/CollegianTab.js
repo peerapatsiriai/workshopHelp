@@ -177,7 +177,7 @@ function CollegianTab() {
     } else if (type === 'email') {
       updatedValue = updatedValue.replace(/[^A-Za-z0-9.@+-]|[@][^A-Za-z0-9.@+-\u0E01-\u0E5B]/g, '');
     } else if (type === 'tel') {
-      updatedValue = updatedValue.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+      updatedValue = updatedValue.replace(/\D/g, '').replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
     } else if (type === 'code') {
       updatedValue = updatedValue.replace(/[^a-zA-Z0-9\s]/g, '');
     }
@@ -187,6 +187,107 @@ function CollegianTab() {
   // content modal
   const ContentModal = (
     <Box>
+      <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
+        <Box sx={{ width: '50%' }}>
+          <Typography sx={{ fontSize: 12, mb: 0.5, ml: 2 }}>Academic</Typography>
+          <Select
+            id='faculty_institutes_fi_id'
+            placeholder='กรุณาเลือกคณะ'
+            indicator={<KeyboardArrowDown />}
+            value={state.faculty_institutes_fi_id || ''}
+            onChange={(event, value, text) => {
+              setState((pre) => ({ ...pre, faculty_institutes_fi_id: value }));
+              setSelectState(text);
+            }}
+            color={validation.faculty_institutes_fi_id ? 'danger' : 'neutral'}
+            sx={{
+              mx: 1,
+              size: 'sm',
+              [`& .${selectClasses.indicator}`]: {
+                transition: '0.2s',
+                [`&.${selectClasses.expanded}`]: {
+                  transform: 'rotate(-180deg)',
+                },
+              },
+            }}
+          >
+            {facultyList.map((faculty) => (
+              <Option
+                key={faculty.fi_id}
+                value={faculty.fi_id}
+              >
+                {faculty.fi_name_th}
+              </Option>
+            ))}
+          </Select>
+        </Box>
+      </Box>
+      <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
+        <Box sx={{ width: '50%' }}>
+          <Typography sx={{ fontSize: 12, mb: 0.5, ml: 2 }}>Curriculum</Typography>
+          <Select
+            id='curriculums_cur_id'
+            placeholder='กรุณาเลือกหลักสูตร'
+            indicator={<KeyboardArrowDown />}
+            value={state.curriculums_cur_id || ''}
+            onChange={(event, value) => setState((pre) => ({ ...pre, curriculums_cur_id: value }))}
+            color={validation.curriculums_cur_id ? 'danger' : 'neutral'}
+            sx={{
+              mx: 1,
+              size: 'sm',
+              [`& .${selectClasses.indicator}`]: {
+                transition: '0.2s',
+                [`&.${selectClasses.expanded}`]: {
+                  transform: 'rotate(-180deg)',
+                },
+              },
+            }}
+          >
+            {curriculumsList.map((curriculum) => (
+              <Option
+                key={curriculum.cur_id}
+                value={curriculum.cur_id}
+                onClick={() => setSelectState((pre) => ({ ...pre, cur_name_th: curriculum.cur_name_th }))}
+              >
+                {curriculum.cur_name_th}
+              </Option>
+            ))}
+          </Select>
+        </Box>
+        <Box sx={{ width: '50%' }}>
+          <Typography sx={{ fontSize: 12, mb: 0.5, ml: 2 }}>Faculty Institutes</Typography>
+          <Select
+            id='faculty_institutes_fi_id'
+            placeholder='กรุณาเลือกคณะ'
+            indicator={<KeyboardArrowDown />}
+            value={state.faculty_institutes_fi_id || ''}
+            onChange={(event, value, text) => {
+              setState((pre) => ({ ...pre, faculty_institutes_fi_id: value }));
+              setSelectState(text);
+            }}
+            color={validation.faculty_institutes_fi_id ? 'danger' : 'neutral'}
+            sx={{
+              mx: 1,
+              size: 'sm',
+              [`& .${selectClasses.indicator}`]: {
+                transition: '0.2s',
+                [`&.${selectClasses.expanded}`]: {
+                  transform: 'rotate(-180deg)',
+                },
+              },
+            }}
+          >
+            {facultyList.map((faculty) => (
+              <Option
+                key={faculty.fi_id}
+                value={faculty.fi_id}
+              >
+                {faculty.fi_name_th}
+              </Option>
+            ))}
+          </Select>
+        </Box>
+      </Box>
       <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
         <Box sx={{ width: '50%' }}>
           <Box sx={{ ml: 2 }}>
@@ -329,72 +430,6 @@ function CollegianTab() {
             onChange={(event) => handleChange(event, 'co_tel', 'tel')}
             sx={{ mx: 1 }}
           />
-        </Box>
-      </Box>
-      <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
-        <Box sx={{ width: '50%' }}>
-          <Typography sx={{ fontSize: 12, mb: 0.5, ml: 2 }}>Faculty Institutes</Typography>
-          <Select
-            id='faculty_institutes_fi_id'
-            placeholder='กรุณาเลือกคณะ'
-            indicator={<KeyboardArrowDown />}
-            value={state.faculty_institutes_fi_id || ''}
-            onChange={(event, value, text) => {
-              setState((pre) => ({ ...pre, faculty_institutes_fi_id: value }));
-              setSelectState(text);
-            }}
-            color={validation.faculty_institutes_fi_id ? 'danger' : 'neutral'}
-            sx={{
-              mx: 1,
-              size: 'sm',
-              [`& .${selectClasses.indicator}`]: {
-                transition: '0.2s',
-                [`&.${selectClasses.expanded}`]: {
-                  transform: 'rotate(-180deg)',
-                },
-              },
-            }}
-          >
-            {facultyList.map((faculty) => (
-              <Option
-                key={faculty.fi_id}
-                value={faculty.fi_id}
-              >
-                {faculty.fi_name_th}
-              </Option>
-            ))}
-          </Select>
-        </Box>
-        <Box sx={{ width: '50%' }}>
-          <Typography sx={{ fontSize: 12, mb: 0.5, ml: 2 }}>Curriculum</Typography>
-          <Select
-            id='curriculums_cur_id'
-            placeholder='กรุณาเลือกหลักสูตร'
-            indicator={<KeyboardArrowDown />}
-            value={state.curriculums_cur_id || ''}
-            onChange={(event, value) => setState((pre) => ({ ...pre, curriculums_cur_id: value }))}
-            color={validation.curriculums_cur_id ? 'danger' : 'neutral'}
-            sx={{
-              mx: 1,
-              size: 'sm',
-              [`& .${selectClasses.indicator}`]: {
-                transition: '0.2s',
-                [`&.${selectClasses.expanded}`]: {
-                  transform: 'rotate(-180deg)',
-                },
-              },
-            }}
-          >
-            {curriculumsList.map((curriculum) => (
-              <Option
-                key={curriculum.cur_id}
-                value={curriculum.cur_id}
-                onClick={() => setSelectState((pre) => ({ ...pre, cur_name_th: curriculum.cur_name_th }))}
-              >
-                {curriculum.cur_name_th}
-              </Option>
-            ))}
-          </Select>
         </Box>
       </Box>
     </Box>
