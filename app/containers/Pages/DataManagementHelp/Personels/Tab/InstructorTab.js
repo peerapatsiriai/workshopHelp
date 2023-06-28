@@ -132,7 +132,7 @@ function InstructorTab() {
       .finally(() => {
         const idToDelete = deleteState.primary;
         console.log('idToDelete: ', idToDelete);
-        const objectToDelete = rows.filter((obj) => obj.ist_id !== idToDelete);
+        const objectToDelete = rows?.filter((obj) => obj.ist_id !== idToDelete);
         console.log('objectToDelete: ', objectToDelete);
         setRows(objectToDelete);
       });
@@ -500,7 +500,7 @@ function InstructorTab() {
       <Box sx={{ display: 'flex', width: '100%' }}>
         {/* ทำแค่ตัวนี้ก่อน */}
         <DataGrid
-          rows={rows}
+          rows={rows || []}
           columns={columnsForInstructor}
           getRowId={(row) => row.ist_id}
           initialState={{
@@ -578,7 +578,7 @@ function InstructorTab() {
                   <ExportExcel
                     fileName={tableName + '_' + Date().toLocaleString()}
                     tableName={tableName}
-                    excelData={instructortypeRows?.map((val) => ({
+                    excelData={rows?.map((val) => ({
                       FirstNameTH: val.ist_fname_th,
                       LastNameTH: val.ist_lname_th,
                       FirstNameEN: val.ist_fname_en,
@@ -592,9 +592,7 @@ function InstructorTab() {
               </Box>
               <Box sx={{ display: 'flex', width: 200, justifyContent: 'space-between' }}>
                 <Typography variant='body2'>Total rows :</Typography>
-                <Typography variant='body2'>
-                  {instructortypeRows !== undefined ? instructortypeRows?.length : ''}
-                </Typography>
+                <Typography variant='body2'>{rows !== undefined ? rows?.length : ''}</Typography>
               </Box>
             </Box>
           </Box>
@@ -619,7 +617,7 @@ function InstructorTab() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {instructortypeRows?.map((row, index) => (
+                {rows?.map((row, index) => (
                   <TableRow
                     key={row.name}
                     sx={{ background: index % 2 === 0 ? '#f2f6fa' : '' }}

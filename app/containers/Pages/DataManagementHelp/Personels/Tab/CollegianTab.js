@@ -717,7 +717,7 @@ function CollegianTab() {
               </Box>
               <Box sx={{ display: 'flex', width: 200, justifyContent: 'space-between' }}>
                 <Typography variant='body2'>Total rows :</Typography>
-                <Typography variant='body2'>{rows !== undefined ? rows.length : ''}</Typography>
+                <Typography variant='body2'>{rows !== undefined ? rows?.length : ''}</Typography>
               </Box>
             </Box>
           </Box>
