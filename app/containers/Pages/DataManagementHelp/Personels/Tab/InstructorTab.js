@@ -36,6 +36,7 @@ function InstructorTab() {
     ist_email: '',
     ist_tel: '',
     faculty_institutes_fi_id: '',
+    ac_id: '',
   };
   const initialSelectState = {
     fi_name_th: '',
@@ -44,15 +45,20 @@ function InstructorTab() {
     table: 'tabinstrutors',
     primary: '',
   };
+
   const tableName = 'Instructor';
+
+  // สำหรับ set state เริ่มต้น
   const [selectState, setSelectState] = useState(initialSelectState);
   const [state, setState] = useState(initialState);
   const [deleteState, setDeleteState] = useState(initialDeleteState);
-  const [rows, setRows] = useState([]);
-
   const [openInsIns, setOpenInsIns] = React.useState(false); // สำหรับใช้ควบคุม Modal insert
   const [openUpdIns, setOpenUpdIns] = React.useState(false); // สำหรับใช้ควบคุม Modal update
   const [openDelIns, setOpenDelIns] = React.useState(false); // สำหรับใช้ควบคุม Modal Delete
+
+  // สำหรับ set data
+  const [rows, setRows] = useState([]);
+  const [academicLists, setAcademicLists] = useState([]);
   const [instructortypeRows, setInstructortypeRows] = useState([]);
   const [openPreview, setOpenPreview] = React.useState(false);
 
@@ -68,6 +74,12 @@ function InstructorTab() {
   useEffect(() => {
     axios.get('http://192.168.1.168:8000/api/method/frappe.help-api.getAllinstructors').then((response) => {
       setRows(response.data.message.Data);
+      setInstructortypeRows(response.data.message.Data);
+      console.log(response.data.message.Data);
+    });
+    // set rows academic list for dropdown
+    axios.get('http://192.168.1.168:8000/api/method/frappe.help-api.getAllAcademics').then((response) => {
+      setAcademicLists(response.data.message.Data);
       console.log(response.data.message.Data);
     });
   }, []);
@@ -138,12 +150,6 @@ function InstructorTab() {
       });
   };
 
-  useEffect(() => {
-    axios.get('http://192.168.1.168:8000/api/method/frappe.help-api.getAllinstructors').then((response) => {
-      setInstructortypeRows(response.data.message.Data);
-      console.log(response.data.message.Data);
-    });
-  }, []);
   const handleEditSubmit = () => {
     Object.keys(state).forEach((key) => {
       const value = state[key];
@@ -190,7 +196,7 @@ function InstructorTab() {
       // ถ้ารูปแบบไม่ถูกต้อง แทนที่อักขระที่ไม่ถูกต้องด้วยช่องว่าง
       updatedValue = updatedValue.replace(/[^A-Za-z0-9.@+-]/g, '');
     } else if (type === 'tel') {
-      updatedValue = updatedValue.replace(/[^0-9]/g, '');
+      updatedValue = updatedValue.replace(/\D/g, '').replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
     } else if (type === 'code') {
       updatedValue = updatedValue.replace(/[^a-zA-Z0-9\s]/g, ' ');
     }
@@ -199,6 +205,73 @@ function InstructorTab() {
 
   const ContentModal = (
     <Box>
+      <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
+        <Box sx={{ width: '50%' }}>
+          <Typography sx={{ fontSize: 12, mb: 0.5, ml: 2 }}>Academic</Typography>
+          <Select
+            id='faculty_institutes_fi_id'
+            placeholder='กรุณาเลือกคณะ'
+            indicator={<KeyboardArrowDown />}
+            value={state.ac_id || ''}
+            onChange={(event, value, text) => {
+              setState((pre) => ({ ...pre, ac_id: value }));
+              setSelectState(text);
+            }}
+            color={validation.ac_id ? 'danger' : 'neutral'}
+            sx={{
+              mx: 1,
+              size: 'sm',
+              [`& .${selectClasses.indicator}`]: {
+                transition: '0.2s',
+                [`&.${selectClasses.expanded}`]: {
+                  transform: 'rotate(-180deg)',
+                },
+              },
+            }}
+          >
+            {academicLists?.map((acadamicList) => (
+              <Option
+                key={acadamicList.ac_id}
+                value={acadamicList.ac_id}
+              >
+                {acadamicList.ac_name_th}
+              </Option>
+            ))}
+          </Select>
+        </Box>
+        <Box sx={{ width: '50%' }}>
+          <Typography sx={{ fontSize: 12, mb: 0.5, ml: 2 }}>Faculty Institutes</Typography>
+          <Select
+            placeholder='Type in here…'
+            indicator={<KeyboardArrowDown />}
+            value={state.faculty_institutes_fi_id || '0'}
+            onChange={(event, value) => {
+              setState((pre) => ({ ...pre, faculty_institutes_fi_id: value }));
+            }}
+            color={validation.faculty_institutes_fi_id ? 'danger' : 'neutral'}
+            sx={{
+              mx: 1,
+              size: 'sm',
+              [`& .${selectClasses.indicator}`]: {
+                transition: '0.2s',
+                [`&.${selectClasses.expanded}`]: {
+                  transform: 'rotate(-180deg)',
+                },
+              },
+            }}
+          >
+            {instructortypeRows?.map((contentIn, value) => (
+              <Option
+                key={value}
+                value={contentIn.faculty_institutes_fi_id}
+                onClick={() => setSelectState((pre) => ({ ...pre, fi_name_th: contentIn.fi_name_th }))}
+              >
+                {contentIn.fi_name_th}
+              </Option>
+            ))}
+          </Select>
+        </Box>
+      </Box>
       <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
         <Box sx={{ width: '50%' }}>
           <Box sx={{ ml: 2 }}>
@@ -305,41 +378,6 @@ function InstructorTab() {
             sx={{ mx: 1 }}
           />
         </Box>
-      </Box>
-      <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
-        <Box sx={{ width: '50%' }}>
-          <Typography sx={{ fontSize: 12, mb: 0.5, ml: 2 }}>Faculty Institutes</Typography>
-          <Select
-            placeholder='Type in here…'
-            indicator={<KeyboardArrowDown />}
-            value={state.faculty_institutes_fi_id || '0'}
-            onChange={(event, value) => {
-              setState((pre) => ({ ...pre, faculty_institutes_fi_id: value }));
-            }}
-            color={validation.faculty_institutes_fi_id ? 'danger' : 'neutral'}
-            sx={{
-              mx: 1,
-              size: 'sm',
-              [`& .${selectClasses.indicator}`]: {
-                transition: '0.2s',
-                [`&.${selectClasses.expanded}`]: {
-                  transform: 'rotate(-180deg)',
-                },
-              },
-            }}
-          >
-            {instructortypeRows?.map((contentIn, value) => (
-              <Option
-                key={value}
-                value={contentIn.faculty_institutes_fi_id}
-                onClick={() => setSelectState((pre) => ({ ...pre, fi_name_th: contentIn.fi_name_th }))}
-              >
-                {contentIn.fi_name_th}
-              </Option>
-            ))}
-          </Select>
-        </Box>
-        <Box sx={{ width: '50%' }}></Box>
       </Box>
     </Box>
   );
