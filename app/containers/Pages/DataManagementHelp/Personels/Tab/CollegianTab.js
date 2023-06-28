@@ -36,7 +36,9 @@ function CollegianTab() {
     co_lname_en: '',
     co_email: '',
     co_tel: '',
+    ac_id: '',
     faculty_institutes_fi_id: '',
+    curriculums_cur_id: '',
   };
   const initialDeleteState = {
     table: 'tabcollegians',
@@ -50,20 +52,25 @@ function CollegianTab() {
     co_lname_en: false,
     co_email: false,
     co_tel: false,
+    ac_id: false,
     faculty_institutes_fi_id: false,
+    curriculums_cur_id: false,
   };
   const initialSelectState = {
     cur_name_th: '',
   };
+
   const tableName = 'Collegian';
   // ค่า modal state change
   const [openInsCo, setOpenInsCo] = React.useState(false); // สำหรับใช้ควบคุม Modal insert
   const [openUpdCo, setOpenUpdCo] = React.useState(false); // สำหรับใช้ควบคุม Modal update
   const [openDelCo, setOpenDelCo] = React.useState(false); // สำหรับใช้ควบคุม Modal Delete
   const [openPreview, setOpenPreview] = React.useState(false);
+  const [dropdownState, setDropdownState] = useState(true);
 
   // สำหรับ set state เริ่มต้น
-  const [collegianRows, setCollegianRows] = useState([]);
+  const [rows, setRows] = useState([]);
+  const [academicLists, setAcademicLists] = useState([]);
   const [state, setState] = useState(initialState);
   const [deleteState, setDeleteState] = useState(initialDeleteState);
   const [validation, setValidation] = useState(initialValidation);
@@ -90,11 +97,6 @@ function CollegianTab() {
         // always executed
       });
   }, []);
-
-  const handelSetDropdownDefaults = () => {
-    setCurriculumsList(curriculumsListIns);
-    setFacultyList(facultyListIns);
-  };
 
   const dropdown = (id) => {
     const strId = id.toString();
@@ -135,6 +137,7 @@ function CollegianTab() {
             dropdown(cellValues.row.co_id);
             setState(cellValues.row);
             setState((pre) => ({ ...pre, primarykey: cellValues.row.co_id }));
+            setDropdownState(false);
           }}
         >
           ...
@@ -158,10 +161,15 @@ function CollegianTab() {
     },
   ];
 
-  // set rows
   useEffect(() => {
+    // set rows Data
     axios.get('http://192.168.1.168:8000/api/method/frappe.help-api.getAllcollegians').then((response) => {
-      setCollegianRows(response.data.message.Data);
+      setRows(response.data.message.Data);
+      console.log(response.data.message.Data);
+    });
+    // set rows academic list for dropdown
+    axios.get('http://192.168.1.168:8000/api/method/frappe.help-api.getAllAcademics').then((response) => {
+      setAcademicLists(response.data.message.Data);
       console.log(response.data.message.Data);
     });
   }, []);
@@ -194,12 +202,12 @@ function CollegianTab() {
             id='faculty_institutes_fi_id'
             placeholder='กรุณาเลือกคณะ'
             indicator={<KeyboardArrowDown />}
-            value={state.faculty_institutes_fi_id || ''}
+            value={state.ac_id || ''}
             onChange={(event, value, text) => {
-              setState((pre) => ({ ...pre, faculty_institutes_fi_id: value }));
+              setState((pre) => ({ ...pre, ac_id: value }));
               setSelectState(text);
             }}
-            color={validation.faculty_institutes_fi_id ? 'danger' : 'neutral'}
+            color={validation.ac_id ? 'danger' : 'neutral'}
             sx={{
               mx: 1,
               size: 'sm',
@@ -211,12 +219,16 @@ function CollegianTab() {
               },
             }}
           >
-            {facultyList.map((faculty) => (
+            {academicLists.map((acadamicList) => (
               <Option
-                key={faculty.fi_id}
-                value={faculty.fi_id}
+                key={acadamicList.ac_id}
+                value={acadamicList.ac_id}
+                onClick={() => {
+                  dropdown(acadamicList.ac_id);
+                  setDropdownState(false);
+                }}
               >
-                {faculty.fi_name_th}
+                {acadamicList.ac_name_th}
               </Option>
             ))}
           </Select>
@@ -232,6 +244,7 @@ function CollegianTab() {
             value={state.curriculums_cur_id || ''}
             onChange={(event, value) => setState((pre) => ({ ...pre, curriculums_cur_id: value }))}
             color={validation.curriculums_cur_id ? 'danger' : 'neutral'}
+            disabled={dropdownState}
             sx={{
               mx: 1,
               size: 'sm',
@@ -261,11 +274,11 @@ function CollegianTab() {
             placeholder='กรุณาเลือกคณะ'
             indicator={<KeyboardArrowDown />}
             value={state.faculty_institutes_fi_id || ''}
-            onChange={(event, value, text) => {
+            onChange={(event, value) => {
               setState((pre) => ({ ...pre, faculty_institutes_fi_id: value }));
-              setSelectState(text);
             }}
             color={validation.faculty_institutes_fi_id ? 'danger' : 'neutral'}
+            disabled={dropdownState}
             sx={{
               mx: 1,
               size: 'sm',
@@ -462,7 +475,7 @@ function CollegianTab() {
           const newState1 = { ...selectState, ...state };
           const newState2 = { co_id: response.data.message.Primarykey, ...newState1 };
           console.log(newState2);
-          setCollegianRows((pre) => [newState2, ...pre]);
+          setRows((pre) => [newState2, ...pre]);
           setState(initialState);
           setSelectState(initialSelectState);
         })
@@ -489,7 +502,7 @@ function CollegianTab() {
         .then((response) => {
           console.log(response);
           setOpenUpdCo(false);
-          const objectToUpdate = collegianRows.find((obj) => obj.co_id === state.co_id);
+          const objectToUpdate = rows.find((obj) => obj.co_id === state.co_id);
 
           // แก้ไขค่า ในออบเจ็กต์
           if (objectToUpdate) {
@@ -527,9 +540,9 @@ function CollegianTab() {
       .finally(() => {
         const idToDelete = deleteState.primary;
         console.log('idToDelete: ', idToDelete);
-        const objectToDelete = collegianRows.filter((obj) => obj.co_id !== idToDelete);
+        const objectToDelete = rows.filter((obj) => obj.co_id !== idToDelete);
         console.log('objectToDelete: ', objectToDelete);
-        setCollegianRows(objectToDelete);
+        setRows(objectToDelete);
       });
   };
 
@@ -565,7 +578,9 @@ function CollegianTab() {
           <Button
             onClick={() => {
               setOpenInsCo(true);
-              handelSetDropdownDefaults();
+              setCurriculumsList(curriculumsListIns);
+              setFacultyList(facultyListIns);
+              setDropdownState(true);
             }}
             sx={{
               px: 2,
@@ -607,7 +622,7 @@ function CollegianTab() {
       <Box sx={{ display: 'flex', width: '100%' }}>
         {/* ทำแค่ตัวนี้ก่อน */}
         <DataGrid
-          rows={collegianRows}
+          rows={rows}
           columns={collegianColumns}
           getRowId={(row) => row.co_id}
           initialState={{
@@ -615,6 +630,7 @@ function CollegianTab() {
           }}
           pageSizeOptions={[10, 25, 50]}
         />
+        {/* สำหรับ edit */}
         <JoyModal
           open={openUpdCo}
           handleClose={() => {
@@ -686,7 +702,7 @@ function CollegianTab() {
                   <ExportExcel
                     fileName={tableName + '_' + Date().toLocaleString()}
                     tableName={tableName}
-                    excelData={collegianRows.map((val) => ({
+                    excelData={rows.map((val) => ({
                       Code: val.co_code,
                       FirstNameTH: val.co_fname_th,
                       LastNameTH: val.co_lname_th,
@@ -701,7 +717,7 @@ function CollegianTab() {
               </Box>
               <Box sx={{ display: 'flex', width: 200, justifyContent: 'space-between' }}>
                 <Typography variant='body2'>Total rows :</Typography>
-                <Typography variant='body2'>{collegianRows.length}</Typography>
+                <Typography variant='body2'>{rows.length}</Typography>
               </Box>
             </Box>
           </Box>
@@ -727,7 +743,7 @@ function CollegianTab() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {collegianRows.map((row, index) => (
+                {rows.map((row, index) => (
                   <TableRow
                     key={row.name}
                     sx={{ background: index % 2 === 0 ? '#f2f6fa' : '' }}
