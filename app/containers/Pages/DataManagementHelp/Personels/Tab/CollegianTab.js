@@ -166,11 +166,6 @@ function CollegianTab() {
     });
   }, []);
 
-  useEffect(() => {
-    console.log('DropdownA: ', curriculumsList);
-    console.log('DropdownB: ', facultyList);
-  }, [curriculumsList]);
-
   const handleChange = (e, key, type) => {
     const { value } = e.target;
     const getKey = key;
@@ -180,7 +175,7 @@ function CollegianTab() {
     } else if (type === 'en') {
       updatedValue = updatedValue.replace(/[^a-zA-Z\s]/g, '');
     } else if (type === 'email') {
-      updatedValue = updatedValue.replace(/[^A-Za-z0-9.@+-]/g, '');
+      updatedValue = updatedValue.replace(/[^A-Za-z0-9.@+-]|[@][^A-Za-z0-9.@+-\u0E01-\u0E5B]/g, '');
     } else if (type === 'tel') {
       updatedValue = updatedValue.replace(/[^0-9]/g, '');
     } else if (type === 'code') {
@@ -300,19 +295,14 @@ function CollegianTab() {
             error={validation.co_email || false}
             placeholder={validation.co_email ? 'กรุณากรอก Email' : ''}
             size='md'
-            type='email'
             slotProps={{
               input: {
-                minLength: 0,
                 maxLength: 100,
-                pattern: '.+@globex.com',
-                size: '30',
               },
             }}
             value={state.co_email}
             onChange={(event) => handleChange(event, 'co_email', 'email')}
             sx={{ mx: 1 }}
-            required
           />
         </Box>
       </Box>
@@ -409,7 +399,7 @@ function CollegianTab() {
 
   // เช็คค่าใน state
   useEffect(() => {
-    console.log(state);
+    console.log('state: ', state);
   }, [state]);
 
   // สำหรับกด Submit หน้าเพิ่มข้อมูล Collegian
