@@ -32,7 +32,7 @@ function ExportExcel({ excelData, fileName, tableName }) {
       >
         {tableName}{' '}
         <IconButton onClick={exportToExcel}>
-          <DownloadIcon sx={{ fontSize: 18, color: 'gray' }} />
+          <DownloadIcon sx={{ fontSize: 18 }} />
         </IconButton>
       </Typography>
     </Tooltip>

@@ -620,22 +620,17 @@ function AcademicsTab() {
             style={{ maxWidth: '100%', width: '100%' }}
           >
             <Table
-              sx={{ overflowX: 'auto', background: 'white' }}
+              sx={{ overflowX: 'auto' }}
               aria-label='spanning table'
             >
               <TableHead>
                 <TableRow>
-                  <TableCell sx={{ color: 'black', typography: 'body2' }}>#</TableCell>
-                  <TableCell sx={{ color: 'black', typography: 'body2' }}>Name(TH)</TableCell>
-                  <TableCell sx={{ color: 'black', typography: 'body2' }}>Name(EN)</TableCell>
-                  <TableCell
-                    sx={{ color: 'black', typography: 'body2' }}
-                    width={100}
-                  >
-                    Campus
-                  </TableCell>
-                  <TableCell sx={{ color: 'black', typography: 'body2' }}>Address</TableCell>
-                  <TableCell sx={{ color: 'black', typography: 'body2' }}>Tel</TableCell>
+                  <TableCell>#</TableCell>
+                  <TableCell>Name(TH)</TableCell>
+                  <TableCell>Name(EN)</TableCell>
+                  <TableCell width={100}>Campus</TableCell>
+                  <TableCell>Address</TableCell>
+                  <TableCell>Tel</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -644,10 +639,10 @@ function AcademicsTab() {
                     key={row.name}
                     sx={{ background: index % 2 === 0 ? '#f2f6fa' : '' }}
                   >
-                    <TableCell sx={{ fontWeight: 200, width: 60, color: 'black' }}>{index + 1}</TableCell>
-                    <TableCell sx={{ fontWeight: 200, maxWidth: 160, color: 'black' }}>{row.ac_name_th}</TableCell>
-                    <TableCell sx={{ fontWeight: 200, maxWidth: 160, color: 'black' }}>{row.ac_name_en}</TableCell>
-                    <TableCell sx={{ fontWeight: 200, maxWidth: 140, color: 'black' }}>{row.ac_campus}</TableCell>
+                    <TableCell sx={{ fontWeight: 200, width: 60 }}>{index + 1}</TableCell>
+                    <TableCell sx={{ fontWeight: 200, maxWidth: 160 }}>{row.ac_name_th}</TableCell>
+                    <TableCell sx={{ fontWeight: 200, maxWidth: 160 }}>{row.ac_name_en}</TableCell>
+                    <TableCell sx={{ fontWeight: 200, maxWidth: 140 }}>{row.ac_campus}</TableCell>
                     <TableCell sx={{ fontWeight: 200 }}>
                       <Textarea
                         variant='plain'
@@ -657,13 +652,10 @@ function AcademicsTab() {
                           fontSize: 14,
                           typography: 'body2',
                           fontFamily: 'Noto Sans Thai',
-                          color: 'black',
                         }}
                       />
                     </TableCell>
-                    <TableCell sx={{ fontWeight: 200, maxWidth: 140, minWidth: 80, color: 'black' }}>
-                      {row.ac_tel}
-                    </TableCell>
+                    <TableCell sx={{ fontWeight: 200, maxWidth: 140, minWidth: 80 }}>{row.ac_tel}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
