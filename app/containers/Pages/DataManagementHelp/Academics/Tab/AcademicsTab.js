@@ -49,7 +49,7 @@ function AcademicsTab() {
   const [openPreview, setOpenPreview] = React.useState(false);
 
   // สำหรับรับค่า
-  const [Rows, setRows] = useState([]);
+  const [rows, setRows] = useState([]);
   const [academictypeRows, setacademictypeRows] = useState([]);
   const [state, setState] = useState(initialState);
   const [deleteState, setDeleteState] = useState(initialDeleteState);
@@ -383,7 +383,7 @@ function AcademicsTab() {
         .then((response) => {
           console.log(response);
           setOpenUpd(false);
-          const objectToUpdate = Rows.find((obj) => obj.ac_id === state.ac_id);
+          const objectToUpdate = rows.find((obj) => obj.ac_id === state.ac_id);
 
           // แก้ไขค่า ในออบเจ็กต์
           if (objectToUpdate) {
@@ -437,7 +437,7 @@ function AcademicsTab() {
       .then((response) => {
         console.log(response);
         console.log('deleteState: ', deleteState);
-        const newRows = Rows.filter((row) => row.ac_id !== deleteState.primary); // อัปเดต Rows โดยลบรายการที่มี primary key เท่ากับ deleteState.primary
+        const newRows = rows.filter((row) => row.ac_id !== deleteState.primary); // อัปเดต Rows โดยลบรายการที่มี primary key เท่ากับ deleteState.primary
         setRows(newRows);
         setOpenDel(false);
 
@@ -449,7 +449,7 @@ function AcademicsTab() {
       .finally(() => {
         const idToDelete = deleteState.primary;
         console.log('idToDelete: ', idToDelete);
-        const objectToDelete = Rows.filter((obj) => obj.ac_id !== idToDelete);
+        const objectToDelete = rows.filter((obj) => obj.ac_id !== idToDelete);
         console.log('objectToDelete: ', objectToDelete);
         setRows(objectToDelete);
         setOpenDel(false); // เพิ่มตรงนี้เพื่อปิด Pop-up
@@ -518,7 +518,7 @@ function AcademicsTab() {
         {/* ทำแค่ตัวนี้ก่อน */}
         <DataGrid
           sx={{ fontFamily: 'Noto Sans Thai' }}
-          rows={Rows}
+          rows={rows}
           columns={columns}
           getRowId={(row) => row.ac_id}
           initialState={{
@@ -598,7 +598,7 @@ function AcademicsTab() {
                   <ExportExcel
                     fileName={tableName + '_' + Date().toLocaleString()}
                     tableName={tableName}
-                    excelData={Rows.map((val) => ({
+                    excelData={rows.map((val) => ({
                       AcademicNameTH: val.ac_name_th,
                       AcademicNameEN: val.ac_name_en,
                       Campus: val.ac_campus,
@@ -611,7 +611,7 @@ function AcademicsTab() {
               </Box>
               <Box sx={{ display: 'flex', width: 200, justifyContent: 'space-between' }}>
                 <Typography variant='body2'>Total rows :</Typography>
-                <Typography variant='body2'>{Rows.length}</Typography>
+                <Typography variant='body2'>{rows.length}</Typography>
               </Box>
             </Box>
           </Box>
@@ -634,7 +634,7 @@ function AcademicsTab() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {Rows.map((row, index) => (
+                {rows.map((row, index) => (
                   <TableRow
                     key={row.name}
                     sx={{ background: index % 2 === 0 ? '#f2f6fa' : '' }}
