@@ -164,7 +164,7 @@ function AcademicsTab() {
     } else if (type === 'email') {
       updatedValue = updatedValue.replace(/[^A-Za-z0-9.@+-]/g, '');
     } else if (type === 'tel') {
-      updatedValue = updatedValue.replace(/[^0-9]/g, '');
+      updatedValue = updatedValue.replace(/\D/g, '').replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
     } else if (type === 'code') {
       updatedValue = updatedValue.replace(/[^a-zA-Z0-9\s]/g, '');
     }
@@ -429,16 +429,11 @@ function AcademicsTab() {
 
   // สำหรับกด Submit หน้าลบข้อมูล
   const handleDeleteSubmit = () => {
-    const requestData = {
-      primary: deleteState.primary, // ตรวจสอบว่าคุณส่งค่า primary key ที่ถูกต้องไปยัง API
-    };
     axios
-      .post('http://192.168.1.168:8000/api/method/frappe.help-api.delete', requestData)
+      .post('http://192.168.1.168:8000/api/method/frappe.help-api.delete', deleteState)
       .then((response) => {
         console.log(response);
         console.log('deleteState: ', deleteState);
-        const newRows = rows.filter((row) => row.ac_id !== deleteState.primary); // อัปเดต Rows โดยลบรายการที่มี primary key เท่ากับ deleteState.primary
-        setRows(newRows);
         setOpenDel(false);
 
         // ลบค่า ในออบเจ็กต์
@@ -449,10 +444,9 @@ function AcademicsTab() {
       .finally(() => {
         const idToDelete = deleteState.primary;
         console.log('idToDelete: ', idToDelete);
-        const objectToDelete = rows.filter((obj) => obj.ac_id !== idToDelete);
+        const objectToDelete = rows.filter((obj) => obj.fi_id !== idToDelete);
         console.log('objectToDelete: ', objectToDelete);
         setRows(objectToDelete);
-        setOpenDel(false); // เพิ่มตรงนี้เพื่อปิด Pop-up
       });
   };
 
