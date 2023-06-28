@@ -50,6 +50,7 @@ function AcademicsTab() {
 
   // สำหรับรับค่า
   const [Rows, setRows] = useState([]);
+  const [academictypeRows, setacademictypeRows] = useState([]);
   const [state, setState] = useState(initialState);
   const [deleteState, setDeleteState] = useState(initialDeleteState);
 
@@ -143,6 +144,11 @@ function AcademicsTab() {
     // ดึงข้อมูล Academic เพื่อ set rows
     axios.get('http://192.168.1.168:8000/api/method/frappe.help-api.getAllAcademics').then((response) => {
       setRows(response.data.message.Data);
+      console.log(response.data.message.Data);
+    });
+    // ดึงข้อมูล Api จาก Academic Type
+    axios.get('http://192.168.1.168:8000/api/method/frappe.help-api.getallacademictype').then((response) => {
+      setacademictypeRows(response.data.message.Data);
       console.log(response.data.message.Data);
     });
   }, []);
@@ -249,7 +255,7 @@ function AcademicsTab() {
           <Typography sx={{ fontSize: 12, mb: 0.5, ml: 2 }}>Academic Type*</Typography>
           <Select
             color={validation.academic_type_ac_type_id ? 'danger' : 'neutral'}
-            placeholder='Type in here…'
+            placeholder='เลือกข้อมูล'
             indicator={<KeyboardArrowDown />}
             value={state.academic_type_ac_type_id || ''}
             onChange={(event, value) => {
@@ -268,10 +274,10 @@ function AcademicsTab() {
               },
             }}
           >
-            {Rows?.map((contentAc, value) => (
+            {academictypeRows?.map((contentAc, value) => (
               <Option
                 key={value}
-                value={contentAc.academic_type_ac_type_id}
+                value={contentAc.ac_type_id}
               >
                 {contentAc.ac_type_name_th}
               </Option>
@@ -395,7 +401,6 @@ function AcademicsTab() {
         });
     } else {
       console.log(state.academic_type_ac_type_id);
-      alert('แตกใน');
       if (state.ac_name_th === '') {
         // ทำให้แสดงสีแดงตรงที่ไม่ได้กรอกข้อความ
         setValidation((pre) => ({ ...pre, ac_name_th: true }));
@@ -424,11 +429,16 @@ function AcademicsTab() {
 
   // สำหรับกด Submit หน้าลบข้อมูล
   const handleDeleteSubmit = () => {
+    const requestData = {
+      primary: deleteState.primary, // ตรวจสอบว่าคุณส่งค่า primary key ที่ถูกต้องไปยัง API
+    };
     axios
-      .post('http://192.168.1.168:8000/api/method/frappe.help-api.delete', deleteState)
+      .post('http://192.168.1.168:8000/api/method/frappe.help-api.delete', requestData)
       .then((response) => {
         console.log(response);
         console.log('deleteState: ', deleteState);
+        const newRows = Rows.filter((row) => row.ac_id !== deleteState.primary); // อัปเดต Rows โดยลบรายการที่มี primary key เท่ากับ deleteState.primary
+        setRows(newRows);
         setOpenDel(false);
 
         // ลบค่า ในออบเจ็กต์
@@ -442,6 +452,7 @@ function AcademicsTab() {
         const objectToDelete = Rows.filter((obj) => obj.ac_id !== idToDelete);
         console.log('objectToDelete: ', objectToDelete);
         setRows(objectToDelete);
+        setOpenDel(false); // เพิ่มตรงนี้เพื่อปิด Pop-up
       });
   };
 
