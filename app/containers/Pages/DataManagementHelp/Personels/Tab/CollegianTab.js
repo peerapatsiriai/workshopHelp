@@ -1,11 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { JoyModal, DeleteButton, ConfirmDelModal } from 'dan-components';
-import { Box, Typography, useMediaQuery, Button } from '@mui/material';
+import {
+  Box,
+  Typography,
+  useMediaQuery,
+  Button,
+  TableContainer,
+  Table,
+  TableHead,
+  TableRow,
+  TableBody,
+  Paper,
+  TableCell,
+} from '@mui/material';
 import axios from 'axios';
 import { useTheme } from '@emotion/react';
-import { Select, selectClasses, Option, Input } from '@mui/joy';
+import { Select, selectClasses, Option, Input, Modal, Sheet } from '@mui/joy';
 import { DataGrid } from '@mui/x-data-grid';
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
+import ExportExcel from '../../../../../components/ExportExcel';
 
 function CollegianTab() {
   // สำหรับ Responsive
@@ -42,11 +55,12 @@ function CollegianTab() {
   const initialSelectState = {
     cur_name_th: '',
   };
-
+  const tableName = 'Collegian';
   // ค่า modal state change
   const [openInsCo, setOpenInsCo] = React.useState(false); // สำหรับใช้ควบคุม Modal insert
   const [openUpdCo, setOpenUpdCo] = React.useState(false); // สำหรับใช้ควบคุม Modal update
   const [openDelCo, setOpenDelCo] = React.useState(false); // สำหรับใช้ควบคุม Modal Delete
+  const [openPreview, setOpenPreview] = React.useState(false);
 
   // สำหรับ set state เริ่มต้น
   const [collegianRows, setCollegianRows] = useState([]);
@@ -152,11 +166,6 @@ function CollegianTab() {
     });
   }, []);
 
-  useEffect(() => {
-    console.log('DropdownA: ', curriculumsList);
-    console.log('DropdownB: ', facultyList);
-  }, [curriculumsList]);
-
   const handleChange = (e, key, type) => {
     const { value } = e.target;
     const getKey = key;
@@ -166,9 +175,9 @@ function CollegianTab() {
     } else if (type === 'en') {
       updatedValue = updatedValue.replace(/[^a-zA-Z\s]/g, '');
     } else if (type === 'email') {
-      updatedValue = updatedValue.replace(/[^A-Za-z0-9.@+-]/g, '');
+      updatedValue = updatedValue.replace(/[^A-Za-z0-9.@+-]|[@][^A-Za-z0-9.@+-\u0E01-\u0E5B]/g, '');
     } else if (type === 'tel') {
-      updatedValue = updatedValue.replace(/[^0-9]/g, '');
+      updatedValue = updatedValue.replace(/\D/g, '').replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
     } else if (type === 'code') {
       updatedValue = updatedValue.replace(/[^a-zA-Z0-9\s]/g, '');
     }
@@ -178,6 +187,107 @@ function CollegianTab() {
   // content modal
   const ContentModal = (
     <Box>
+      <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
+        <Box sx={{ width: '50%' }}>
+          <Typography sx={{ fontSize: 12, mb: 0.5, ml: 2 }}>Academic</Typography>
+          <Select
+            id='faculty_institutes_fi_id'
+            placeholder='กรุณาเลือกคณะ'
+            indicator={<KeyboardArrowDown />}
+            value={state.faculty_institutes_fi_id || ''}
+            onChange={(event, value, text) => {
+              setState((pre) => ({ ...pre, faculty_institutes_fi_id: value }));
+              setSelectState(text);
+            }}
+            color={validation.faculty_institutes_fi_id ? 'danger' : 'neutral'}
+            sx={{
+              mx: 1,
+              size: 'sm',
+              [`& .${selectClasses.indicator}`]: {
+                transition: '0.2s',
+                [`&.${selectClasses.expanded}`]: {
+                  transform: 'rotate(-180deg)',
+                },
+              },
+            }}
+          >
+            {facultyList.map((faculty) => (
+              <Option
+                key={faculty.fi_id}
+                value={faculty.fi_id}
+              >
+                {faculty.fi_name_th}
+              </Option>
+            ))}
+          </Select>
+        </Box>
+      </Box>
+      <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
+        <Box sx={{ width: '50%' }}>
+          <Typography sx={{ fontSize: 12, mb: 0.5, ml: 2 }}>Curriculum</Typography>
+          <Select
+            id='curriculums_cur_id'
+            placeholder='กรุณาเลือกหลักสูตร'
+            indicator={<KeyboardArrowDown />}
+            value={state.curriculums_cur_id || ''}
+            onChange={(event, value) => setState((pre) => ({ ...pre, curriculums_cur_id: value }))}
+            color={validation.curriculums_cur_id ? 'danger' : 'neutral'}
+            sx={{
+              mx: 1,
+              size: 'sm',
+              [`& .${selectClasses.indicator}`]: {
+                transition: '0.2s',
+                [`&.${selectClasses.expanded}`]: {
+                  transform: 'rotate(-180deg)',
+                },
+              },
+            }}
+          >
+            {curriculumsList.map((curriculum) => (
+              <Option
+                key={curriculum.cur_id}
+                value={curriculum.cur_id}
+                onClick={() => setSelectState((pre) => ({ ...pre, cur_name_th: curriculum.cur_name_th }))}
+              >
+                {curriculum.cur_name_th}
+              </Option>
+            ))}
+          </Select>
+        </Box>
+        <Box sx={{ width: '50%' }}>
+          <Typography sx={{ fontSize: 12, mb: 0.5, ml: 2 }}>Faculty Institutes</Typography>
+          <Select
+            id='faculty_institutes_fi_id'
+            placeholder='กรุณาเลือกคณะ'
+            indicator={<KeyboardArrowDown />}
+            value={state.faculty_institutes_fi_id || ''}
+            onChange={(event, value, text) => {
+              setState((pre) => ({ ...pre, faculty_institutes_fi_id: value }));
+              setSelectState(text);
+            }}
+            color={validation.faculty_institutes_fi_id ? 'danger' : 'neutral'}
+            sx={{
+              mx: 1,
+              size: 'sm',
+              [`& .${selectClasses.indicator}`]: {
+                transition: '0.2s',
+                [`&.${selectClasses.expanded}`]: {
+                  transform: 'rotate(-180deg)',
+                },
+              },
+            }}
+          >
+            {facultyList.map((faculty) => (
+              <Option
+                key={faculty.fi_id}
+                value={faculty.fi_id}
+              >
+                {faculty.fi_name_th}
+              </Option>
+            ))}
+          </Select>
+        </Box>
+      </Box>
       <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
         <Box sx={{ width: '50%' }}>
           <Box sx={{ ml: 2 }}>
@@ -286,19 +396,17 @@ function CollegianTab() {
             error={validation.co_email || false}
             placeholder={validation.co_email ? 'กรุณากรอก Email' : ''}
             size='md'
-            type='email'
             slotProps={{
               input: {
-                minLength: 0,
                 maxLength: 100,
-                pattern: '.+@globex.com',
-                size: '30',
+                type: 'email',
+                pattern: '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}',
+                title: 'กรุณากรอกอีเมลให้ถูกต้อง',
               },
             }}
             value={state.co_email}
             onChange={(event) => handleChange(event, 'co_email', 'email')}
             sx={{ mx: 1 }}
-            required
           />
         </Box>
       </Box>
@@ -314,7 +422,7 @@ function CollegianTab() {
             type='tel'
             slotProps={{
               input: {
-                minLength: 0,
+                minLength: 10,
                 maxLength: 10,
               },
             }}
@@ -324,78 +432,12 @@ function CollegianTab() {
           />
         </Box>
       </Box>
-      <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
-        <Box sx={{ width: '50%' }}>
-          <Typography sx={{ fontSize: 12, mb: 0.5, ml: 2 }}>Faculty Institutes</Typography>
-          <Select
-            id='faculty_institutes_fi_id'
-            placeholder='กรุณาเลือกคณะ'
-            indicator={<KeyboardArrowDown />}
-            value={state.faculty_institutes_fi_id || ''}
-            onChange={(event, value, text) => {
-              setState((pre) => ({ ...pre, faculty_institutes_fi_id: value }));
-              setSelectState(text);
-            }}
-            color={validation.faculty_institutes_fi_id ? 'danger' : 'neutral'}
-            sx={{
-              mx: 1,
-              size: 'sm',
-              [`& .${selectClasses.indicator}`]: {
-                transition: '0.2s',
-                [`&.${selectClasses.expanded}`]: {
-                  transform: 'rotate(-180deg)',
-                },
-              },
-            }}
-          >
-            {facultyList.map((faculty) => (
-              <Option
-                key={faculty.fi_id}
-                value={faculty.fi_id}
-              >
-                {faculty.fi_name_th}
-              </Option>
-            ))}
-          </Select>
-        </Box>
-        <Box sx={{ width: '50%' }}>
-          <Typography sx={{ fontSize: 12, mb: 0.5, ml: 2 }}>Curriculum</Typography>
-          <Select
-            id='curriculums_cur_id'
-            placeholder='กรุณาเลือกหลักสูตร'
-            indicator={<KeyboardArrowDown />}
-            value={state.curriculums_cur_id || ''}
-            onChange={(event, value) => setState((pre) => ({ ...pre, curriculums_cur_id: value }))}
-            color={validation.curriculums_cur_id ? 'danger' : 'neutral'}
-            sx={{
-              mx: 1,
-              size: 'sm',
-              [`& .${selectClasses.indicator}`]: {
-                transition: '0.2s',
-                [`&.${selectClasses.expanded}`]: {
-                  transform: 'rotate(-180deg)',
-                },
-              },
-            }}
-          >
-            {curriculumsList.map((curriculum) => (
-              <Option
-                key={curriculum.cur_id}
-                value={curriculum.cur_id}
-                onClick={() => setSelectState((pre) => ({ ...pre, cur_name_th: curriculum.cur_name_th }))}
-              >
-                {curriculum.cur_name_th}
-              </Option>
-            ))}
-          </Select>
-        </Box>
-      </Box>
     </Box>
   );
 
   // เช็คค่าใน state
   useEffect(() => {
-    console.log(state);
+    console.log('state: ', state);
   }, [state]);
 
   // สำหรับกด Submit หน้าเพิ่มข้อมูล Collegian
@@ -546,7 +588,10 @@ function CollegianTab() {
               + Add Colegian
             </Typography>
           </Button>
-          <Button sx={{ ml: 2 }}>
+          <Button
+            sx={{ ml: 2 }}
+            onClick={() => setOpenPreview(true)}
+          >
             <Typography
               sx={{
                 fontSize: 12,
@@ -604,6 +649,105 @@ function CollegianTab() {
         handleSubmit={handleInsertSubmit}
         subDetail={false}
       />
+      <Modal
+        open={openPreview}
+        onClose={() => setOpenPreview(false)}
+        sx={{ minWidth: 800, display: 'flex', justifyContent: 'center', alignItems: 'center', overflow: 'auto' }}
+      >
+        <Sheet
+          variant='outlined'
+          sx={{
+            flex: 'none',
+            width: '100%',
+            minWidth: 600,
+            maxWidth: 1200,
+            borderRadius: 'md',
+            p: 3,
+            boxShadow: 'lg',
+            m: 'auto',
+          }}
+        >
+          <Box sx={{ display: 'flex', flexDirection: 'column', m: 4 }}>
+            <Typography
+              variant='h4'
+              mb={2}
+            >
+              Export Excel File
+            </Typography>
+            <Box sx={{ display: 'flex', width: '100%', flexDirection: 'column' }}>
+              <Box sx={{ display: 'flex', width: '100%', justifyContent: 'space-between' }}>
+                <Box sx={{ display: 'flex', width: 200, justifyContent: 'space-between' }}>
+                  <Typography
+                    sx={{ mt: 1 }}
+                    variant='body2'
+                  >
+                    Table :
+                  </Typography>
+                  <ExportExcel
+                    fileName={tableName + '_' + Date().toLocaleString()}
+                    tableName={tableName}
+                    excelData={collegianRows.map((val) => ({
+                      Code: val.co_code,
+                      FirstNameTH: val.co_fname_th,
+                      LastNameTH: val.co_lname_th,
+                      FirstNameEN: val.co_fname_en,
+                      LastNameEN: val.co_lname_en,
+                      Email: val.co_email,
+                      Tel: val.co_tel,
+                      Faculty: val.fi_name_th,
+                    }))}
+                  />
+                </Box>
+              </Box>
+              <Box sx={{ display: 'flex', width: 200, justifyContent: 'space-between' }}>
+                <Typography variant='body2'>Total rows :</Typography>
+                <Typography variant='body2'>{collegianRows.length}</Typography>
+              </Box>
+            </Box>
+          </Box>
+          <TableContainer
+            component={Paper}
+            style={{ maxWidth: '100%', width: '100%' }}
+          >
+            <Table
+              sx={{ overflowX: 'auto' }}
+              aria-label='spanning table'
+            >
+              <TableHead>
+                <TableRow>
+                  <TableCell>#</TableCell>
+                  <TableCell>Code</TableCell>
+                  <TableCell>First Name(TH)</TableCell>
+                  <TableCell>Last Name(TH)</TableCell>
+                  <TableCell>First Name(EN)</TableCell>
+                  <TableCell>Last Name(EN)</TableCell>
+                  <TableCell>Email</TableCell>
+                  <TableCell>Tel</TableCell>
+                  <TableCell>Faculty</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {collegianRows.map((row, index) => (
+                  <TableRow
+                    key={row.name}
+                    sx={{ background: index % 2 === 0 ? '#f2f6fa' : '' }}
+                  >
+                    <TableCell sx={{ fontWeight: 200, width: 60 }}>{index + 1}</TableCell>
+                    <TableCell sx={{ fontWeight: 200, maxWidth: 160 }}>{row.co_code}</TableCell>
+                    <TableCell sx={{ fontWeight: 200, maxWidth: 160 }}>{row.co_fname_th}</TableCell>
+                    <TableCell sx={{ fontWeight: 200, maxWidth: 140 }}>{row.co_lname_th}</TableCell>
+                    <TableCell sx={{ fontWeight: 200, maxWidth: 160 }}>{row.co_fname_en}</TableCell>
+                    <TableCell sx={{ fontWeight: 200, maxWidth: 160 }}>{row.co_lname_en}</TableCell>
+                    <TableCell sx={{ fontWeight: 200, maxWidth: 140 }}>{row.co_email}</TableCell>
+                    <TableCell sx={{ fontWeight: 200, maxWidth: 160 }}>{row.co_tel}</TableCell>
+                    <TableCell sx={{ fontWeight: 200, maxWidth: 140 }}>{row.fi_name_th}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Sheet>
+      </Modal>
     </div>
   );
 }
