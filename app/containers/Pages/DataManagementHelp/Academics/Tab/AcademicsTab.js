@@ -364,6 +364,7 @@ function AcademicsTab() {
       }
     }
   };
+
   // สำหรับกด Submit หน้าแก้ไขข้อมูล
   const handleEditSubmit = (e) => {
     e.preventDefault();
@@ -429,12 +430,12 @@ function AcademicsTab() {
 
   // สำหรับกด Submit หน้าลบข้อมูล
   const handleDeleteSubmit = () => {
+    setOpenDel(false);
     axios
       .post('http://192.168.1.168:8000/api/method/frappe.help-api.delete', deleteState)
       .then((response) => {
         console.log(response);
         console.log('deleteState: ', deleteState);
-        setOpenDel(false);
 
         // ลบค่า ในออบเจ็กต์
       })
@@ -444,7 +445,7 @@ function AcademicsTab() {
       .finally(() => {
         const idToDelete = deleteState.primary;
         console.log('idToDelete: ', idToDelete);
-        const objectToDelete = rows.filter((obj) => obj.fi_id !== idToDelete);
+        const objectToDelete = rows?.filter((obj) => obj.ac_id !== idToDelete);
         console.log('objectToDelete: ', objectToDelete);
         setRows(objectToDelete);
       });
