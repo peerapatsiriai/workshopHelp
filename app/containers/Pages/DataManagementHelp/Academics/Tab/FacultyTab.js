@@ -48,7 +48,7 @@ function FacultyTab() {
   const [openPreview, setOpenPreview] = React.useState(false);
 
   // สำหรับ set ค่า State
-  const [Rows, setRows] = useState([]);
+  const [rows, setRows] = useState([]);
   const [dataAcademics, setDataAcademics] = useState([]);
   // const [selectDisabled, setSelectDisabled] = useState(false);
   const [state, setState] = useState(initialState);
@@ -100,15 +100,11 @@ function FacultyTab() {
 
   // get Data Academics for select
   useEffect(() => {
-    axios
-      .get(
-        'http://192.168.1.168:8000/api/method/frappe.help-api.getAllAcademics'
-      )
-      .then((res) => {
-        setDataAcademics(res.data.message.Data);
-        res.data.message.Data;
-        console.log(res.data.message.Data);
-      });
+    axios.get('http://192.168.1.168:8000/api/method/frappe.help-api.getAllAcademics').then((res) => {
+      setDataAcademics(res.data.message.Data);
+      res.data.message.Data;
+      console.log(res.data.message.Data);
+    });
   }, []);
 
   // useEffect(() => {
@@ -136,7 +132,8 @@ function FacultyTab() {
               primarykey: String(cellValues.row.fi_id),
             }));
             // setSelectDisabled(true);
-          }}>
+          }}
+        >
           ...
         </Button>
       ),
@@ -163,30 +160,21 @@ function FacultyTab() {
 
   // set rows
   useEffect(() => {
-    axios
-      .get(
-        'http://192.168.1.168:8000/api/method/frappe.help-api.getAllfacultys'
-      )
-      .then((response) => {
-        setRows(response.data.message.Data);
-        console.log(response.data.message.Data);
-      });
+    axios.get('http://192.168.1.168:8000/api/method/frappe.help-api.getAllfacultys').then((response) => {
+      setRows(response.data.message.Data);
+      console.log(response.data.message.Data);
+    });
   }, []);
 
   // content modal
   const ContentModal = (
     <Box>
-      <Box
-        sx={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-end' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-end' }}>
         <Box sx={{ flexDirection: 'column', width: '50%', ml: 2 }}>
-          <Typography sx={{ fontSize: 12, mb: 0.5 }}>
-            Academic Name(TH)
-          </Typography>
+          <Typography sx={{ fontSize: 12, mb: 0.5 }}>Academic Name(TH)</Typography>
           <Input
             label='Academic Name'
-            placeholder={
-              validationFac.fi_name_th ? 'Please Type Thai Name' : 'Thai Name'
-            }
+            placeholder={validationFac.fi_name_th ? 'Please Type Thai Name' : 'Thai Name'}
             type={'text'}
             size='sm'
             error={validationFac.fi_name_th || false}
@@ -212,13 +200,10 @@ function FacultyTab() {
           sx={{
             flexDirection: 'column',
             width: '50%',
-          }}>
+          }}
+        >
           <Input
-            placeholder={
-              validationFac.fi_name_en
-                ? 'Please Type Engligsh Name'
-                : 'Engligsh Name'
-            }
+            placeholder={validationFac.fi_name_en ? 'Please Type Engligsh Name' : 'Engligsh Name'}
             type={'text'}
             size='sm'
             error={validationFac.fi_name_en || false}
@@ -249,16 +234,13 @@ function FacultyTab() {
           width: '45%',
           mt: 3,
           ml: 2,
-        }}>
+        }}
+      >
         <Typography sx={{ fontSize: 12, mb: 0.5 }}>Academic</Typography>
         <Select
           indicator={<KeyboardArrowDown />}
           value={state.academics_ac_id}
-          placeholder={
-            validationFac.academics_ac_id
-              ? 'Please Select Academic'
-              : 'Select Academic'
-          }
+          placeholder={validationFac.academics_ac_id ? 'Please Select Academic' : 'Select Academic'}
           onChange={(event, value) => {
             setState((pre) => ({ ...pre, academics_ac_id: value }));
             console.log('value: ', value);
@@ -275,7 +257,8 @@ function FacultyTab() {
                 transform: 'rotate(-180deg)',
               },
             },
-          }}>
+          }}
+        >
           {dataAcademics?.map((data) => (
             <Option
               key={data.name}
@@ -286,7 +269,8 @@ function FacultyTab() {
                   ...pre,
                   ac_name_th: data.ac_name_th,
                 }))
-              }>
+              }
+            >
               {data.ac_name_th}
             </Option>
           ))}
@@ -303,10 +287,7 @@ function FacultyTab() {
   const handleInsertSubmit = (e) => {
     e.preventDefault();
     axios
-      .post(
-        'http://192.168.1.168:8000/api/method/frappe.help-api.insertfaculty',
-        state
-      )
+      .post('http://192.168.1.168:8000/api/method/frappe.help-api.insertfaculty', state)
       .then((response) => {
         console.log(response);
         setOpenIns(false);
@@ -328,16 +309,13 @@ function FacultyTab() {
   const handleEditSubmit = (e) => {
     e.preventDefault();
     axios
-      .post(
-        'http://192.168.1.168:8000/api/method/frappe.help-api.editfaculty',
-        state
-      )
+      .post('http://192.168.1.168:8000/api/method/frappe.help-api.editfaculty', state)
       .then((response) => {
         console.log(response);
         setOpenUpd(false);
         setState(initialState);
         setSelectState(initialSelectState);
-        const objectToUpdate = Rows.find((obj) => obj.fi_id === state.fi_id);
+        const objectToUpdate = rows.find((obj) => obj.fi_id === state.fi_id);
 
         // แก้ไขค่า ในออบเจ็กต์
         if (objectToUpdate) {
@@ -384,10 +362,7 @@ function FacultyTab() {
   // สำหรับกด Submit หน้าลบข้อมูล Collegian
   const handleDeleteSubmit = () => {
     axios
-      .post(
-        'http://192.168.1.168:8000/api/method/frappe.help-api.delete',
-        deleteState
-      )
+      .post('http://192.168.1.168:8000/api/method/frappe.help-api.delete', deleteState)
       .then((response) => {
         console.log(response);
         console.log('deleteState: ', deleteState);
@@ -401,7 +376,7 @@ function FacultyTab() {
       .finally(() => {
         const idToDelete = deleteState.primary;
         console.log('idToDelete: ', idToDelete);
-        const objectToDelete = Rows.filter((obj) => obj.fi_id !== idToDelete);
+        const objectToDelete = rows.filter((obj) => obj.fi_id !== idToDelete);
         console.log('objectToDelete: ', objectToDelete);
         setRows(objectToDelete);
       });
@@ -421,7 +396,8 @@ function FacultyTab() {
             : 'center',
           width: '100%',
           p: 2,
-        }}>
+        }}
+      >
         <Box sx={{ display: 'flex', flexDirection: 'row' }}>
           <Button
             onClick={() => {
@@ -437,23 +413,29 @@ function FacultyTab() {
                 background: '#fff',
                 color: 'black',
               },
-            }}>
+            }}
+          >
             <Typography
               sx={{
                 fontSize: 12,
                 textTransform: 'capitalize',
                 fontWeight: 'bold',
-              }}>
+              }}
+            >
               + Add Institute
             </Typography>
           </Button>
-          <Button sx={{ ml: 2 }} onClick={() => setOpenPreview(true)}>
+          <Button
+            sx={{ ml: 2 }}
+            onClick={() => setOpenPreview(true)}
+          >
             <Typography
               sx={{
                 fontSize: 12,
                 textTransform: 'capitalize',
                 fontWeight: 'bold',
-              }}>
+              }}
+            >
               Export
             </Typography>
           </Button>
@@ -462,7 +444,7 @@ function FacultyTab() {
       <Box sx={{ display: 'flex', width: '100%' }}>
         {/* ทำแค่ตัวนี้ก่อน */}
         <DataGrid
-          rows={Rows}
+          rows={rows}
           columns={columns}
           getRowId={(row) => row.fi_id}
           initialState={{
@@ -512,7 +494,8 @@ function FacultyTab() {
           justifyContent: 'center',
           alignItems: 'center',
           overflow: 'auto',
-        }}>
+        }}
+      >
         <Sheet
           variant='outlined'
           sx={{
@@ -524,32 +507,40 @@ function FacultyTab() {
             p: 3,
             boxShadow: 'lg',
             m: 'auto',
-          }}>
+          }}
+        >
           <Box sx={{ display: 'flex', flexDirection: 'column', m: 4 }}>
-            <Typography variant='h4' mb={2}>
+            <Typography
+              variant='h4'
+              mb={2}
+            >
               Export Excel File
             </Typography>
-            <Box
-              sx={{ display: 'flex', width: '100%', flexDirection: 'column' }}>
+            <Box sx={{ display: 'flex', width: '100%', flexDirection: 'column' }}>
               <Box
                 sx={{
                   display: 'flex',
                   width: '100%',
                   justifyContent: 'space-between',
-                }}>
+                }}
+              >
                 <Box
                   sx={{
                     display: 'flex',
                     width: 200,
                     justifyContent: 'space-between',
-                  }}>
-                  <Typography sx={{ mt: 1 }} variant='body2'>
+                  }}
+                >
+                  <Typography
+                    sx={{ mt: 1 }}
+                    variant='body2'
+                  >
                     Table :
                   </Typography>
                   <ExportExcel
                     fileName={tableName + '_' + Date().toLocaleString()}
                     tableName={tableName}
-                    excelData={Rows.map((val) => ({
+                    excelData={rows.map((val) => ({
                       AcademicNameTH: val.ac_name_th,
                       AcademicNameEN: val.ac_name_en,
                       Campus: val.ac_campus,
@@ -565,16 +556,21 @@ function FacultyTab() {
                   display: 'flex',
                   width: 200,
                   justifyContent: 'space-between',
-                }}>
+                }}
+              >
                 <Typography variant='body2'>Total rows :</Typography>
-                <Typography variant='body2'>{Rows.length}</Typography>
+                <Typography variant='body2'>{rows.length}</Typography>
               </Box>
             </Box>
           </Box>
           <TableContainer
             component={Paper}
-            style={{ maxWidth: '100%', width: '100%' }}>
-            <Table sx={{ overflowX: 'auto' }} aria-label='spanning table'>
+            style={{ maxWidth: '100%', width: '100%' }}
+          >
+            <Table
+              sx={{ overflowX: 'auto' }}
+              aria-label='spanning table'
+            >
               <TableHead>
                 <TableRow>
                   <TableCell>#</TableCell>
@@ -584,22 +580,15 @@ function FacultyTab() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {Rows.map((row, index) => (
+                {rows.map((row, index) => (
                   <TableRow
                     key={row.name}
-                    sx={{ background: index % 2 === 0 ? '#f2f6fa' : '' }}>
-                    <TableCell sx={{ fontWeight: 200, width: 60 }}>
-                      {index + 1}
-                    </TableCell>
-                    <TableCell sx={{ fontWeight: 200 }}>
-                      {row.fi_name_th}
-                    </TableCell>
-                    <TableCell sx={{ fontWeight: 200 }}>
-                      {row.fi_name_en}
-                    </TableCell>
-                    <TableCell sx={{ fontWeight: 200 }}>
-                      {row.ac_name_th}
-                    </TableCell>
+                    sx={{ background: index % 2 === 0 ? '#f2f6fa' : '' }}
+                  >
+                    <TableCell sx={{ fontWeight: 200, width: 60 }}>{index + 1}</TableCell>
+                    <TableCell sx={{ fontWeight: 200 }}>{row.fi_name_th}</TableCell>
+                    <TableCell sx={{ fontWeight: 200 }}>{row.fi_name_en}</TableCell>
+                    <TableCell sx={{ fontWeight: 200 }}>{row.ac_name_th}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
