@@ -39,7 +39,7 @@ function ExportExcel({ excelData, fileName, tableName }) {
   );
 }
 ExportExcel.propTypes = {
-  excelData: PropTypes.node,
+  excelData: PropTypes.any,
   fileName: PropTypes.string,
   tableName: PropTypes.string,
 };
