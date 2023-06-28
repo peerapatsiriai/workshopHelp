@@ -164,7 +164,7 @@ function AcademicsTab() {
     } else if (type === 'email') {
       updatedValue = updatedValue.replace(/[^A-Za-z0-9.@+-]/g, '');
     } else if (type === 'tel') {
-      updatedValue = updatedValue.replace(/[^0-9]/g, '');
+      updatedValue = updatedValue.replace(/\D/g, '').replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
     } else if (type === 'code') {
       updatedValue = updatedValue.replace(/[^a-zA-Z0-9\s]/g, '');
     }
@@ -364,6 +364,7 @@ function AcademicsTab() {
       }
     }
   };
+
   // สำหรับกด Submit หน้าแก้ไขข้อมูล
   const handleEditSubmit = (e) => {
     e.preventDefault();
@@ -429,17 +430,12 @@ function AcademicsTab() {
 
   // สำหรับกด Submit หน้าลบข้อมูล
   const handleDeleteSubmit = () => {
-    const requestData = {
-      primary: deleteState.primary, // ตรวจสอบว่าคุณส่งค่า primary key ที่ถูกต้องไปยัง API
-    };
+    setOpenDel(false);
     axios
-      .post('http://192.168.1.168:8000/api/method/frappe.help-api.delete', requestData)
+      .post('http://192.168.1.168:8000/api/method/frappe.help-api.delete', deleteState)
       .then((response) => {
         console.log(response);
         console.log('deleteState: ', deleteState);
-        const newRows = rows.filter((row) => row.ac_id !== deleteState.primary); // อัปเดต Rows โดยลบรายการที่มี primary key เท่ากับ deleteState.primary
-        setRows(newRows);
-        setOpenDel(false);
 
         // ลบค่า ในออบเจ็กต์
       })
@@ -449,10 +445,9 @@ function AcademicsTab() {
       .finally(() => {
         const idToDelete = deleteState.primary;
         console.log('idToDelete: ', idToDelete);
-        const objectToDelete = rows.filter((obj) => obj.ac_id !== idToDelete);
+        const objectToDelete = rows?.filter((obj) => obj.ac_id !== idToDelete);
         console.log('objectToDelete: ', objectToDelete);
         setRows(objectToDelete);
-        setOpenDel(false); // เพิ่มตรงนี้เพื่อปิด Pop-up
       });
   };
 
@@ -667,5 +662,27 @@ function AcademicsTab() {
     </div>
   );
 }
+//
+//                       _oo0oo_
+//                      o8888888o
+//                      88" . "88
+//                      (| -_- |)
+//                      0\  =  /0
+//                    ___/`---'\___
+//                  .' \\|     |// '.
+//                 / \\|||  :  |||// \
+//                / _||||| -:- |||||- \
+//               |   | \\\  -  /// |   |
+//               | \_|  ''\---/''  |_/ |
+//               \  .-\__  '-'  ___/-. /
+//             ___'. .'  /--.--\  `. .'___
+//          ."" '<  `.___\_<|>_/___.' >' "".
+//         | | :  `- \`.;`\ _ /`;.`/ - ` : | |
+//         \  \ `_.   \_ __\ /__ _/   .-` /  /
+//     =====`-.____`.___ \_____/___.-`___.-'=====
+//                       `=---='
+//    ขออำนาจคุณพระรัตนตรัย ตลอดจนสิ่งศักดิ์สิทธิ์ทั้งหลายในสากลโลก
+//                จงดลบันดาลให้บัคร้ายหายไป
+//     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 export default AcademicsTab;

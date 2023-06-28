@@ -203,9 +203,8 @@ function CollegianTab() {
             placeholder='กรุณาเลือกคณะ'
             indicator={<KeyboardArrowDown />}
             value={state.ac_id || ''}
-            onChange={(event, value, text) => {
+            onChange={(event, value) => {
               setState((pre) => ({ ...pre, ac_id: value }));
-              setSelectState(text);
             }}
             color={validation.ac_id ? 'danger' : 'neutral'}
             sx={{
@@ -256,7 +255,7 @@ function CollegianTab() {
               },
             }}
           >
-            {curriculumsList.map((curriculum) => (
+            {curriculumsList?.map((curriculum) => (
               <Option
                 key={curriculum.cur_id}
                 value={curriculum.cur_id}
@@ -290,7 +289,7 @@ function CollegianTab() {
               },
             }}
           >
-            {facultyList.map((faculty) => (
+            {facultyList?.map((faculty) => (
               <Option
                 key={faculty.fi_id}
                 value={faculty.fi_id}
