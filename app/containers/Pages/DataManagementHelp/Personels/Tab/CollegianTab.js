@@ -700,6 +700,7 @@ function CollegianTab() {
                     Table :
                   </Typography>
                   <ExportExcel
+                    isEmpty={rows?.length > 0 ? 0 : 1}
                     fileName={tableName + '_' + Date().toLocaleString()}
                     tableName={tableName}
                     excelData={rows?.map((val) => ({

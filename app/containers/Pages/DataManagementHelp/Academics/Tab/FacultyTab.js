@@ -315,7 +315,7 @@ function FacultyTab() {
         setOpenUpd(false);
         setState(initialState);
         setSelectState(initialSelectState);
-        const objectToUpdate = rows.find((obj) => obj.fi_id === state.fi_id);
+        const objectToUpdate = rows?.find((obj) => obj.fi_id === state.fi_id);
 
         // แก้ไขค่า ในออบเจ็กต์
         if (objectToUpdate) {
@@ -444,7 +444,7 @@ function FacultyTab() {
       <Box sx={{ display: 'flex', width: '100%' }}>
         {/* ทำแค่ตัวนี้ก่อน */}
         <DataGrid
-          rows={rows}
+          rows={rows || []}
           columns={columns}
           getRowId={(row) => row.fi_id}
           initialState={{
@@ -538,9 +538,10 @@ function FacultyTab() {
                     Table :
                   </Typography>
                   <ExportExcel
+                    isEmpty={rows?.length > 0 ? 0 : 1}
                     fileName={tableName + '_' + Date().toLocaleString()}
                     tableName={tableName}
-                    excelData={rows.map((val) => ({
+                    excelData={rows?.map((val) => ({
                       AcademicNameTH: val.ac_name_th,
                       AcademicNameEN: val.ac_name_en,
                       Campus: val.ac_campus,
@@ -559,7 +560,7 @@ function FacultyTab() {
                 }}
               >
                 <Typography variant='body2'>Total rows :</Typography>
-                <Typography variant='body2'>{rows.length}</Typography>
+                <Typography variant='body2'>{rows?.length}</Typography>
               </Box>
             </Box>
           </Box>
@@ -580,7 +581,7 @@ function FacultyTab() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map((row, index) => (
+                {rows?.map((row, index) => (
                   <TableRow
                     key={row.name}
                     sx={{ background: index % 2 === 0 ? '#f2f6fa' : '' }}

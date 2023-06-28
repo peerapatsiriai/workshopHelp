@@ -576,6 +576,7 @@ function InstructorTab() {
                     Table :
                   </Typography>
                   <ExportExcel
+                    isEmpty={instructortypeRows?.length > 0 ? 0 : 1}
                     fileName={tableName + '_' + Date().toLocaleString()}
                     tableName={tableName}
                     excelData={instructortypeRows?.map((val) => ({
