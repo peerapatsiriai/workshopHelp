@@ -177,7 +177,7 @@ function CollegianTab() {
     } else if (type === 'email') {
       updatedValue = updatedValue.replace(/[^A-Za-z0-9.@+-]|[@][^A-Za-z0-9.@+-\u0E01-\u0E5B]/g, '');
     } else if (type === 'tel') {
-      updatedValue = updatedValue.replace(/[^0-9]/g, '');
+      updatedValue = updatedValue.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
     } else if (type === 'code') {
       updatedValue = updatedValue.replace(/[^a-zA-Z0-9\s]/g, '');
     }
@@ -298,6 +298,9 @@ function CollegianTab() {
             slotProps={{
               input: {
                 maxLength: 100,
+                type: 'email',
+                pattern: '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}',
+                title: 'กรุณากรอกอีเมลให้ถูกต้อง',
               },
             }}
             value={state.co_email}
@@ -318,7 +321,7 @@ function CollegianTab() {
             type='tel'
             slotProps={{
               input: {
-                minLength: 0,
+                minLength: 10,
                 maxLength: 10,
               },
             }}
