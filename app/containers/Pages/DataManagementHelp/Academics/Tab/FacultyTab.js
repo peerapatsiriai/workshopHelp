@@ -1,3 +1,4 @@
+// ============================================================library================================================================
 import React, { useEffect, useState } from 'react';
 import { JoyModal, DeleteButton, ConfirmDelModal } from 'dan-components';
 import {
@@ -19,15 +20,17 @@ import { Select, selectClasses, Option, Input, Modal, Sheet } from '@mui/joy';
 import { DataGrid } from '@mui/x-data-grid';
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
 import ExportExcel from '../../../../../components/ExportExcel';
+// ============================================================library================================================================
 
 function FacultyTab() {
-  // สำหรับ Responsive
+  // ===========================================================responsive==============================================================
   const theme = useTheme();
   const onlySmallScreen = useMediaQuery(theme.breakpoints.up('sm'));
   const onlyMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
   const onlyLargeScreen = useMediaQuery(theme.breakpoints.up('lg'));
+  // ===========================================================responsive==============================================================
 
-  // initialState
+  // ===========================================================initialState============================================================
   const initialState = {
     fi_name_th: '',
     fi_name_en: '',
@@ -40,32 +43,35 @@ function FacultyTab() {
     table: 'tabfaculty_institutes',
     primary: '',
   };
-  const tableName = 'Faculty';
-  // ค่า modal state change
-  const [openIns, setOpenIns] = React.useState(false); // สำหรับใช้ควบคุม Modal insert
-  const [openUpd, setOpenUpd] = React.useState(false); // สำหรับใช้ควบคุม Modal update
-  const [openDel, setOpenDel] = React.useState(false); // สำหรับใช้ควบคุม Modal Delete
-  const [openPreview, setOpenPreview] = React.useState(false);
+  // ===========================================================initialState============================================================
 
-  // สำหรับ set ค่า State
+  // ==================================================== ค่า modal state change ========================================================
+  const [openIns, setOpenIns] = React.useState(false); // สำหรับใช้ควบคุม modal insert
+  const [openUpd, setOpenUpd] = React.useState(false); // สำหรับใช้ควบคุม modal updata
+  const [openDel, setOpenDel] = React.useState(false); // สำหรับใช้ควบคุม modal delete
+  const [openPreview, setOpenPreview] = React.useState(false);
+  // ==================================================== ค่า modal state change ========================================================
+
+  // ====================================================== สำหรับ set ค่า State =========================================================
   const [Rows, setRows] = useState([]);
   const [dataAcademics, setDataAcademics] = useState([]);
-  // const [selectDisabled, setSelectDisabled] = useState(false);
   const [state, setState] = useState(initialState);
   const [selectState, setSelectState] = useState(initialState);
   const [deleteState, setDeleteState] = useState(initialDeleteState);
+  // ====================================================== สำหรับ set ค่า State =========================================================
 
-  // by bill start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  // =================================================== สำหรับ set ค่า State array ======================================================
   const [validationFac, setValidationFac] = useState({
     fi_name_th: false,
     fi_name_en: false,
     academics_ac_id: false,
   });
+  // =================================================== สำหรับ set ค่า State array ======================================================
 
+  // ============================================================== handle ===============================================================
   const handleChange = (e, key, type) => {
     const getKey = key;
     const { value } = e.target;
-    // setState((pre) => ({ ...pre, [getKey]: value }));
     let updatedValue = value;
     if (type === 'th') {
       updatedValue = updatedValue.replace(/[^ก-๙เ\s]/g, '');
@@ -75,6 +81,88 @@ function FacultyTab() {
     setState((pre) => ({ ...pre, [getKey]: updatedValue }));
   };
 
+  // สำหรับกด Submit หน้าเพิ่มข้อมูล
+  const handleInsertSubmit = (e) => {
+    e.preventDefault();
+    axios
+      .post(
+        'http://192.168.1.168:8000/api/method/frappe.help-api.insertfaculty',
+        state
+      )
+      .then((response) => {
+        console.log(response);
+        setOpenIns(false);
+        const newState1 = { ...selectState, ...state };
+        const newState2 = {
+          fi_id: response.data.message.Primarykey,
+          ...newState1,
+        };
+        setRows((pre) => [newState2, ...pre]);
+        setState(initialState);
+        setSelectState(initialSelectState);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  // สำหรับกด Submit หน้าแก้ไขข้อมูล
+  const handleEditSubmit = (e) => {
+    e.preventDefault();
+    axios
+      .post(
+        'http://192.168.1.168:8000/api/method/frappe.help-api.editfaculty',
+        state
+      )
+      .then((response) => {
+        console.log(response);
+        setOpenUpd(false);
+        setState(initialState);
+        setSelectState(initialSelectState);
+        const objectToUpdate = Rows.find((obj) => obj.fi_id === state.fi_id);
+
+        // แก้ไขค่า ในออบเจ็กต์
+        if (objectToUpdate) {
+          objectToUpdate.fi_name_th = state.fi_name_th;
+          objectToUpdate.fi_name_en = state.fi_name_en;
+          objectToUpdate.academics_ac_id = state.academics_ac_id;
+        }
+        setState(initialState);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  // สำหรับกด Submit หน้าลบข้อมูล Collegian
+  const handleDeleteSubmit = () => {
+    axios
+      .post(
+        'http://192.168.1.168:8000/api/method/frappe.help-api.delete',
+        deleteState
+      )
+      .then((response) => {
+        console.log(response);
+        console.log('deleteState: ', deleteState);
+        setOpenDel(false);
+
+        // ลบค่า ในออบเจ็กต์
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {
+        const idToDelete = deleteState.primary;
+        console.log('idToDelete: ', idToDelete);
+        const objectToDelete = Rows.filter((obj) => obj.fi_id !== idToDelete);
+        console.log('objectToDelete: ', objectToDelete);
+        setRows(objectToDelete);
+      });
+  };
+
+  // ============================================================== handle ===============================================================
+
+  // ============================================================ useEffect ==============================================================
   useEffect(() => {
     console.log('del:', deleteState);
   }, [deleteState]);
@@ -96,7 +184,6 @@ function FacultyTab() {
       console.log('NAME ENG Still Null');
     }
   }, [state]);
-  // by bill spot >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
   // get Data Academics for select
   useEffect(() => {
@@ -111,56 +198,6 @@ function FacultyTab() {
       });
   }, []);
 
-  // useEffect(() => {
-  //   const min = Math.min(...dataAcademics.map((item) => item.ac_id));
-  //   setState((pre) => ({ ...pre, academics_ac_id: String(min) }));
-  // }, [dataAcademics]);
-
-  // set columns
-  const columns = [
-    { field: 'fi_name_th', headerName: 'Name(TH)', width: 200 },
-    { field: 'fi_name_en', headerName: 'Name(EN)', width: 300 },
-    { field: 'ac_name_th', headerName: 'Academic', width: 450 },
-    {
-      field: 'Edit',
-      headerName: 'Edit',
-      width: 100,
-      renderCell: (cellValues) => (
-        <Button
-          variant='text'
-          onClick={() => {
-            setOpenUpd(true);
-            setState(cellValues.row);
-            setState((pre) => ({
-              ...pre,
-              primarykey: String(cellValues.row.fi_id),
-            }));
-            // setSelectDisabled(true);
-          }}>
-          ...
-        </Button>
-      ),
-      // renderCell ใช้สำหรับสร้างปุ่มภายในตาราง
-    },
-    {
-      field: 'Delete',
-      headerName: 'Delete',
-      width: 100,
-      renderCell: (cellValues) => (
-        <DeleteButton
-          handleClick={() => {
-            setOpenDel(true);
-            setDeleteState((pre) => ({
-              ...pre,
-              primary: cellValues.row.fi_id,
-            }));
-          }}
-        />
-      ),
-      // renderCell ใช้สำหรับสร้างปุ่มภายในตาราง
-    },
-  ];
-
   // set rows
   useEffect(() => {
     axios
@@ -173,6 +210,13 @@ function FacultyTab() {
       });
   }, []);
 
+  useEffect(() => {
+    console.log(state);
+  }, [state]);
+
+  // ============================================================ useEffect ==============================================================
+
+  // ============================================================= function ==============================================================
   // content modal
   const ContentModal = (
     <Box>
@@ -295,63 +339,6 @@ function FacultyTab() {
     </Box>
   );
 
-  useEffect(() => {
-    console.log(state);
-  }, [state]);
-
-  // สำหรับกด Submit หน้าเพิ่มข้อมูล
-  const handleInsertSubmit = (e) => {
-    e.preventDefault();
-    axios
-      .post(
-        'http://192.168.1.168:8000/api/method/frappe.help-api.insertfaculty',
-        state
-      )
-      .then((response) => {
-        console.log(response);
-        setOpenIns(false);
-        const newState1 = { ...selectState, ...state };
-        const newState2 = {
-          fi_id: response.data.message.Primarykey,
-          ...newState1,
-        };
-        setRows((pre) => [newState2, ...pre]);
-        setState(initialState);
-        setSelectState(initialSelectState);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  // สำหรับกด Submit หน้าแก้ไขข้อมูล
-  const handleEditSubmit = (e) => {
-    e.preventDefault();
-    axios
-      .post(
-        'http://192.168.1.168:8000/api/method/frappe.help-api.editfaculty',
-        state
-      )
-      .then((response) => {
-        console.log(response);
-        setOpenUpd(false);
-        setState(initialState);
-        setSelectState(initialSelectState);
-        const objectToUpdate = Rows.find((obj) => obj.fi_id === state.fi_id);
-
-        // แก้ไขค่า ในออบเจ็กต์
-        if (objectToUpdate) {
-          objectToUpdate.fi_name_th = state.fi_name_th;
-          objectToUpdate.fi_name_en = state.fi_name_en;
-          objectToUpdate.academics_ac_id = state.academics_ac_id;
-        }
-        setState(initialState);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
   const onSubmit = (e) => {
     if (
       // eslint-disable-next-line operator-linebreak
@@ -381,32 +368,56 @@ function FacultyTab() {
     }
   };
 
-  // สำหรับกด Submit หน้าลบข้อมูล Collegian
-  const handleDeleteSubmit = () => {
-    axios
-      .post(
-        'http://192.168.1.168:8000/api/method/frappe.help-api.delete',
-        deleteState
-      )
-      .then((response) => {
-        console.log(response);
-        console.log('deleteState: ', deleteState);
-        setOpenDel(false);
+  // ============================================================= function ==============================================================
 
-        // ลบค่า ในออบเจ็กต์
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .finally(() => {
-        const idToDelete = deleteState.primary;
-        console.log('idToDelete: ', idToDelete);
-        const objectToDelete = Rows.filter((obj) => obj.fi_id !== idToDelete);
-        console.log('objectToDelete: ', objectToDelete);
-        setRows(objectToDelete);
-      });
-  };
+  // ============================================================variables==============================================================
+  const tableName = 'Faculty';
 
+  // set columns
+  const columns = [
+    { field: 'fi_name_th', headerName: 'Name(TH)', width: 200 },
+    { field: 'fi_name_en', headerName: 'Name(EN)', width: 300 },
+    { field: 'ac_name_th', headerName: 'Academic', width: 450 },
+    {
+      field: 'Edit',
+      headerName: 'Edit',
+      width: 100,
+      renderCell: (cellValues) => (
+        <Button
+          variant='text'
+          onClick={() => {
+            setOpenUpd(true);
+            setState(cellValues.row);
+            setState((pre) => ({
+              ...pre,
+              primarykey: String(cellValues.row.fi_id),
+            }));
+            // setSelectDisabled(true);
+          }}>
+          ...
+        </Button>
+      ),
+      // renderCell ใช้สำหรับสร้างปุ่มภายในตาราง
+    },
+    {
+      field: 'Delete',
+      headerName: 'Delete',
+      width: 100,
+      renderCell: (cellValues) => (
+        <DeleteButton
+          handleClick={() => {
+            setOpenDel(true);
+            setDeleteState((pre) => ({
+              ...pre,
+              primary: cellValues.row.fi_id,
+            }));
+          }}
+        />
+      ),
+      // renderCell ใช้สำหรับสร้างปุ่มภายในตาราง
+    },
+  ];
+  // ============================================================variables==============================================================
   return (
     <div>
       <Box
@@ -513,6 +524,7 @@ function FacultyTab() {
           alignItems: 'center',
           overflow: 'auto',
         }}>
+        {/* =========================================================ExportExcel======================================================= */}
         <Sheet
           variant='outlined'
           sx={{
@@ -606,6 +618,7 @@ function FacultyTab() {
             </Table>
           </TableContainer>
         </Sheet>
+        {/* =========================================================ExportExcel======================================================= */}
       </Modal>
     </div>
   );
