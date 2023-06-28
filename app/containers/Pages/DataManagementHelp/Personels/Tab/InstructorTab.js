@@ -159,7 +159,7 @@ function InstructorTab() {
         .then((response) => {
           console.log(response);
           setOpenUpdIns(false);
-          const objectToUpdate = rows.find((obj) => obj.ist_id === state.ist_id);
+          const objectToUpdate = rows?.find((obj) => obj.ist_id === state.ist_id);
 
           // แก้ไขค่า ในออบเจ็กต์
           if (objectToUpdate) {
@@ -578,7 +578,7 @@ function InstructorTab() {
                   <ExportExcel
                     fileName={tableName + '_' + Date().toLocaleString()}
                     tableName={tableName}
-                    excelData={instructortypeRows.map((val) => ({
+                    excelData={instructortypeRows?.map((val) => ({
                       FirstNameTH: val.ist_fname_th,
                       LastNameTH: val.ist_lname_th,
                       FirstNameEN: val.ist_fname_en,
@@ -592,7 +592,9 @@ function InstructorTab() {
               </Box>
               <Box sx={{ display: 'flex', width: 200, justifyContent: 'space-between' }}>
                 <Typography variant='body2'>Total rows :</Typography>
-                <Typography variant='body2'>{instructortypeRows.length}</Typography>
+                <Typography variant='body2'>
+                  {instructortypeRows !== undefined ? instructortypeRows?.length : ''}
+                </Typography>
               </Box>
             </Box>
           </Box>
@@ -617,7 +619,7 @@ function InstructorTab() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {instructortypeRows.map((row, index) => (
+                {instructortypeRows?.map((row, index) => (
                   <TableRow
                     key={row.name}
                     sx={{ background: index % 2 === 0 ? '#f2f6fa' : '' }}

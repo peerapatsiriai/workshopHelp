@@ -219,7 +219,7 @@ function CollegianTab() {
               },
             }}
           >
-            {academicLists.map((acadamicList) => (
+            {academicLists?.map((acadamicList) => (
               <Option
                 key={acadamicList.ac_id}
                 value={acadamicList.ac_id}
@@ -502,7 +502,7 @@ function CollegianTab() {
         .then((response) => {
           console.log(response);
           setOpenUpdCo(false);
-          const objectToUpdate = rows.find((obj) => obj.co_id === state.co_id);
+          const objectToUpdate = rows?.find((obj) => obj.co_id === state.co_id);
 
           // แก้ไขค่า ในออบเจ็กต์
           if (objectToUpdate) {
@@ -540,7 +540,7 @@ function CollegianTab() {
       .finally(() => {
         const idToDelete = deleteState.primary;
         console.log('idToDelete: ', idToDelete);
-        const objectToDelete = rows.filter((obj) => obj.co_id !== idToDelete);
+        const objectToDelete = rows?.filter((obj) => obj.co_id !== idToDelete);
         console.log('objectToDelete: ', objectToDelete);
         setRows(objectToDelete);
       });
@@ -622,7 +622,7 @@ function CollegianTab() {
       <Box sx={{ display: 'flex', width: '100%' }}>
         {/* ทำแค่ตัวนี้ก่อน */}
         <DataGrid
-          rows={rows}
+          rows={rows || []}
           columns={collegianColumns}
           getRowId={(row) => row.co_id}
           initialState={{
@@ -702,7 +702,7 @@ function CollegianTab() {
                   <ExportExcel
                     fileName={tableName + '_' + Date().toLocaleString()}
                     tableName={tableName}
-                    excelData={rows.map((val) => ({
+                    excelData={rows?.map((val) => ({
                       Code: val.co_code,
                       FirstNameTH: val.co_fname_th,
                       LastNameTH: val.co_lname_th,
@@ -717,7 +717,7 @@ function CollegianTab() {
               </Box>
               <Box sx={{ display: 'flex', width: 200, justifyContent: 'space-between' }}>
                 <Typography variant='body2'>Total rows :</Typography>
-                <Typography variant='body2'>{rows.length}</Typography>
+                <Typography variant='body2'>{rows !== undefined ? rows.length : ''}</Typography>
               </Box>
             </Box>
           </Box>
@@ -743,7 +743,7 @@ function CollegianTab() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map((row, index) => (
+                {rows?.map((row, index) => (
                   <TableRow
                     key={row.name}
                     sx={{ background: index % 2 === 0 ? '#f2f6fa' : '' }}
