@@ -191,9 +191,7 @@ function FacultyTab() {
         'http://192.168.1.168:8000/api/method/frappe.help-api.delete',
         deleteState
       )
-      .then((response) => {
-        console.log(response);
-        console.log('deleteState: ', deleteState);
+      .then(() => {
         setOpenDel(false);
 
         // ลบค่า ในออบเจ็กต์
@@ -222,7 +220,6 @@ function FacultyTab() {
       .then((res) => {
         setDataAcademics(res.data.message.Data);
         res.data.message.Data;
-        console.log('API Academics: ', res.data.message.Data);
       });
   }, []);
 
@@ -234,7 +231,6 @@ function FacultyTab() {
       )
       .then((response) => {
         setRows(response.data.message.Data);
-        console.log('API Faculty', response.data.message.Data);
       });
   }, []);
   // เช็คว่าช่องกรอก ว่างไหม
@@ -343,7 +339,7 @@ function FacultyTab() {
         <Typography sx={{ fontSize: 12, mb: 0.5 }}>Academic</Typography>
         <Select
           indicator={<KeyboardArrowDown />}
-          value={state.academics_ac_id}
+          value={state.academics_ac_id || null}
           placeholder={
             validationFac.academics_ac_id || state.academics_ac_id === null
               ? 'Please Select Academic'
@@ -353,7 +349,6 @@ function FacultyTab() {
             setState((pre) => ({ ...pre, academics_ac_id: value }));
             console.log('value: ', value);
           }}
-          // disabled={selectDisabled}
           color={validationFac.academics_ac_id ? 'danger' : 'neutral'}
           size='sm'
           sx={{
@@ -368,7 +363,7 @@ function FacultyTab() {
           }}>
           {dataAcademics?.map((data) => (
             <Option
-              key={data.name}
+              key={data.ac_id}
               value={data.ac_id}
               onClick={() =>
                 // eslint-disable-next-line implicit-arrow-linebreak
@@ -621,7 +616,7 @@ function FacultyTab() {
               <TableBody>
                 {rows?.map((row, index) => (
                   <TableRow
-                    key={row.index}
+                    key={row.fi_id}
                     sx={{ background: index % 2 === 0 ? '#f2f6fa' : '' }}>
                     <TableCell sx={{ fontWeight: 200, width: 60 }}>
                       {index + 1}
