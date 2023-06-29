@@ -36,6 +36,9 @@ function AcademicsTab() {
     ac_tel: '',
     academic_type_ac_type_id: '',
   };
+  const initialSelectState = {
+    ac_type_name_th: '',
+  };
   const initialDeleteState = {
     table: 'tabacademics',
     primary: '',
@@ -52,6 +55,7 @@ function AcademicsTab() {
   const [rows, setRows] = useState([]);
   const [academictypeRows, setacademictypeRows] = useState([]);
   const [state, setState] = useState(initialState);
+  const [selectState, setSelectState] = useState(initialSelectState);
   const [deleteState, setDeleteState] = useState(initialDeleteState);
 
   // สำหรับใช้เก็บค่า Validation Insert
@@ -274,6 +278,13 @@ function AcademicsTab() {
               <Option
                 key={value}
                 value={contentAc.ac_type_id}
+                onClick={() =>
+                  // eslint-disable-next-line implicit-arrow-linebreak
+                  setSelectState((pre) => ({
+                    ...pre,
+                    ac_type_name_th: contentAc.ac_type_name_th,
+                  }))
+                }
               >
                 {contentAc.ac_type_name_th}
               </Option>
@@ -325,9 +336,16 @@ function AcademicsTab() {
           console.log(response);
           setOpenIns(false);
           // console.log('t: ', response.data.message.Primarykey);
-          const newState = { ac_id: response.data.message.Primarykey, ...state };
-          setRows((pre) => [newState, ...pre]);
+          // const newState = { ac_id: response.data.message.Primarykey, ...state };
+          // setRows((pre) => [newState, ...pre]);
+          const newState1 = { ...selectState, ...state };
+          const newState2 = {
+            ac_id: response.data.message.Primarykey,
+            ...newState1,
+          };
+          setRows((pre) => [newState2, ...pre]);
           setState(initialState);
+          setSelectState(initialSelectState);
         })
         .catch((error) => {
           console.log(error);
@@ -392,6 +410,7 @@ function AcademicsTab() {
             objectToUpdate.academic_type_ac_type_id = state.academic_type_ac_type_id;
           }
           setState(initialState);
+          setSelectState(initialSelectState);
         })
         .catch((error) => {
           console.log(error);
