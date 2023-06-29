@@ -149,13 +149,6 @@ function CollegianTab() {
       });
   };
 
-  async function myAsyncFunction(cellValues) {
-    // Your code here
-    await dropdown(cellValues.row.co_id);
-    await setState(cellValues.row);
-    await setState((pre) => ({ ...pre, primarykey: cellValues.row.co_id }));
-  }
-
   // set columns
   const collegianColumns = [
     { field: 'co_code', headerName: 'Code', width: 120 },
@@ -173,7 +166,9 @@ function CollegianTab() {
           variant='text'
           onClick={() => {
             setOpenUpdCo(true);
-            myAsyncFunction(cellValues);
+            dropdown(cellValues.row.co_id);
+            setState(cellValues.row);
+            setState((pre) => ({ ...pre, primarykey: cellValues.row.co_id }));
 
             setDropdownState(false);
           }}
