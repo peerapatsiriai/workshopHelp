@@ -185,7 +185,6 @@ function AcademicsTab() {
             size='md'
             value={state.ac_name_th || ''}
             onChange={(event) => {
-              setState((pre) => ({ ...pre, ac_name_th: event.target.value }));
               handleChange(event, 'ac_name_th', 'th');
             }}
           />
@@ -201,7 +200,6 @@ function AcademicsTab() {
             size='md'
             value={state.ac_name_en || ''}
             onChange={(event) => {
-              setState((pre) => ({ ...pre, ac_name_en: event.target.value }));
               handleChange(event, 'ac_name_en', 'en');
             }}
             sx={{ mx: 1 }}
@@ -220,7 +218,6 @@ function AcademicsTab() {
             size='md'
             value={state.ac_campus || ''}
             onChange={(event) => {
-              setState((pre) => ({ ...pre, ac_campus: event.target.value }));
               handleChange(event, 'ac_campus', 'th');
             }}
           />
@@ -243,7 +240,6 @@ function AcademicsTab() {
             }}
             value={state.ac_tel || ''}
             onChange={(event) => {
-              setState((pre) => ({ ...pre, ac_tel: event.target.value }));
               handleChange(event, 'ac_tel', 'tel');
             }}
             sx={{ mx: 1 }}
