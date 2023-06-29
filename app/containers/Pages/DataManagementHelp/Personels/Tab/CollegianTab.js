@@ -468,7 +468,7 @@ function CollegianTab() {
       axios
         .post('http://192.168.1.168:8000/api/method/frappe.help-api.insertcollegian', state)
         .then((response) => {
-          console.log(response);
+          console.log('res: ', response);
           setOpenInsCo(false);
           // console.log('t: ', response.data.message.Primarykey);
           const newState1 = { ...selectState, ...state };
@@ -499,7 +499,7 @@ function CollegianTab() {
       axios
         .post('http://192.168.1.168:8000/api/method/frappe.help-api.editcollegian', state)
         .then((response) => {
-          console.log(response);
+          console.log('res: ', response);
           setOpenUpdCo(false);
           const objectToUpdate = rows?.find((obj) => obj.co_id === state.co_id);
 
@@ -528,13 +528,13 @@ function CollegianTab() {
     axios
       .post('http://192.168.1.168:8000/api/method/frappe.help-api.delete', deleteState)
       .then((response) => {
-        console.log(response);
+        console.log('res: ', response);
         console.log('deleteState: ', deleteState);
 
         // ลบค่า ในออบเจ็กต์
       })
       .catch((error) => {
-        console.log(error);
+        console.log('err: ', error);
       })
       .finally(() => {
         const idToDelete = deleteState.primary;
