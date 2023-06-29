@@ -131,8 +131,9 @@ function CollegianTab() {
 
   const dropdown = (id) => {
     const strId = id.toString();
+    console.log(strId);
     axios
-      .post('http://192.168.1.168:8000/api/method/frappe.help-api.getfacultyandcurriculumfordropdown', {
+      .post('http://192.168.1.168:8000/api/method/frappe.help-api.getAllCurriculumandFacultyinoneacademic', {
         primarykey: strId,
       })
       .then((response) => {
