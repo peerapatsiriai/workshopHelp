@@ -149,6 +149,13 @@ function CollegianTab() {
       });
   };
 
+  async function myAsyncFunction(cellValues) {
+    // Your code here
+    await dropdown(cellValues.row.co_id);
+    await setState(cellValues.row);
+    await setState((pre) => ({ ...pre, primarykey: cellValues.row.co_id }));
+  }
+
   // set columns
   const collegianColumns = [
     { field: 'co_code', headerName: 'Code', width: 120 },
@@ -166,9 +173,8 @@ function CollegianTab() {
           variant='text'
           onClick={() => {
             setOpenUpdCo(true);
-            dropdown(cellValues.row.co_id);
-            setState(cellValues.row);
-            setState((pre) => ({ ...pre, primarykey: cellValues.row.co_id }));
+            myAsyncFunction(cellValues);
+
             setDropdownState(false);
           }}
         >
@@ -259,8 +265,8 @@ function CollegianTab() {
             id='curriculums_cur_id'
             placeholder='กรุณาเลือกหลักสูตร'
             indicator={<KeyboardArrowDown />}
-            value={state.curriculums_cur_id || ''}
-            onChange={(event, value) => setState((pre) => ({ ...pre, curriculums_cur_id: value }))}
+            value={state.cur_id || ''}
+            onChange={(event, value) => setState((pre) => ({ ...pre, cur_id: value }))}
             color={validation.curriculums_cur_id ? 'danger' : 'neutral'}
             disabled={dropdownState}
             sx={{
