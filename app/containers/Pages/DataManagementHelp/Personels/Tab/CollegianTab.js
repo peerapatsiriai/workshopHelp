@@ -261,7 +261,9 @@ function CollegianTab() {
             placeholder='กรุณาเลือกหลักสูตร'
             indicator={<KeyboardArrowDown />}
             value={state.cur_id || ''}
-            onChange={(event, value) => setState((pre) => ({ ...pre, cur_id: value }))}
+            onChange={(event, value) => {
+              setState((pre) => ({ ...pre, cur_id: value, curriculums_cur_id: value }));
+            }}
             color={validation.curriculums_cur_id ? 'danger' : 'neutral'}
             disabled={dropdownState}
             sx={{
@@ -294,7 +296,7 @@ function CollegianTab() {
             indicator={<KeyboardArrowDown />}
             value={state.fi_id || ''}
             onChange={(event, value) => {
-              setState((pre) => ({ ...pre, fi_id: value }));
+              setState((pre) => ({ ...pre, fi_id: value, faculty_institutes_fi_id: value }));
             }}
             color={validation.fi_id ? 'danger' : 'neutral'}
             disabled={dropdownState}
@@ -768,7 +770,7 @@ function CollegianTab() {
               <TableBody>
                 {rows?.map((row, index) => (
                   <TableRow
-                    key={row.name}
+                    key={row.co_id}
                     sx={{ background: index % 2 === 0 ? '#f2f6fa' : '' }}
                   >
                     <TableCell sx={{ fontWeight: 200, width: 60 }}>{index + 1}</TableCell>
