@@ -100,6 +100,7 @@ function CollegianTab() {
     );
   }, []);
 
+  /* The above code is using the useEffect hook in React to make two API calls using axios. */
   useEffect(() => {
     // set rows Data
     axios.get('http://192.168.1.168:8000/api/method/frappe.help-api.getAllcollegians').then((response) => {
@@ -129,12 +130,16 @@ function CollegianTab() {
       });
   }, []);
 
+  /**
+   * The function `dropdown` makes an HTTP GET request to a specific API endpoint and retrieves data
+   * related to curriculums and faculty based on a given ID.
+   * @param id - The `id` parameter is the primary key used to fetch data from the API. It is passed as
+   * a parameter to the `dropdown` function.
+   */
   const dropdown = (id) => {
-    const strId = id.toString();
-    console.log(strId);
     axios
-      .post('http://192.168.1.168:8000/api/method/frappe.help-api.getAllCurriculumandFacultyinoneacademic', {
-        primarykey: strId,
+      .get('http://192.168.1.168:8000/api/method/frappe.help-api.getAllCurriculumandFacultyinoneacademic', {
+        primarykey: id,
       })
       .then((response) => {
         console.log(response);
