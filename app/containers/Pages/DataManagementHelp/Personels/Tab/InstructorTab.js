@@ -39,6 +39,7 @@ function InstructorTab() {
     ac_id: '',
   };
   const initialSelectState = {
+    ac_name_th: '',
     fi_name_th: '',
   };
   const initialDeleteState = {
@@ -59,7 +60,7 @@ function InstructorTab() {
   // สำหรับ set data
   const [rows, setRows] = useState([]);
   const [academicLists, setAcademicLists] = useState([]);
-  const [instructortypeRows, setInstructortypeRows] = useState([]);
+  const [facultyList, setFacultyList] = useState([]);
   const [openPreview, setOpenPreview] = React.useState(false);
 
   const [validation, setValidation] = useState({
@@ -74,7 +75,6 @@ function InstructorTab() {
   useEffect(() => {
     axios.get('http://192.168.1.168:8000/api/method/frappe.help-api.getAllinstructors').then((response) => {
       setRows(response.data.message.Data);
-      setInstructortypeRows(response.data.message.Data);
       console.log(response.data.message.Data);
     });
     // set rows academic list for dropdown
@@ -83,6 +83,19 @@ function InstructorTab() {
       console.log(response.data.message.Data);
     });
   }, []);
+
+  useEffect(() => {
+    if (state.ac_id !== null) {
+      axios
+        .post('http://192.168.1.168:8000/api/method/frappe.help-api.getAllCurriculumandFacultyinoneacademic', {
+          primarykey: String(state.ac_id),
+        })
+        .then((response) => {
+          setFacultyList(response.data.message.FacultyList);
+          console.log(response.data.message.FacultyList);
+        });
+    }
+  }, [state.ac_id]);
 
   useEffect(() => {
     console.log(state);
@@ -174,7 +187,7 @@ function InstructorTab() {
             objectToUpdate.ist_fname_en = state.ist_fname_en;
             objectToUpdate.ist_lname_en = state.ist_lname_en;
             objectToUpdate.ist_email = state.ist_email;
-            objectToUpdate.ist_tel = state.ist_email;
+            objectToUpdate.ist_tel = state.ist_tel;
             objectToUpdate.faculty_institutes_fi_id = state.faculty_institutes_fi_id;
           }
           setState(initialState);
@@ -213,9 +226,9 @@ function InstructorTab() {
             placeholder='กรุณาเลือกคณะ'
             indicator={<KeyboardArrowDown />}
             value={state.ac_id || ''}
-            onChange={(event, value, text) => {
+            onChange={(event, value) => {
               setState((pre) => ({ ...pre, ac_id: value }));
-              setSelectState(text);
+              // setSelectState(text);
             }}
             color={validation.ac_id ? 'danger' : 'neutral'}
             sx={{
@@ -233,6 +246,7 @@ function InstructorTab() {
               <Option
                 key={acadamicList.ac_id}
                 value={acadamicList.ac_id}
+                onClick={() => setSelectState((pre) => ({ ...pre, ac_name_th: acadamicList.ac_name_th }))}
               >
                 {acadamicList.ac_name_th}
               </Option>
@@ -260,10 +274,10 @@ function InstructorTab() {
               },
             }}
           >
-            {instructortypeRows?.map((contentIn, value) => (
+            {facultyList?.map((contentIn) => (
               <Option
-                key={value}
-                value={contentIn.faculty_institutes_fi_id}
+                key={contentIn.fi_id}
+                value={contentIn.fi_id}
                 onClick={() => setSelectState((pre) => ({ ...pre, fi_name_th: contentIn.fi_name_th }))}
               >
                 {contentIn.fi_name_th}
@@ -614,7 +628,7 @@ function InstructorTab() {
                     Table :
                   </Typography>
                   <ExportExcel
-                    isEmpty={instructortypeRows?.length > 0 ? 0 : 1}
+                    isEmpty={rows?.length > 0 ? 0 : 1}
                     fileName={tableName + '_' + Date().toLocaleString()}
                     tableName={tableName}
                     excelData={rows?.map((val) => ({

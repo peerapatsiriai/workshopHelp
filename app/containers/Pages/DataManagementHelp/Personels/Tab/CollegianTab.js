@@ -37,8 +37,8 @@ function CollegianTab() {
     co_email: '',
     co_tel: '',
     ac_id: '',
-    faculty_institutes_fi_id: '',
-    curriculums_cur_id: '',
+    fi_id: '',
+    cur_id: '',
   };
   const initialDeleteState = {
     table: 'tabcollegians',
@@ -53,8 +53,8 @@ function CollegianTab() {
     co_email: false,
     co_tel: false,
     ac_id: false,
-    faculty_institutes_fi_id: false,
-    curriculums_cur_id: false,
+    fi_id: false,
+    cur_id: false,
   };
   const initialSelectState = {
     cur_name_th: '',
@@ -83,6 +83,37 @@ function CollegianTab() {
   const [facultyList, setFacultyList] = useState(facultyListIns);
 
   useEffect(() => {
+    console.log(
+      'ข้าแต่พระเจ้าพระเยชูคริสตเจ้าสมควรให้นมัสการพระผู้ไถ่ ซึ่งได้ถวายชีวิตบนไม้กางเขนช่วยลูกทั้งหลายให้รอดพ้นจากความตาย '
+    );
+    console.log('โอ้พระเยซูนาซาเรท ที่ต้องตรึงบนไม้กางเขน โปรดรักษาความคิดของลูกด้วยเถิด');
+    console.log('โอ้พระเยซูนาซาเรท ที่ต้องตรึงบนไม้กางเขน โปรดป้องกันความชั่วร้ายต่างๆแก่ลูกด้วยเถิด');
+    console.log('โอ้พระเยซูนาซาเรท ที่ต้องตรึงบนไม้กางเขน โปรดป้องกันลูกให้พ้นทุกข์อุกฉกรรจ์ต่างๆ ด้วยเถิด');
+    console.log('โอ้พระเยซูนาซาเรท ที่ต้องตรึงบนไม้กางเขน โปรดช่วยบำรุงรักษาลูก (ตามที่ลูกประสงค์)');
+    console.log('โอ้พระเยซูนาซาเรท ที่ต้องตรึงบนไม้กางเขน โปรดช่วยพิทักษ์รักษาลูกให้พ้นศัตรูของลูกด้วยเถิด');
+    console.log(
+      'โอ้พระเยซูนาซาเรท ที่ต้องตรึงบนไม้กางเขน โปรดป้องกันอันตรายต่างๆ ให้พ้นจากตัวลูกและประทานชีวิตให้แก่ลูกด้วยเถิด'
+    );
+    console.log('โอ้พระเยซูนาซาเรท ที่ต้องตรึงบนไม้กางเขน โปรดทรงพระกรุณาแก่ลูก ณ กาลบัดนี้ และเสมอไปด้วยเถิด');
+    console.log(
+      'ข้าแต่พระจิตผู้ประทานให้ลูกมองเห็นและแสดงให้ลูกได้พบหนทางที่จะบรรลุถึงความปรารถนาของลูก ผู้ประทานพระหรรษทานสำหรับการยกโทษและลืมความผิดบกพร่องต่าง ๆ และผู้เป็นแบบอย่างสำหรับชีวิตของลูก ในบทภาวนาสั้นๆ นี้ ลูกขอขอบพระคุณพระองค์สำหรับทุกสิ่งทุกอย่าง และลูกขอกล่าวย้ำอีกว่า ลูกไม่ต้องการที่จะแยกจากพระองค์ ไม่มีอะไรสำคัญกว่าความปรารถนานี้ ลูกต้องการเป็นหนึ่งเดียวกับพระองค์และความรักของลูกเพื่อพระองค์เท่านั้น'
+    );
+  }, []);
+
+  useEffect(() => {
+    // set rows Data
+    axios.get('http://192.168.1.168:8000/api/method/frappe.help-api.getAllcollegians').then((response) => {
+      setRows(response.data.message.Data);
+      console.log(response.data.message.Data);
+    });
+    // set rows academic list for dropdown
+    axios.get('http://192.168.1.168:8000/api/method/frappe.help-api.getAllAcademics').then((response) => {
+      setAcademicLists(response.data.message.Data);
+      console.log(response.data.message.Data);
+    });
+  }, []);
+
+  useEffect(() => {
     axios
       .get('http://192.168.1.168:8000/api/method/frappe.help-api.getAllCurriculumandFaculty')
       .then((response) => {
@@ -100,6 +131,7 @@ function CollegianTab() {
 
   const dropdown = (id) => {
     const strId = id.toString();
+    console.log(strId);
     axios
       .post('http://192.168.1.168:8000/api/method/frappe.help-api.getAllCurriculumandFacultyinoneacademic', {
         primarykey: strId,
@@ -137,6 +169,7 @@ function CollegianTab() {
             dropdown(cellValues.row.co_id);
             setState(cellValues.row);
             setState((pre) => ({ ...pre, primarykey: cellValues.row.co_id }));
+
             setDropdownState(false);
           }}
         >
@@ -160,19 +193,6 @@ function CollegianTab() {
       // renderCell ใช้สำหรับสร้างปุ่มภายในตาราง
     },
   ];
-
-  useEffect(() => {
-    // set rows Data
-    axios.get('http://192.168.1.168:8000/api/method/frappe.help-api.getAllcollegians').then((response) => {
-      setRows(response.data.message.Data);
-      console.log(response.data.message.Data);
-    });
-    // set rows academic list for dropdown
-    axios.get('http://192.168.1.168:8000/api/method/frappe.help-api.getAllAcademics').then((response) => {
-      setAcademicLists(response.data.message.Data);
-      console.log(response.data.message.Data);
-    });
-  }, []);
 
   const handleChange = (e, key, type) => {
     const { value } = e.target;
@@ -199,7 +219,7 @@ function CollegianTab() {
         <Box sx={{ width: '50%' }}>
           <Typography sx={{ fontSize: 12, mb: 0.5, ml: 2 }}>Academic</Typography>
           <Select
-            id='faculty_institutes_fi_id'
+            id='Academic'
             placeholder='กรุณาเลือกคณะ'
             indicator={<KeyboardArrowDown />}
             value={state.ac_id || ''}
@@ -240,8 +260,8 @@ function CollegianTab() {
             id='curriculums_cur_id'
             placeholder='กรุณาเลือกหลักสูตร'
             indicator={<KeyboardArrowDown />}
-            value={state.curriculums_cur_id || ''}
-            onChange={(event, value) => setState((pre) => ({ ...pre, curriculums_cur_id: value }))}
+            value={state.cur_id || ''}
+            onChange={(event, value) => setState((pre) => ({ ...pre, cur_id: value }))}
             color={validation.curriculums_cur_id ? 'danger' : 'neutral'}
             disabled={dropdownState}
             sx={{
@@ -269,14 +289,14 @@ function CollegianTab() {
         <Box sx={{ width: '50%' }}>
           <Typography sx={{ fontSize: 12, mb: 0.5, ml: 2 }}>Faculty Institutes</Typography>
           <Select
-            id='faculty_institutes_fi_id'
+            id='fi_id'
             placeholder='กรุณาเลือกคณะ'
             indicator={<KeyboardArrowDown />}
-            value={state.faculty_institutes_fi_id || ''}
+            value={state.fi_id || ''}
             onChange={(event, value) => {
-              setState((pre) => ({ ...pre, faculty_institutes_fi_id: value }));
+              setState((pre) => ({ ...pre, fi_id: value }));
             }}
-            color={validation.faculty_institutes_fi_id ? 'danger' : 'neutral'}
+            color={validation.fi_id ? 'danger' : 'neutral'}
             disabled={dropdownState}
             sx={{
               mx: 1,
@@ -512,7 +532,7 @@ function CollegianTab() {
             objectToUpdate.co_lname_en = state.co_lname_en;
             objectToUpdate.co_email = state.co_email;
             objectToUpdate.co_tel = state.co_tel;
-            objectToUpdate.faculty_institutes_fi_id = state.faculty_institutes_fi_id;
+            objectToUpdate.fi_id = state.fi_id;
           }
           setState(initialState);
         })
