@@ -264,7 +264,7 @@ function PersonelsPage() {
                       borderColor: 'gray',
                     }}
                   >
-                    Colegians
+                    Collegians
                   </Tab>
                   <Tab
                     sx={{
