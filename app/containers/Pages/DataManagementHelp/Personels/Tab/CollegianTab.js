@@ -37,8 +37,8 @@ function CollegianTab() {
     co_email: '',
     co_tel: '',
     ac_id: '',
-    faculty_institutes_fi_id: '',
-    curriculums_cur_id: '',
+    fi_id: '',
+    cur_id: '',
   };
   const initialDeleteState = {
     table: 'tabcollegians',
@@ -53,8 +53,8 @@ function CollegianTab() {
     co_email: false,
     co_tel: false,
     ac_id: false,
-    faculty_institutes_fi_id: false,
-    curriculums_cur_id: false,
+    fi_id: false,
+    cur_id: false,
   };
   const initialSelectState = {
     cur_name_th: '',
@@ -83,6 +83,19 @@ function CollegianTab() {
   const [facultyList, setFacultyList] = useState(facultyListIns);
 
   useEffect(() => {
+    // set rows Data
+    axios.get('http://192.168.1.168:8000/api/method/frappe.help-api.getAllcollegians').then((response) => {
+      setRows(response.data.message.Data);
+      console.log(response.data.message.Data);
+    });
+    // set rows academic list for dropdown
+    axios.get('http://192.168.1.168:8000/api/method/frappe.help-api.getAllAcademics').then((response) => {
+      setAcademicLists(response.data.message.Data);
+      console.log(response.data.message.Data);
+    });
+  }, []);
+
+  useEffect(() => {
     axios
       .get('http://192.168.1.168:8000/api/method/frappe.help-api.getAllCurriculumandFaculty')
       .then((response) => {
@@ -101,7 +114,7 @@ function CollegianTab() {
   const dropdown = (id) => {
     const strId = id.toString();
     axios
-      .post('http://192.168.1.168:8000/api/method/frappe.help-api.getAllCurriculumandFacultyinoneacademic', {
+      .post('http://192.168.1.168:8000/api/method/frappe.help-api.getfacultyandcurriculumfordropdown', {
         primarykey: strId,
       })
       .then((response) => {
@@ -161,19 +174,6 @@ function CollegianTab() {
     },
   ];
 
-  useEffect(() => {
-    // set rows Data
-    axios.get('http://192.168.1.168:8000/api/method/frappe.help-api.getAllcollegians').then((response) => {
-      setRows(response.data.message.Data);
-      console.log(response.data.message.Data);
-    });
-    // set rows academic list for dropdown
-    axios.get('http://192.168.1.168:8000/api/method/frappe.help-api.getAllAcademics').then((response) => {
-      setAcademicLists(response.data.message.Data);
-      console.log(response.data.message.Data);
-    });
-  }, []);
-
   const handleChange = (e, key, type) => {
     const { value } = e.target;
     const getKey = key;
@@ -199,7 +199,7 @@ function CollegianTab() {
         <Box sx={{ width: '50%' }}>
           <Typography sx={{ fontSize: 12, mb: 0.5, ml: 2 }}>Academic</Typography>
           <Select
-            id='faculty_institutes_fi_id'
+            id='Academic'
             placeholder='กรุณาเลือกคณะ'
             indicator={<KeyboardArrowDown />}
             value={state.ac_id || ''}
@@ -269,14 +269,14 @@ function CollegianTab() {
         <Box sx={{ width: '50%' }}>
           <Typography sx={{ fontSize: 12, mb: 0.5, ml: 2 }}>Faculty Institutes</Typography>
           <Select
-            id='faculty_institutes_fi_id'
+            id='fi_id'
             placeholder='กรุณาเลือกคณะ'
             indicator={<KeyboardArrowDown />}
-            value={state.faculty_institutes_fi_id || ''}
+            value={state.fi_id || ''}
             onChange={(event, value) => {
-              setState((pre) => ({ ...pre, faculty_institutes_fi_id: value }));
+              setState((pre) => ({ ...pre, fi_id: value }));
             }}
-            color={validation.faculty_institutes_fi_id ? 'danger' : 'neutral'}
+            color={validation.fi_id ? 'danger' : 'neutral'}
             disabled={dropdownState}
             sx={{
               mx: 1,
@@ -512,7 +512,7 @@ function CollegianTab() {
             objectToUpdate.co_lname_en = state.co_lname_en;
             objectToUpdate.co_email = state.co_email;
             objectToUpdate.co_tel = state.co_tel;
-            objectToUpdate.faculty_institutes_fi_id = state.faculty_institutes_fi_id;
+            objectToUpdate.fi_id = state.fi_id;
           }
           setState(initialState);
         })
