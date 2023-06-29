@@ -265,9 +265,7 @@ function FacultyTab() {
       <Box
         sx={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-end' }}>
         <Box sx={{ flexDirection: 'column', width: '50%', ml: 2 }}>
-          <Typography sx={{ fontSize: 12, mb: 0.5 }}>
-            Academic Name(TH)
-          </Typography>
+          <Typography sx={{ fontSize: 12, mb: 0.5 }}>Academic Name</Typography>
           <Input
             label='Academic Name'
             placeholder={
