@@ -552,19 +552,16 @@ function CollegianTab() {
       .then((response) => {
         console.log('res: ', response);
         console.log('deleteState: ', deleteState);
-
-        // ลบค่า ในออบเจ็กต์
-      })
-      .catch((error) => {
-        console.log('err: ', error);
-      })
-      .finally(() => {
         const idToDelete = deleteState.primary;
         console.log('idToDelete: ', idToDelete);
         const objectToDelete = rows?.filter((obj) => obj.co_id !== idToDelete);
         console.log('objectToDelete: ', objectToDelete);
         setRows(objectToDelete);
-      });
+      })
+      .catch((error) => {
+        console.log('err: ', error);
+      })
+      .finally(() => {});
   };
 
   // Update ค่า Validation ที่แสดงเตือนสีแดง แล้วมีเพิ่มข้อมูลให้ปิดสีแดง
