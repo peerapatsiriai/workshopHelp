@@ -553,7 +553,7 @@ function InstructorTab() {
             setState(initialState);
           }}
           content={ContentModal}
-          header={'Update Collegian'}
+          header={'Update Instructor'}
           labelBtn={'Update'}
           subDetail={true}
           handleSubmit={handleEditSubmit}
@@ -574,7 +574,7 @@ function InstructorTab() {
           setState(initialState);
         }}
         content={ContentModal}
-        header={'Add New Collegian'}
+        header={'Add New Instructor'}
         labelBtn={'Submit'}
         handleSubmit={handleInsertSubmit}
         subDetail={true}
